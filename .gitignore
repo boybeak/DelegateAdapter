@@ -46,4 +46,4 @@ gradlew
 gradlew.bat
 settings.gradle
 private_key_sender.asc
-public_key_sender.ascgpg
+public_key_sender.asc
