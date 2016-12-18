@@ -1,6 +1,6 @@
 # DelegateAdapter
 An advanced RecyclerView's Adapter
-
+![](https://github.com/boybeak/DelegateAdapter/blob/master/demopicture.png =360x640)
 ## How to use.
 #### AnnotationDelegate的使用方法
 一般来说，使用AnnotationAdapter配合AnnotationDelegate就可以满足大部分需求。
