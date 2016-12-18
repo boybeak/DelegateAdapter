@@ -15,10 +15,10 @@ public abstract class AbsViewHolder<T> extends RecyclerView.ViewHolder {
     }
 
     /**
-     * @param context
+     * @param context context
      * @param t may be a subclass of {@link DelegateImpl}
      * @param position adapter position
-     * @param adapter
+     * @param adapter adapter
      */
     public abstract void onBindView (Context context, T t, int position, DelegateAdapter adapter);
 

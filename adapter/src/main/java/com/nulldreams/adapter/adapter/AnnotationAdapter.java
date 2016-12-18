@@ -45,7 +45,7 @@ public class AnnotationAdapter extends DelegateAdapter {
 
     /**
      * store unknown viewType and AbsViewHolder class to {@link #mTypeHolderMap}
-     * @param position
+     * @param position adapter position
      * @return
      */
     @Override
