@@ -1,5 +1,6 @@
 # DelegateAdapter
 An advanced RecyclerView's Adapter
+
 <img src="https://github.com/boybeak/DelegateAdapter/blob/master/demopicture.png" width="360" height="640"/>
 ## How to use.
 #### AnnotationDelegate的使用方法
