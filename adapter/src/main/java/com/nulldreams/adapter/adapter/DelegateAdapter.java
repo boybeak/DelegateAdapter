@@ -103,14 +103,14 @@ public abstract class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder
         mDelegateImplList.add(position, impl);
     }
 
-    public void addAll(Collection<DelegateImpl> list) {
+    public void addAll(Collection<? extends DelegateImpl> list) {
         if (list == null) {
             throw new NullPointerException("list shouldn't be null");
         }
         mDelegateImplList.addAll(list);
     }
 
-    public void addAll(int position, Collection<DelegateImpl> list) {
+    public void addAll(int position, Collection<? extends DelegateImpl> list) {
         if (list == null) {
             throw new NullPointerException("list shouldn't be null");
         }

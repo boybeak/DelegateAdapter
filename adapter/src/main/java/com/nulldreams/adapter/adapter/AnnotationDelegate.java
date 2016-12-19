@@ -50,7 +50,7 @@ public class AnnotationDelegate<T> extends AbsDelegate<T> {
             Class<? extends Annotation> annoClz = anno.annotationType();
             try {
                 Method method = annoClz.getMethod("layoutID");
-                layoutID = (int)method.invoke(anno, null);
+                layoutID = (int)method.invoke(anno);
                 return layoutID;
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
@@ -95,7 +95,7 @@ public class AnnotationDelegate<T> extends AbsDelegate<T> {
             Class<? extends Annotation> annoClz = anno.annotationType();
             try {
                 Method method = annoClz.getMethod("holderClass");
-                holderClass = (Class<? extends AbsViewHolder>)method.invoke(anno, null);
+                holderClass = (Class<? extends AbsViewHolder>)method.invoke(anno);
                 return holderClass;
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
