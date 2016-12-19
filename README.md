@@ -29,9 +29,9 @@ public class UserDelegate extends AnnotationDelegate<User> {
 注意其中变量的注解@LayoutID, @HolderClass.
 
 #### AnnotationAdapter的使用方法
-···
+```
 AnnotationAdapter adapter = new AnnotationAdapter(this);
-···
+```
 添加数据
 ```
 User user = new User(R.drawable.img1, "Jack", "Jack slow f**k");
