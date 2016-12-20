@@ -177,6 +177,10 @@ public abstract class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder
         return mDelegateImplList;
     }
 
+    public DelegateImpl get (int position) {
+        return mDelegateImplList.get(position);
+    }
+
     public <T> ArrayList<T> getDataSourceArrayList (SimpleFilter<T> filter) {
         if (filter == null) {
             throw new NullPointerException("filter shouldn't be null");
@@ -320,6 +324,10 @@ public abstract class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder
             }
         }
         return count;
+    }
+
+    public void remove (int position) {
+        mDelegateImplList.remove(position);
     }
 
     public int remove (DelegateFilter filter) {
