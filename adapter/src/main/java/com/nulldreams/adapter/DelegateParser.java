@@ -1,4 +1,4 @@
-package com.nulldreams.adapter.adapter;
+package com.nulldreams.adapter;
 
 /**
  * Created by gaoyunfei on 16/7/30.

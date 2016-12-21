@@ -1,8 +1,12 @@
-package com.nulldreams.adapter.adapter;
+package com.nulldreams.adapter.annotation;
 
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.nulldreams.adapter.AbsViewHolder;
+import com.nulldreams.adapter.DelegateAdapter;
+import com.nulldreams.adapter.DelegateImpl;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

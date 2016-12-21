@@ -1,8 +1,7 @@
-package com.nulldreams.adapter.adapter;
+package com.nulldreams.adapter.annotation;
 
-import com.nulldreams.adapter.annotation.DelegateInfo;
-import com.nulldreams.adapter.annotation.HolderClass;
-import com.nulldreams.adapter.annotation.LayoutID;
+import com.nulldreams.adapter.AbsDelegate;
+import com.nulldreams.adapter.AbsViewHolder;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;

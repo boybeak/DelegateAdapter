@@ -2,7 +2,7 @@ package com.nulldreams.adapter.annotation;
 
 import android.support.annotation.LayoutRes;
 
-import com.nulldreams.adapter.adapter.AbsViewHolder;
+import com.nulldreams.adapter.AbsViewHolder;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,4 +1,4 @@
-package com.nulldreams.adapter.adapter;
+package com.nulldreams.adapter;
 
 import android.support.annotation.LayoutRes;
 
