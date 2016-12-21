@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.nulldreams.adapter.impl.DelegateImpl;
+
 /**
  * Created by gaoyunfei on 16/7/29.<br><br/>
  * An abstract class for all ViewHolder, generally T is a subclass of {@link DelegateImpl}

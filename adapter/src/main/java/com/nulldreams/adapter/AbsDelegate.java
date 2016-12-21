@@ -1,5 +1,7 @@
 package com.nulldreams.adapter;
 
+import com.nulldreams.adapter.impl.DelegateImpl;
+
 /**
  * Created by gaoyunfei on 16/7/29.
  */
@@ -23,12 +25,17 @@ public abstract class AbsDelegate<T> implements DelegateImpl {
         this.t = t;
     }
 
+    @Override
+    public Class<? extends AbsViewHolder> getHolderClass() {
+        return null;
+    }
+
     /**
      * @return override this method to return adapter's itemType with the same value layout resource id.
      */
-    @Override
+    /*@Override
     public int getType() {
         return getLayout();
-    }
+    }*/
 
 }

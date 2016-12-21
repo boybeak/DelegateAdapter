@@ -1,16 +1,25 @@
 package com.nulldreams.adapter;
 
 import android.content.Context;
+import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.nulldreams.adapter.annotation.AnnotationDelegate;
+import com.nulldreams.adapter.impl.DelegateImpl;
+import com.nulldreams.adapter.impl.LayoutImpl;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by gaoyunfei on 16/7/29.
@@ -18,26 +27,44 @@ import java.util.List;
 public abstract class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
 
     private Context mContext = null;
-    private List<DelegateImpl> mDelegateImplList = null;
-    private TypeLayoutConvert mConvert;
+    private List<LayoutImpl> mDelegateImplList = null;
+    private SparseArrayCompat<Class<? extends AbsViewHolder>> mTypeHolderMap = null;
 
     public DelegateAdapter (Context context) {
-        this (context, new SimpleConvert());
-    }
-
-    public DelegateAdapter (Context context, TypeLayoutConvert convert) {
         mContext = context;
         mDelegateImplList = new ArrayList<>();
-        mConvert = convert;
+        mTypeHolderMap = new SparseArrayCompat<Class<? extends AbsViewHolder>>();
+        //mTypeHolderMap = new HashMap<Integer, Class<? extends AbsViewHolder>>();
     }
 
     @Override
     public final AbsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(mContext).inflate(mConvert.convert(viewType), null);
-        return onCreateAbsViewHolder(parent, viewType, itemView);
+        View itemView = LayoutInflater.from(mContext).inflate(viewType, null);
+        return getHolder(viewType, itemView);
     }
 
-    public abstract AbsViewHolder onCreateAbsViewHolder (ViewGroup parent, int viewType, View itemView);
+    /**
+     * make an {@link AbsViewHolder} instance for {@param viewType} with {@param itemView}
+     * @param viewType
+     * @param itemView
+     * @return
+     */
+    private AbsViewHolder getHolder (int viewType, View itemView) {
+        Class<? extends AbsViewHolder> clz = mTypeHolderMap.get(viewType);
+        try {
+            Constructor<? extends AbsViewHolder> constructor = clz.getConstructor(View.class);
+            return constructor.newInstance(itemView);
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        throw new IllegalStateException("no holder found for viewType(0x" + Integer.toHexString(viewType) + ") at getHolder in " + this.getClass().getName());
+    }
 
     @Override
     public void onBindViewHolder(AbsViewHolder holder, int position) {
@@ -51,7 +78,32 @@ public abstract class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder
 
     @Override
     public int getItemViewType(int position) {
-        return mDelegateImplList.get(position).getType();
+        LayoutImpl impl = mDelegateImplList.get(position);
+        int type = impl.getLayout();
+        if (type == 0) {
+            type = AnnotationDelegate.getLayoutFromAnnotation(impl);
+        }
+        if (type <= 0) {
+            throw new IllegalStateException("layout not be defined by class(" + impl.getClass().getName()
+                    + "), please define a layout resource id by getLayout or LayoutID or LayoutInfo");
+        }
+        /*if (type != 0) {
+            if (mTypeHolderMap.indexOfKey(type) > 0 && mTypeHolderMap.get(type) != null) {
+
+            }
+        }*/
+        Class<? extends AbsViewHolder> holderClass = impl.getHolderClass();
+        if (holderClass == null) {
+            holderClass = AnnotationDelegate.getHolderClassFromAnnotation(impl);
+        }
+        if (holderClass == null) {
+            throw new IllegalStateException("holderClass not be defined by class(" + impl.getClass().getName()
+                    + "), please define a holderClass by getHolderClass or HolderClass or LayoutInfo");
+        }
+        if (mTypeHolderMap.indexOfKey(type) < 0) {
+            mTypeHolderMap.put(type, holderClass);
+        }
+        return type;
     }
 
     @Override
@@ -173,11 +225,11 @@ public abstract class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder
         }
     }
 
-    public List<? extends DelegateImpl> getList() {
+    public List<? extends LayoutImpl> getList() {
         return mDelegateImplList;
     }
 
-    public DelegateImpl get (int position) {
+    public LayoutImpl get (int position) {
         return mDelegateImplList.get(position);
     }
 
@@ -186,7 +238,7 @@ public abstract class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder
             throw new NullPointerException("filter shouldn't be null");
         }
         ArrayList<T> dataList = new ArrayList<>();
-        for (DelegateImpl impl : mDelegateImplList) {
+        for (LayoutImpl impl : mDelegateImplList) {
             if (filter.accept(impl)) {
                 dataList.add(((DelegateImpl<T>)impl).getSource());
             }
@@ -194,12 +246,12 @@ public abstract class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder
         return dataList;
     }
 
-    public List<DelegateImpl> getSubList (DelegateFilter filter) {
+    public List<LayoutImpl> getSubList (DelegateFilter filter) {
         if (filter == null) {
             throw new NullPointerException("filter shouldn't be null");
         }
-        List<DelegateImpl> delegates = new ArrayList<>();
-        for (DelegateImpl impl : mDelegateImplList) {
+        List<LayoutImpl> delegates = new ArrayList<>();
+        for (LayoutImpl impl : mDelegateImplList) {
             if (filter.accept(impl)) {
                 delegates.add(impl);
             }
@@ -287,11 +339,11 @@ public abstract class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder
         }
     }
 
-    public DelegateImpl getFirst (DelegateFilter filter) {
+    public LayoutImpl getFirst (DelegateFilter filter) {
         if (filter == null) {
             throw new NullPointerException("filter shouldn't be null");
         }
-        for (DelegateImpl impl : mDelegateImplList) {
+        for (LayoutImpl impl : mDelegateImplList) {
             if (filter.accept(impl)) {
                 return impl;
             }
@@ -299,13 +351,13 @@ public abstract class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder
         return null;
     }
 
-    public DelegateImpl getLast (DelegateFilter filter) {
+    public LayoutImpl getLast (DelegateFilter filter) {
         if (filter == null) {
             throw new NullPointerException("filter shouldn't be null");
         }
         final int length = mDelegateImplList.size();
         for (int i = length - 1; i >= 0; i--) {
-            DelegateImpl impl = mDelegateImplList.get(i);
+            LayoutImpl impl = mDelegateImplList.get(i);
             if (filter.accept(impl)) {
                 return impl;
             }
@@ -318,7 +370,7 @@ public abstract class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder
             throw new NullPointerException("filter shouldn't be null");
         }
         int count = 0;
-        for (DelegateImpl impl : mDelegateImplList) {
+        for (LayoutImpl impl : mDelegateImplList) {
             if (filter.accept(impl)) {
                 count++;
             }
@@ -334,10 +386,10 @@ public abstract class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder
         if (filter == null) {
             throw new NullPointerException("filter shouldn't be null");
         }
-        Iterator<? extends DelegateImpl> iterator = mDelegateImplList.iterator();
+        Iterator<? extends LayoutImpl> iterator = mDelegateImplList.iterator();
         int count = 0;
         while (iterator.hasNext()) {
-            DelegateImpl impl = iterator.next();
+            LayoutImpl impl = iterator.next();
             if (filter.accept(impl)) {
                 iterator.remove();
                 count++;
@@ -352,7 +404,7 @@ public abstract class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder
             throw new NullPointerException("action shouldn't be null");
         }
         int count = 0;
-        for (DelegateImpl impl : mDelegateImplList) {
+        for (LayoutImpl impl : mDelegateImplList) {
             action.onAction(impl);
             count++;
         }
@@ -364,7 +416,7 @@ public abstract class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder
             throw new NullPointerException("filter or action is null");
         }
         int count = 0;
-        for (DelegateImpl impl : mDelegateImplList) {
+        for (LayoutImpl impl : mDelegateImplList) {
             if (filter.accept(impl)) {
                 action.onAction(impl);
                 count++;
@@ -380,7 +432,7 @@ public abstract class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder
         int count = 0;
         final int length = mDelegateImplList.size();
         for (int i = 0; i < length; i++) {
-            DelegateImpl impl = mDelegateImplList.get(i);
+            LayoutImpl impl = mDelegateImplList.get(i);
             if (filter.accept(impl)) {
                 mDelegateImplList.set(i, replace.replaceWith(impl));
                 count++;

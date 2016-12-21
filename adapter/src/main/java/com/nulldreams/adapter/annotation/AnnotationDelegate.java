@@ -2,6 +2,7 @@ package com.nulldreams.adapter.annotation;
 
 import com.nulldreams.adapter.AbsDelegate;
 import com.nulldreams.adapter.AbsViewHolder;
+import com.nulldreams.adapter.impl.LayoutImpl;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -42,8 +43,26 @@ public class AnnotationDelegate<T> extends AbsDelegate<T> {
         if (layoutID > 0) {
             return layoutID;
         }
-        Class clz = this.getClass();
 
+        layoutID = getLayoutFromAnnotation(this);
+        return layoutID;
+    }
+
+    /**
+     * find holder class in {@link DelegateInfo} first, if not found, then with {@link HolderClass}
+     * @return
+     */
+    public final Class<? extends AbsViewHolder> getHolderClass () {
+        if (holderClass != null) {
+            return holderClass;
+        }
+        holderClass = getHolderClassFromAnnotation(this);
+        return holderClass;
+    }
+
+    public static int getLayoutFromAnnotation (LayoutImpl impl) {
+        Class clz = impl.getClass();
+        int layoutID = 0;
         Annotation anno = clz.getAnnotation(DelegateInfo.class);
         if (anno != null) {
             Class<? extends Annotation> annoClz = anno.annotationType();
@@ -59,17 +78,17 @@ public class AnnotationDelegate<T> extends AbsDelegate<T> {
                 e.printStackTrace();
             }
         }
-        layoutID = getLayoutId(clz);
+        layoutID = getLayoutFromAnnotation(clz, impl);
         return layoutID;
     }
 
-    private int getLayoutId (Class<AnnotationDelegate<T>> clz) {
+    private static int getLayoutFromAnnotation (Class<? extends LayoutImpl> clz, LayoutImpl impl) {
         Field[] fields = clz.getDeclaredFields();
         for (Field field : fields) {
             LayoutID anno = field.getAnnotation(LayoutID.class);
             if (anno != null) {
                 try {
-                    return field.getInt(this);
+                    return field.getInt(impl);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
@@ -78,18 +97,11 @@ public class AnnotationDelegate<T> extends AbsDelegate<T> {
         return 0;
     }
 
-    /**
-     * find holder class in {@link DelegateInfo} first, if not found, then with {@link HolderClass}
-     * @return
-     */
-    public final Class<? extends AbsViewHolder> getHolderClass () {
-        if (holderClass != null) {
-            return holderClass;
-        }
-        Class clz = this.getClass();
+    public static Class<? extends AbsViewHolder> getHolderClassFromAnnotation (LayoutImpl impl) {
+        Class clz = impl.getClass();
 
         Annotation anno = clz.getAnnotation(DelegateInfo.class);
-
+        Class<? extends AbsViewHolder> holderClass;
         if (anno != null) {
             Class<? extends Annotation> annoClz = anno.annotationType();
             try {
@@ -104,17 +116,17 @@ public class AnnotationDelegate<T> extends AbsDelegate<T> {
                 e.printStackTrace();
             }
         }
-        holderClass = getHolderClassFromField(clz);
+        holderClass = getHolderClassFromAnnotation(clz, impl);
         return holderClass;
     }
 
-    private Class<? extends AbsViewHolder> getHolderClassFromField (Class<? extends AnnotationDelegate> clz) {
+    private static Class<? extends AbsViewHolder> getHolderClassFromAnnotation (Class<? extends AnnotationDelegate> clz, LayoutImpl impl) {
         Field[] fields = clz.getDeclaredFields();
         for (Field field : fields) {
             HolderClass anno = field.getAnnotation(HolderClass.class);
             if (anno != null) {
                 try {
-                    return (Class<? extends AbsViewHolder>)field.get(this);
+                    return (Class<? extends AbsViewHolder>)field.get(impl);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
