@@ -1,6 +1,6 @@
 package com.nulldreams.delegateadapter.adapter;
 
-import com.nulldreams.adapter.adapter.AnnotationDelegate;
+import com.nulldreams.adapter.annotation.AnnotationDelegate;
 import com.nulldreams.adapter.annotation.DelegateInfo;
 import com.nulldreams.delegateadapter.R;
 import com.nulldreams.delegateadapter.User;

@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.nulldreams.adapter.adapter.AnnotationAdapter;
+import com.nulldreams.adapter.DelegateAdapter;
 import com.nulldreams.delegateadapter.adapter.ColorDelegate;
 import com.nulldreams.delegateadapter.adapter.TextDelegate;
 import com.nulldreams.delegateadapter.adapter.UserDelegate;
@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView mRv;
 
-    private AnnotationAdapter mAdapter = null;
+    private DelegateAdapter mAdapter = null;
 
     private int[] colors = {
             android.R.color.holo_blue_bright, android.R.color.holo_green_dark,
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         mRv = (RecyclerView)findViewById(R.id.main_rv);
 
         mRv.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new AnnotationAdapter(this);
+        mAdapter = new DelegateAdapter(this);
         mRv.setAdapter(mAdapter);
 
         addData();

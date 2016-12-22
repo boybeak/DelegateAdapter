@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * Created by gaoyunfei on 16/7/29.
  */
-public abstract class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
+public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
 
     private Context mContext = null;
     private List<LayoutImpl> mDelegateImplList = null;

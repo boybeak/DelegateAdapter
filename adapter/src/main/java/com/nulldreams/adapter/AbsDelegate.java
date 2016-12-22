@@ -25,17 +25,4 @@ public abstract class AbsDelegate<T> implements DelegateImpl {
         this.t = t;
     }
 
-    @Override
-    public Class<? extends AbsViewHolder> getHolderClass() {
-        return null;
-    }
-
-    /**
-     * @return override this method to return adapter's itemType with the same value layout resource id.
-     */
-    /*@Override
-    public int getType() {
-        return getLayout();
-    }*/
-
 }
