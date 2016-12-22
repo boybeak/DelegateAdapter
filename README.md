@@ -1,7 +1,7 @@
 # DelegateAdapter
 An advanced RecyclerView's Adapter
 
-<img src="https://github.com/boybeak/DelegateAdapter/blob/master/demopicture.png" width="360" height="640"/>
+<img src="https://github.com/boybeak/DelegateAdapter/blob/master/showcase.png" width="360" height="640"/>
 ## How to use.
 #### AnnotationDelegate的使用方法
 一般来说，使用DelegateAdapter配合AnnotationDelegate就可以满足大部分需求。
@@ -44,7 +44,7 @@ adapter.notifyDataSetChanged();
 
 #### 不使用注解，可以直接使用AbsDelegate
 在AnnotationDelegate中，使用了反射来获取注解中的值，所以性能会稍微受到影响，如果想提高效率，可以直接继承AbsDelegate，在抽象方法getLayout与getHolderClass中去提供对应的布局与holder类。
-当然，对于继承自AbsDelegate的类中，也可以使用注解，只是未对注解中对值做缓存，可能造成多次反射对问题。
+当然，对于继承自AbsDelegate的类中，也可以使用注解，只是未对注解中对值做缓存，可能造成多次反射的问题。
 
 #### 使用LayoutImpl
 如果你不想使用AbsDelegate，也可以使用LayoutImpl,例如：
@@ -56,7 +56,8 @@ public class User implements LayoutImpl {
 }
 ```
 > 建议使用继承AnnotationDelegate的方法来做，在AnnotationDelegate中以及做了缓存layout与holderClass，不需要多次反射获取
-#### 气体使用方法
+
+#### 其他使用方法
 之所以提倡使用Delegate的方式是为了避免污染原数据，例如界面列表的选中状态就不该存储与数据Model中。
 如果你不介意数据污染，可以让原数据类实现LayoutImpl接口，同样要给出DelegateInfo活着是LayoutID,HolderClass注解
 #### 其他便捷方法
