@@ -42,6 +42,10 @@ adapter.notifyDataSetChanged();
 如果还配合非AnnotationDelegate的AbsDelegate使用，则DelegateAdapter必须重写onHolderClassNotFound方法，并删除super.onHolderNotFound.
 并提供对应的AbsViewHolder.
 
+#### 不使用注解，可以直接使用AbsDelegate
+在AnnotationDelegate中，使用了反射来获取注解中的值，所以性能会稍微受到影响，如果想提高效率，可以直接继承AbsDelegate，在抽象方法getLayout与getHolderClass中去提供对应的布局与holder类。
+当然，对于继承自AbsDelegate的类中，也可以使用注解，只是未对注解中对值做缓存，可能造成多次反射对问题。
+
 #### 使用LayoutImpl
 如果你不想使用AbsDelegate，也可以使用LayoutImpl,例如：
 ```

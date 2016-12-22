@@ -1,6 +1,7 @@
 package com.nulldreams.adapter;
 
 import android.content.Context;
+import android.support.annotation.IdRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -29,5 +30,13 @@ public abstract class AbsViewHolder<T> extends RecyclerView.ViewHolder {
     }
 
     public void onViewDetachedFromWindow () {
+    }
+
+    public final View findViewById (@IdRes int id) {
+        return itemView.findViewById(id);
+    }
+
+    public final View findViewByTag (Object tag) {
+        return itemView.findViewWithTag(tag);
     }
 }
