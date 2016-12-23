@@ -27,14 +27,13 @@ import java.util.Map;
 public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
 
     private Context mContext = null;
-    private List<LayoutImpl> mDelegateImplList = null;
-    private SparseArrayCompat<Class<? extends AbsViewHolder>> mTypeHolderMap = null;
+    private List<LayoutImpl> mDelegateImplList = null;  //DataSource
+    private SparseArrayCompat<Class<? extends AbsViewHolder>> mTypeHolderMap = null; // key -- layout, value -- holderClass
 
     public DelegateAdapter (Context context) {
         mContext = context;
         mDelegateImplList = new ArrayList<>();
         mTypeHolderMap = new SparseArrayCompat<Class<? extends AbsViewHolder>>();
-        //mTypeHolderMap = new HashMap<Integer, Class<? extends AbsViewHolder>>();
     }
 
     @Override
