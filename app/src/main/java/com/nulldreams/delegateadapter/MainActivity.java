@@ -1,13 +1,17 @@
 package com.nulldreams.delegateadapter;
 
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.nulldreams.adapter.DelegateAdapter;
@@ -59,6 +63,23 @@ public class MainActivity extends AppCompatActivity {
         mRv.setAdapter(mAdapter);
 
         addData();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.github) {
+            Intent it = new Intent(Intent.ACTION_VIEW);
+            it.setData(Uri.parse("https://github.com/boybeak/DelegateAdapter"));
+            startActivity(it);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void addData () {
