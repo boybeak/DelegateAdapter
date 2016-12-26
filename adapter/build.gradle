@@ -28,6 +28,7 @@ dependencies {
     compile "com.android.support:appcompat-v7:$rootProject.supportLibVersion"
     compile "com.android.support:recyclerview-v7:$rootProject.supportLibVersion"
     compile "com.android.support:support-annotations:$rootProject.supportLibVersion"
+    compile "com.android.support:support-v4:$rootProject.supportLibVersion"
 }
 
 version = "1.0"
@@ -73,6 +74,9 @@ task sourcesJar(type: Jar) {
 task javadoc(type: Javadoc) {
     source = android.sourceSets.main.java.srcDirs
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    options.encoding "UTF-8"
+    options.charSet 'UTF-8'
+    failOnError false
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {

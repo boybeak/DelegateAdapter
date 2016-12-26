@@ -10,19 +10,19 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * An advanced subclass of AbsDelegate, work with {@link AnnotationAdapter}.<br/>
- * In a subclass, you must provide {@link DelegateInfo} for fields with annotation
- * {@link LayoutID} and {@link HolderClass}.<br/>
- * In library project, you can not use {@link DelegateInfo}<br/>
- * For example, a subclass as below:<br/>
- * @DelegateInfo(layoutID=R.layout.xxx, holderClass=XXXViewHolder.class)<br/>
- * public class DemoClass extends AnnotationDelegate<String> {<br/>
- *      @LayoutID<br/>
- *      public int layoutId = R.layout.xxx;<br/>
- *      @HolderClass<br/>
- *      public Class<XXXViewHolder> holderClass;<br/>
- * }<br/>
- * Created by gaoyunfei on 2016/12/17.<br/>
+ *
+ * In a subclass of this, you must provide {@link DelegateInfo} for fields with annotation
+ * {@link LayoutID} and {@link HolderClass}.
+ * In library project, you can not use {@link DelegateInfo}
+ * For example, a subclass as below:
+ * {@link DelegateInfo()}
+ * public class DemoClass extends AnnotationDelegate<String> {
+ *      \@{@link LayoutID}
+ *      public int layoutId = R.layout.xxx;
+ *      \@{@link HolderClass}
+ *      public Class<XXXViewHolder> holderClass;
+ * }
+ * Created by gaoyunfei on 2016/12/17.
  */
 
 public class AnnotationDelegate<T> extends AbsDelegate<T> {

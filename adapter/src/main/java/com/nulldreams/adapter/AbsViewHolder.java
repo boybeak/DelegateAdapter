@@ -1,14 +1,13 @@
 package com.nulldreams.adapter;
 
 import android.content.Context;
-import android.support.annotation.IdRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.nulldreams.adapter.impl.DelegateImpl;
 
 /**
- * Created by gaoyunfei on 16/7/29.<br><br/>
+ * Created by gaoyunfei on 16/7/29.
  * An abstract class for all ViewHolder, generally T is a subclass of {@link DelegateImpl}
  */
 public abstract class AbsViewHolder<T> extends RecyclerView.ViewHolder {
@@ -32,7 +31,7 @@ public abstract class AbsViewHolder<T> extends RecyclerView.ViewHolder {
     public void onViewDetachedFromWindow () {
     }
 
-    public final View findViewById (@IdRes int id) {
+    public final View findViewById (int id) {
         return itemView.findViewById(id);
     }
 
