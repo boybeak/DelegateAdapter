@@ -4,7 +4,8 @@ An advanced RecyclerView's Adapter
 <img src="https://github.com/boybeak/DelegateAdapter/blob/master/showcase.png" width="360" height="640"/>
 ## How to use.
 
-compile 'com.github.boybeak:adapter:1.0'
+* compile 'com.github.boybeak:adapter:1.0'
+
 
 #### AnnotationDelegate的使用方法
 一般来说，使用DelegateAdapter配合AnnotationDelegate就可以满足大部分需求。
