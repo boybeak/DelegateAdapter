@@ -1,10 +1,13 @@
 # DelegateAdapter
-An advanced RecyclerView's Adapter
+An advanced RecyclerView's Adapter.There is no need to custom an Adapter if you use this library.
+This library binds layout file, data and ViewHolder with Annotation.
 
 <img src="https://github.com/boybeak/DelegateAdapter/blob/master/showcase.png" width="360" height="640"/>
 ## How to use.
-
-* compile 'com.github.boybeak:adapter:1.0'
+for gradle with jCenter user:
+```
+compile 'com.github.boybeak:adapter:1.0'
+```
 
 
 #### AnnotationDelegate的使用方法
