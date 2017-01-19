@@ -97,9 +97,8 @@ bintray {
     key = properties.getProperty("bintray.apikey")
     configurations = ['archives']
     pkg {
-        repo = "DelegateAdapter"
-        name = "delegate-adapter"                // project name in jcenter
-        userOrg = "return-0"
+        repo = "nulldreams"
+        name = "adapter"                // project name in jcenter
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ["Apache-2.0"]
