@@ -232,6 +232,54 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         }
     }
 
+    public <T> void addAll (T[] tArray, DelegateListParser<T> parser) {
+        Collection<T> collection = Arrays.asList(tArray);
+        List<LayoutImpl> delegates = generateDelegateImpls(collection, parser);
+        if (delegates != null) {
+            addAll(delegates);
+        }
+    }
+
+    public <T> void addAll (int position, T[] tArray, DelegateListParser<T> parser) {
+        Collection<T> collection = Arrays.asList(tArray);
+        List<LayoutImpl> delegates = generateDelegateImpls(collection, parser);
+        if (delegates != null) {
+            addAll(position, delegates);
+        }
+    }
+
+    public <T> void addAll(Collection<T> data, DelegateListParser<T> parser) {
+        List<LayoutImpl> delegates = generateDelegateImpls(data, parser);
+        if (delegates != null) {
+            addAll(delegates);
+        }
+    }
+
+    public <T> void addAll(int position, Collection<T> data, DelegateListParser<T> parser) {
+        List<LayoutImpl> delegates = generateDelegateImpls(data, parser);
+        if (delegates != null) {
+            addAll(position, delegates);
+        }
+    }
+
+    public <T> void addAllAtFirst (DelegateFilter filter, Collection<T> data, DelegateListParser<T> parser) {
+        final int index = firstIndexOf(filter);
+        if (index >= 0) {
+            addAll(index, data, parser);
+        } else {
+            addAll(0, data, parser);
+        }
+    }
+
+    public <T> void addAllAtLast (DelegateFilter filter, Collection<T> data, DelegateListParser<T> parser) {
+        final int index = lastIndexOf(filter);
+        if (index >= 0) {
+            addAll(index, data, parser);
+        } else {
+            addAll(data, parser);
+        }
+    }
+
     public List<? extends LayoutImpl> getList() {
         return mDelegateImplList;
     }
@@ -304,12 +352,31 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         }
         List<LayoutImpl> delegates = new ArrayList<>();
         for (T obj : data) {
-            DelegateImpl delegate = parser.parse(obj);
+            LayoutImpl delegate = parser.parse(obj);
             if (delegate == null) {
                 continue;
             }
             delegates.add(delegate);
         }
+        return delegates;
+    }
+
+    public <T> List<LayoutImpl> generateDelegateImpls (Collection<T> data, DelegateListParser<T> parser) {
+        if (parser == null) {
+            throw new NullPointerException("parser shouldn't be null");
+        }
+        if (data == null || data.isEmpty()) {
+            return null;
+        }
+        List<LayoutImpl> delegates = new ArrayList<>();
+        for (T obj : data) {
+            List<LayoutImpl> ds = parser.parse(obj);
+            if (ds == null) {
+                continue;
+            }
+            delegates.addAll(ds);
+        }
+        
         return delegates;
     }
 
