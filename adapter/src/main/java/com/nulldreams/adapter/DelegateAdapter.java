@@ -266,6 +266,35 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         return delegates;
     }
 
+    /**
+     * @param indexFrom start index, include this index;
+     * @param indexTo end index
+     * @return return a sub collection of [indexFrom, indexTo)
+     */
+    public List<LayoutImpl> getSubList (int indexFrom, int indexTo) {
+        return mDelegateImplList.subList(indexFrom, indexTo);
+    }
+
+    /**
+     * @param indexFrom start index, include this index;
+     * @param indexTo end index
+     * @param filter a filter between indexFrom and indexTo
+     * @return return a sub collection, the max collection is [indexFrom, indexTo)
+     */
+    public List<LayoutImpl> getSubList (int indexFrom, int indexTo, DelegateFilter filter) {
+        if (filter == null) {
+            throw new NullPointerException("filter shouldn't be null");
+        }
+        List<LayoutImpl> delegates = new ArrayList<>();
+        for (int i = indexFrom; i < indexTo; i++) {
+            LayoutImpl impl = mDelegateImplList.get(i);
+            if (filter.accept(impl)) {
+                delegates.add(impl);
+            }
+        }
+        return delegates;
+    }
+
     public <T> List<LayoutImpl> generateDelegateImpls (Collection<T> data, DelegateParser<T> parser) {
         if (parser == null) {
             throw new NullPointerException("parser shouldn't be null");
@@ -284,12 +313,23 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         return delegates;
     }
 
+    public int indexOf (LayoutImpl impl) {
+        if (impl == null) {
+            return -1;
+        }
+        return mDelegateImplList.indexOf(impl);
+    }
+
     public int firstIndexOf (DelegateFilter filter) {
+        return firstIndexOf(-1, filter);
+    }
+
+    public int firstIndexOf (int index, DelegateFilter filter) {
         if (filter == null) {
             throw new NullPointerException("filter shouldn't be null");
         }
         final int length = mDelegateImplList.size();
-        for (int i = 0; i < length; i++) {
+        for (int i = index + 1; i < length; i++) {
             if (filter.accept(mDelegateImplList.get(i))) {
                 return i;
             }
@@ -298,11 +338,15 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
     }
 
     public int lastIndexOf (DelegateFilter filter) {
+        final int length = mDelegateImplList.size();
+        return lastIndexOf(length, filter);
+    }
+
+    public int lastIndexOf (int index, DelegateFilter filter) {
         if (filter == null) {
             throw new NullPointerException("filter shouldn't be null");
         }
-        final int length = mDelegateImplList.size();
-        for (int i = length - 1; i >= 0; i--) {
+        for (int i = index - 1; i >= 0; i--) {
             if (filter.accept(mDelegateImplList.get(i))) {
                 return i;
             }
