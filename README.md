@@ -6,7 +6,7 @@ This library binds layout file, data and ViewHolder with Annotation.
 ## How to use.
 for gradle with jCenter user:
 ```
-compile 'com.github.boybeak:adapter:1.0'
+compile 'com.github.boybeak:adapter:1.1.0'
 ```
 
 
