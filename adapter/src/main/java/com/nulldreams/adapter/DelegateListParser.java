@@ -9,5 +9,5 @@ import java.util.List;
  */
 
 public interface DelegateListParser<T> {
-    public List<LayoutImpl> parse (T data);
+    public List<LayoutImpl> parse (DelegateAdapter adapter, T data);
 }

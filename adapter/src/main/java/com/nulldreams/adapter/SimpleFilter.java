@@ -15,7 +15,7 @@ public class SimpleFilter<T> implements DelegateFilter<T> {
     }
 
     @Override
-    public boolean accept(LayoutImpl impl) {
+    public boolean accept(DelegateAdapter adapter, LayoutImpl impl) {
         return impl != null && impl instanceof DelegateImpl && tClz.isInstance(((DelegateImpl)impl).getSource());
     }
 }

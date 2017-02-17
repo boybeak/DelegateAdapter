@@ -1,6 +1,7 @@
 package com.nulldreams.adapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -135,44 +136,29 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         mDelegateImplList.add(impl);
     }
 
-    public void addIfNotExist (DelegateImpl impl) {
-        if (impl == null) {
-            throw new NullPointerException("impl shouldn't be null");
-        }
+    public void addIfNotExist (@NonNull DelegateImpl impl) {
         if (contains(impl)) {
             return;
         }
         mDelegateImplList.add(impl);
     }
 
-    public void addIfNotExist (int position, DelegateImpl impl) {
-        if (impl == null) {
-            throw new NullPointerException("impl shouldn't be null");
-        }
+    public void addIfNotExist (int position, @NonNull DelegateImpl impl) {
         if (contains(impl)) {
             return;
         }
         mDelegateImplList.add(position, impl);
     }
 
-    public void add(int position, LayoutImpl impl) {
-        if (impl == null) {
-            throw new NullPointerException("impl shouldn't be null");
-        }
+    public void add(int position, @NonNull LayoutImpl impl) {
         mDelegateImplList.add(position, impl);
     }
 
-    public void addAll(Collection<? extends LayoutImpl> list) {
-        if (list == null) {
-            throw new NullPointerException("list shouldn't be null");
-        }
+    public void addAll(@NonNull Collection<? extends LayoutImpl> list) {
         mDelegateImplList.addAll(list);
     }
 
-    public void addAll(int position, Collection<? extends LayoutImpl> list) {
-        if (list == null) {
-            throw new NullPointerException("list shouldn't be null");
-        }
+    public void addAll(int position, @NonNull Collection<? extends LayoutImpl> list) {
         mDelegateImplList.addAll(position, list);
     }
 
@@ -288,26 +274,20 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         return mDelegateImplList.get(position);
     }
 
-    public <T> ArrayList<T> getDataSourceArrayList (SimpleFilter<T> filter) {
-        if (filter == null) {
-            throw new NullPointerException("filter shouldn't be null");
-        }
+    public <T> ArrayList<T> getDataSourceArrayList (@NonNull SimpleFilter<T> filter) {
         ArrayList<T> dataList = new ArrayList<>();
         for (LayoutImpl impl : mDelegateImplList) {
-            if (filter.accept(impl)) {
+            if (filter.accept(this, impl)) {
                 dataList.add(((DelegateImpl<T>)impl).getSource());
             }
         }
         return dataList;
     }
 
-    public List<LayoutImpl> getSubList (DelegateFilter filter) {
-        if (filter == null) {
-            throw new NullPointerException("filter shouldn't be null");
-        }
+    public List<LayoutImpl> getSubList (@NonNull DelegateFilter filter) {
         List<LayoutImpl> delegates = new ArrayList<>();
         for (LayoutImpl impl : mDelegateImplList) {
-            if (filter.accept(impl)) {
+            if (filter.accept(this, impl)) {
                 delegates.add(impl);
             }
         }
@@ -329,30 +309,24 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
      * @param filter a filter between indexFrom and indexTo
      * @return return a sub collection, the max collection is [indexFrom, indexTo)
      */
-    public List<LayoutImpl> getSubList (int indexFrom, int indexTo, DelegateFilter filter) {
-        if (filter == null) {
-            throw new NullPointerException("filter shouldn't be null");
-        }
+    public List<LayoutImpl> getSubList (int indexFrom, int indexTo, @NonNull DelegateFilter filter) {
         List<LayoutImpl> delegates = new ArrayList<>();
         for (int i = indexFrom; i < indexTo; i++) {
             LayoutImpl impl = mDelegateImplList.get(i);
-            if (filter.accept(impl)) {
+            if (filter.accept(this, impl)) {
                 delegates.add(impl);
             }
         }
         return delegates;
     }
 
-    public <T> List<LayoutImpl> generateDelegateImpls (Collection<T> data, DelegateParser<T> parser) {
-        if (parser == null) {
-            throw new NullPointerException("parser shouldn't be null");
-        }
+    public <T> List<LayoutImpl> generateDelegateImpls (Collection<T> data, @NonNull DelegateParser<T> parser) {
         if (data == null || data.isEmpty()) {
             return null;
         }
         List<LayoutImpl> delegates = new ArrayList<>();
         for (T obj : data) {
-            LayoutImpl delegate = parser.parse(obj);
+            LayoutImpl delegate = parser.parse(this, obj);
             if (delegate == null) {
                 continue;
             }
@@ -361,16 +335,13 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         return delegates;
     }
 
-    public <T> List<LayoutImpl> generateDelegateImpls (Collection<T> data, DelegateListParser<T> parser) {
-        if (parser == null) {
-            throw new NullPointerException("parser shouldn't be null");
-        }
+    public <T> List<LayoutImpl> generateDelegateImpls (Collection<T> data, @NonNull DelegateListParser<T> parser) {
         if (data == null || data.isEmpty()) {
             return null;
         }
         List<LayoutImpl> delegates = new ArrayList<>();
         for (T obj : data) {
-            List<LayoutImpl> ds = parser.parse(obj);
+            List<LayoutImpl> ds = parser.parse(this, obj);
             if (ds == null) {
                 continue;
             }
@@ -391,13 +362,10 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         return firstIndexOf(-1, filter);
     }
 
-    public int firstIndexOf (int index, DelegateFilter filter) {
-        if (filter == null) {
-            throw new NullPointerException("filter shouldn't be null");
-        }
+    public int firstIndexOf (int index, @NonNull DelegateFilter filter) {
         final int length = mDelegateImplList.size();
         for (int i = index + 1; i < length; i++) {
-            if (filter.accept(mDelegateImplList.get(i))) {
+            if (filter.accept(this, mDelegateImplList.get(i))) {
                 return i;
             }
         }
@@ -409,12 +377,9 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         return lastIndexOf(length, filter);
     }
 
-    public int lastIndexOf (int index, DelegateFilter filter) {
-        if (filter == null) {
-            throw new NullPointerException("filter shouldn't be null");
-        }
+    public int lastIndexOf (int index, @NonNull DelegateFilter filter) {
         for (int i = index - 1; i >= 0; i--) {
-            if (filter.accept(mDelegateImplList.get(i))) {
+            if (filter.accept(this, mDelegateImplList.get(i))) {
                 return i;
             }
         }
@@ -457,39 +422,30 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         }
     }
 
-    public LayoutImpl getFirst (DelegateFilter filter) {
-        if (filter == null) {
-            throw new NullPointerException("filter shouldn't be null");
-        }
+    public LayoutImpl getFirst (@NonNull DelegateFilter filter) {
         for (LayoutImpl impl : mDelegateImplList) {
-            if (filter.accept(impl)) {
+            if (filter.accept(this, impl)) {
                 return impl;
             }
         }
         return null;
     }
 
-    public LayoutImpl getLast (DelegateFilter filter) {
-        if (filter == null) {
-            throw new NullPointerException("filter shouldn't be null");
-        }
+    public LayoutImpl getLast (@NonNull DelegateFilter filter) {
         final int length = mDelegateImplList.size();
         for (int i = length - 1; i >= 0; i--) {
             LayoutImpl impl = mDelegateImplList.get(i);
-            if (filter.accept(impl)) {
+            if (filter.accept(this, impl)) {
                 return impl;
             }
         }
         return null;
     }
 
-    public int getCount (DelegateFilter filter) {
-        if (filter == null) {
-            throw new NullPointerException("filter shouldn't be null");
-        }
+    public int getCount (@NonNull DelegateFilter filter) {
         int count = 0;
         for (LayoutImpl impl : mDelegateImplList) {
-            if (filter.accept(impl)) {
+            if (filter.accept(this, impl)) {
                 count++;
             }
         }
@@ -500,31 +456,41 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         mDelegateImplList.remove(position);
     }
 
-    public int remove (DelegateFilter filter) {
-        if (filter == null) {
-            throw new NullPointerException("filter shouldn't be null");
-        }
+    public void remove (int position, @NonNull DoAfter after) {
+        remove(position);
+        after.doAfter(this);
+    }
+
+    public int remove (@NonNull DelegateFilter filter) {
         Iterator<? extends LayoutImpl> iterator = mDelegateImplList.iterator();
         int count = 0;
         while (iterator.hasNext()) {
             LayoutImpl impl = iterator.next();
-            if (filter.accept(impl)) {
+            if (filter.accept(this, impl)) {
                 iterator.remove();
                 count++;
             }
         }
         return count;
+    }
 
+    public int remove (DelegateFilter filter, @NonNull DoAfter after) {
+        int count = remove(filter);
+        after.doAfter(this);
+        return count;
     }
 
     public boolean remove (LayoutImpl impl) {
         return mDelegateImplList.remove(impl);
     }
 
-    public int actionWith (DelegateAction action) {
-        if (action == null) {
-            throw new NullPointerException("action shouldn't be null");
-        }
+    public boolean remove (LayoutImpl impl, @NonNull DoAfter after) {
+        boolean result = remove(impl);
+        after.doAfter(this);
+        return result;
+    }
+
+    public int actionWith (@NonNull DelegateAction action) {
         int count = 0;
         for (LayoutImpl impl : mDelegateImplList) {
             action.onAction(impl);
@@ -533,13 +499,10 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         return count;
     }
 
-    public int actionWith (DelegateFilter filter, DelegateAction action) {
-        if (filter == null || action == null) {
-            throw new NullPointerException("filter or action is null");
-        }
+    public int actionWith (@NonNull DelegateFilter filter, @NonNull DelegateAction action) {
         int count = 0;
         for (LayoutImpl impl : mDelegateImplList) {
-            if (filter.accept(impl)) {
+            if (filter.accept(this, impl)) {
                 action.onAction(impl);
                 count++;
             }
@@ -547,16 +510,13 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         return count;
     }
 
-    public int replaceWith(DelegateFilter filter, DelegateReplace replace) {
-        if (filter == null || replace == null) {
-            throw new NullPointerException("filter or action is null");
-        }
+    public int replaceWith(@NonNull DelegateFilter filter, @NonNull DelegateReplace replace) {
         int count = 0;
         final int length = mDelegateImplList.size();
         for (int i = 0; i < length; i++) {
             LayoutImpl impl = mDelegateImplList.get(i);
-            if (filter.accept(impl)) {
-                mDelegateImplList.set(i, replace.replaceWith(impl));
+            if (filter.accept(this, impl)) {
+                mDelegateImplList.set(i, replace.replaceWith(this, impl));
                 count++;
             }
         }
