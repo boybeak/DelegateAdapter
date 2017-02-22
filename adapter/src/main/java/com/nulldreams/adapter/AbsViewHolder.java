@@ -24,11 +24,11 @@ public abstract class AbsViewHolder<T> extends RecyclerView.ViewHolder {
      */
     public abstract void onBindView (Context context, T t, int position, DelegateAdapter adapter);
 
-    public void onViewAttachedToWindow () {
+    public void onViewAttachedToWindow (Context context) {
 
     }
 
-    public void onViewDetachedFromWindow () {
+    public void onViewDetachedFromWindow (Context context) {
     }
 
     public final View findViewById (int id) {

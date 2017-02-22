@@ -116,12 +116,12 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
 
     @Override
     public void onViewAttachedToWindow(AbsViewHolder holder) {
-        holder.onViewAttachedToWindow();
+        holder.onViewAttachedToWindow(mContext);
     }
 
     @Override
     public void onViewDetachedFromWindow(AbsViewHolder holder) {
-        holder.onViewDetachedFromWindow();
+        holder.onViewDetachedFromWindow(mContext);
     }
 
     public boolean isEmpty () {
