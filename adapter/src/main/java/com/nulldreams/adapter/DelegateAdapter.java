@@ -75,8 +75,18 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
     }
 
     @Override
-    public void onBindViewHolder(AbsViewHolder holder, int position) {
-        holder.onBindView(mContext, mDelegateImplList.get(position), position, this);
+    public void onBindViewHolder(final AbsViewHolder holder, final int position) {
+        final LayoutImpl layoutImpl = mDelegateImplList.get(position);
+        holder.onBindView(mContext, layoutImpl, position, this);
+        if (layoutImpl.getOnItemClickListener() != null) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    layoutImpl.getOnItemClickListener()
+                            .onClick(v, mContext, layoutImpl, holder, position, DelegateAdapter.this);
+                }
+            });
+        }
     }
 
     @Override

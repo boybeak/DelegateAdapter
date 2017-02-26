@@ -94,14 +94,14 @@ public class MainActivity extends AppCompatActivity {
             } else if (v == 3) {
                 mAdapter.addAll(Data.getYtbList(this, v * 2), new DelegateParser<Ytb>() {
                     @Override
-                    public DelegateImpl parse(Ytb data) {
+                    public DelegateImpl parse(DelegateAdapter adapter, Ytb data) {
                         return new YtbDelegate(data);
                     }
                 });
             } else if (v == 4) {
                 mAdapter.addAll(Data.getTwitterList(v), new DelegateParser<Twitter>() {
                     @Override
-                    public DelegateImpl parse(Twitter data) {
+                    public DelegateImpl parse(DelegateAdapter adapter, Twitter data) {
                         return new TwitterDelegate(data);
                     }
                 });

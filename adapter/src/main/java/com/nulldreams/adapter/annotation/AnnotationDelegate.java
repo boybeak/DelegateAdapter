@@ -3,6 +3,7 @@ package com.nulldreams.adapter.annotation;
 import com.nulldreams.adapter.AbsDelegate;
 import com.nulldreams.adapter.AbsViewHolder;
 import com.nulldreams.adapter.impl.LayoutImpl;
+import com.nulldreams.adapter.widget.OnItemClickListener;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -29,6 +30,7 @@ public class AnnotationDelegate<T> extends AbsDelegate<T> {
 
     private int layoutID = 0;
     private Class<? extends AbsViewHolder> holderClass;
+    private OnItemClickListener onItemClickListener;
 
     public AnnotationDelegate(T t) {
         super(t);
@@ -58,6 +60,11 @@ public class AnnotationDelegate<T> extends AbsDelegate<T> {
         }
         holderClass = getHolderClassFromAnnotation(this);
         return holderClass;
+    }
+
+    @Override
+    public OnItemClickListener<LayoutImpl, AbsViewHolder> getOnItemClickListener() {
+        return onItemClickListener;
     }
 
     public static int getLayoutFromAnnotation (LayoutImpl impl) {

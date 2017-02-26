@@ -9,7 +9,9 @@ import com.nulldreams.delegateadapter.model.Twitter;
 /**
  * Created by gaoyunfei on 2016/12/22.
  */
-@DelegateInfo(layoutID = R.layout.layout_twitter, holderClass = TwitterHolder.class)
+@DelegateInfo(
+        layoutID = R.layout.layout_twitter,
+        holderClass = TwitterHolder.class)
 public class TwitterDelegate extends AnnotationDelegate<Twitter>{
     public TwitterDelegate(Twitter twitter) {
         super(twitter);
