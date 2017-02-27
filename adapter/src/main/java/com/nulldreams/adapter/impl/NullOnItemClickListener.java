@@ -1,4 +1,4 @@
-package com.nulldreams.adapter.annotation;
+package com.nulldreams.adapter.impl;
 
 import android.content.Context;
 import android.view.View;
@@ -10,7 +10,7 @@ import com.nulldreams.adapter.widget.OnItemClickListener;
  * Created by gaoyunfei on 2017/2/27.
  */
 
-final class NullOnItemClickListener<L, H> implements OnItemClickListener<L, H> {
+public final class NullOnItemClickListener<L, H> implements OnItemClickListener<L, H> {
 
     private NullOnItemClickListener() {
 

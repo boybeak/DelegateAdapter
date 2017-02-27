@@ -37,11 +37,11 @@ public class YtbHolder extends AbsViewHolder<YtbDelegate> {
         thumb.setImageResource(ytb.getThumb());
         title.setText(ytb.getTitle());
         caption.setText(ytb.getCaption());
-        itemView.setOnClickListener(new View.OnClickListener() {
+        /*itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context, YtbHolder.class.getSimpleName(), Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
     }
 }

@@ -87,6 +87,16 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
                 }
             });
         }
+        if (layoutImpl.getOnItemLongClickListener() != null) {
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return layoutImpl.getOnItemLongClickListener().onLongClick(
+                            v, mContext, layoutImpl, holder, position, DelegateAdapter.this
+                    );
+                }
+            });
+        }
     }
 
     @Override

@@ -40,11 +40,11 @@ public class TwitterHolder extends AbsViewHolder<TwitterDelegate>{
         forwardTv.setText(twitter.getForwardCount() + "");
         commentTv.setText(twitter.getCommentCount() + "");
         likeTv.setText(twitter.getLikeCount() + "");
-        itemView.setOnClickListener(new View.OnClickListener() {
+        /*itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context, TwitterHolder.class.getSimpleName(), Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
     }
 }
