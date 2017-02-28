@@ -3,8 +3,6 @@ package com.nulldreams.adapter.annotation;
 import com.nulldreams.adapter.AbsDelegate;
 import com.nulldreams.adapter.AbsViewHolder;
 import com.nulldreams.adapter.impl.LayoutImpl;
-import com.nulldreams.adapter.impl.NullOnItemClickListener;
-import com.nulldreams.adapter.impl.NullOnItemLongClickListener;
 import com.nulldreams.adapter.throwable.ConstructorException;
 import com.nulldreams.adapter.widget.OnItemClickListener;
 import com.nulldreams.adapter.widget.OnItemLongClickListener;
@@ -134,7 +132,9 @@ public class AnnotationDelegate<T> extends AbsDelegate<T> {
             try {
                 Method method = annoClz.getMethod("layoutID");
                 layoutID = (int)method.invoke(anno);
-                return layoutID;
+                if (layoutID != 0) {
+                    return layoutID;
+                }
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
             } catch (InvocationTargetException e) {
@@ -172,7 +172,9 @@ public class AnnotationDelegate<T> extends AbsDelegate<T> {
             try {
                 Method method = annoClz.getMethod("holderClass");
                 holderClass = (Class<? extends AbsViewHolder>)method.invoke(anno);
-                return holderClass;
+                if (holderClass != null && !holderClass.equals(NullHolder.class)) {
+                    return holderClass;
+                }
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
             } catch (InvocationTargetException e) {
@@ -210,7 +212,9 @@ public class AnnotationDelegate<T> extends AbsDelegate<T> {
             try {
                 Method method = annoClz.getMethod("onClick");
                 listenerClass = (Class<? extends OnItemClickListener>)method.invoke(anno);
-                return listenerClass;
+                if (listenerClass != null && !listenerClass.equals(NullOnItemClickListener.class)) {
+                    return listenerClass;
+                }
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
             } catch (InvocationTargetException e) {
@@ -248,7 +252,9 @@ public class AnnotationDelegate<T> extends AbsDelegate<T> {
             try {
                 Method method = annoClz.getMethod("onLongClick");
                 listenerClass = (Class<? extends OnItemLongClickListener>)method.invoke(anno);
-                return listenerClass;
+                if (listenerClass != null && !listenerClass.equals(NullOnItemLongClickListener.class)) {
+                    return listenerClass;
+                }
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
             } catch (InvocationTargetException e) {
