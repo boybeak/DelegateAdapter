@@ -1,78 +1,183 @@
-# DelegateAdapter
-An advanced RecyclerView's Adapter.There is no need to custom an Adapter if you use this library.
-This library binds layout file, data and ViewHolder with Annotation.
+#DelegateAdapter
+This is an advanced RecyclerView's Adapter library. With this library, writing custom adapter class is not necessary in most conditions. Using DelegateAdapter can satisfy most of what you need.
 
-<img src="https://github.com/boybeak/DelegateAdapter/blob/master/showcase.png" width="360" height="640"/>
-## How to use.
-for gradle with jCenter user:
-```
-compile 'com.github.boybeak:adapter:1.1.0'
+The most amazing this in is binding multi types data and ViewHolder with Injections.
+
+#Download
+Grab via Meven:
+
+```xml
+<dependency>
+  <groupId>com.github.boybeak</groupId>
+  <artifactId>adapter</artifactId>
+  <version>1.2.0</version>
+  <type>pom</type>
+</dependency>
 ```
 
+or Gradle:
 
-#### AnnotationDelegate的使用方法
-一般来说，使用DelegateAdapter配合AnnotationDelegate就可以满足大部分需求。
+```groovy
+compile 'com.github.boybeak:adapter:1.2.0'
 ```
-@DelegateInfo(layoutID = R.layout.layout_user, holderClass = UserHolder.class)
-public class UserDelegate extends AnnotationDelegate<User> {
-    public UserDelegate(User user) {
-        super(user);
-    }
+
+This library requires minSdkVersion 15(Don't ask me why, I just dislike previours versions).
+
+# Usage
+
+I will introduce this library by 4 parts:Data, Adapter, ViewHolder and Advance Usages.
+
+## Data
+
+[DelegateAdapter](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/DelegateAdapter.java) only accept [LayoutImpl](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/impl/LayoutImpl.java) data. So your data model must be changed into one of the two types as below:
+
+1. implement LayoutImpl or DelegateImpl;
+2. with a delegate class extends LayoutImpl's sub classes ([AbsDelegate](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/AbsDelegate.java), [AnnotationDelegate](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/annotation/AnnotationDelegate.java)).
+
+An example class as below:
+
+```java
+public class User {
+	private int avatar;
+    private String name;
+    private String description;
 }
 ```
-注意注解@DelegateInfo，指定了其使用的布局layout id与对应的ViewHolder的class.
-由于在library project中使用常量的限制，在library project中不能这样使用。可以使用另外一种方式。
-```
-public class UserDelegate extends AnnotationDelegate<User> {
-    @LayoutID
-    public int layoutId = R.layout.layout_user;
-    @HolderClass
-    public Class<? extends AbsViewHolder> holderClass = UserHolder.class;
-    public UserDelegate(User user) {
-        super(user);
-    }
-}
-```
-注意其中变量的注解@LayoutID, @HolderClass.
 
-#### DelegateAdapter的使用方法
-```
-DelegateAdapter adapter = new DelegateAdapter(context);
-```
-添加数据
-```
-User user = new User(R.drawable.img1, "Jack", "Jack slow f**k");
-adapter.add (new UserDelegate(user));
-adapter.notifyDataSetChanged();
-```
-如果DelegateAdapter只与AnnotationDelegate配合使用，以上使用方法就可以满足；
-如果还配合非AnnotationDelegate的AbsDelegate使用，则DelegateAdapter必须重写onHolderClassNotFound方法，并删除super.onHolderNotFound.
-并提供对应的AbsViewHolder.
+Implement LayoutImpl:
 
-#### 不使用注解，可以直接使用AbsDelegate
-在AnnotationDelegate中，使用了反射来获取注解中的值，所以性能会稍微受到影响，如果想提高效率，可以直接继承AbsDelegate，在抽象方法getLayout与getHolderClass中去提供对应的布局与holder类。
-当然，对于继承自AbsDelegate的类中，也可以使用注解，只是未对注解中对值做缓存，可能造成多次反射的问题。
-
-#### 使用LayoutImpl
-如果你不想使用AbsDelegate，也可以使用LayoutImpl,例如：
-```
-public class User implements LayoutImpl {
-    public int getLayout () {
+```java
+public class User {
+	private int avatar;
+    private String name;
+    private String description;
+  
+	@Override
+    public int getLayout() {
         return R.layout.layout_user;
     }
+
+    @Override
+    public Class<? extends AbsViewHolder> getHolderClass() {
+        return UserHolder.class;
+    }
+
+    @Override
+    public OnItemClickListener<LayoutImpl, AbsViewHolder> getOnItemClickListener() {
+        return null;
+    }
+
+    @Override
+    public OnItemLongClickListener<LayoutImpl, AbsViewHolder> getOnItemLongClickListener() {
+        return null;
+    }
 }
 ```
-> 建议使用继承AnnotationDelegate的方法来做，在AnnotationDelegate中以及做了缓存layout与holderClass，不需要多次反射获取
 
-#### 其他使用方法
-之所以提倡使用Delegate的方式是为了避免污染原数据，例如界面列表的选中状态就不该存储与数据Model中。
-如果你不介意数据污染，可以让原数据类实现LayoutImpl接口，同样要给出DelegateInfo活着是LayoutID,HolderClass注解
-#### 其他便捷方法
-DelegateAdapter中封装了一些便利方法，例如：
-addIfNotExist，addAll，addAllAtFirst， addAllAtLast， getDataSourceArrayList，
-getSubList， firstIndexOf， replaceWith等。
+implement DelegateImpl:
 
-#### 联系我
-也许我只是重复造了个轮子，期待一起改善。
-新浪微博:没洗干净的葱
-QQ:915522070
+```java
+public class User implements DelegateImpl<User> {
+
+    private int avatar;
+    private String name;
+    private String description;
+  	
+	@Override
+    public User getSource() {
+        return this;
+    }
+
+    @Override
+    public int getLayout() {
+        return R.layout.layout_user;
+    }
+
+    @Override
+    public Class<? extends AbsViewHolder> getHolderClass() {
+        return UserHolder.clsas;
+    }
+
+    @Override
+    public OnItemClickListener<LayoutImpl, AbsViewHolder> getOnItemClickListener() {
+        return null;
+    }
+
+    @Override
+    public OnItemLongClickListener<LayoutImpl, AbsViewHolder> getOnItemLongClickListener() {
+        return null;
+    }
+}
+```
+
+with a delegate class extends AbsDelegate:
+
+```java
+public class UserDelegate extends AbsDelegate<User> {
+    
+    private UserClickListener onClick = new UserClickListener();
+    private UserLongClickListener onLongClick = new UserLongClickListener ();
+    public UserDelegate(User user) {
+        super(user);
+    }
+
+    @Override
+    public int getLayout() {
+        return R.layout.layout_user;
+    }
+
+    @Override
+    public Class<? extends AbsViewHolder> getHolderClass() {
+        return UserHolder.class;
+    }
+
+    @Override
+    public OnItemClickListener<LayoutImpl, AbsViewHolder> getOnItemClickListener() {
+        return onClick;
+    }
+
+    @Override
+    public OnItemLongClickListener<LayoutImpl, AbsViewHolder> getOnItemLongClickListener() {
+        return onLongClick;
+    }
+}
+```
+
+with a delegate class extend AnnotationDelegate and injections:
+
+```java
+@DelegateInfo(layoutID = R.layout.layout_user, holderClass = UserHolder.class)
+public class UserDelegate extends AnnotationDelegate<User> {
+    @OnClick
+    public Class<UserClickListener> onClick = UserClickListener.class;
+  	@OnLongClick
+  	public Class<UserLongClickListener> onLongClick = UserLongClickListener.class;
+    public UserDelegate(User user) {
+        super(user);
+    }
+}
+```
+
+
+
+## Adapter
+
+The most important class is [DelegateAdapter](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/DelegateAdapter.java). With this adapter class, there's no need to make a your own custom adapter class.
+
+```java
+DelegateAdapter adapter = new DelegateAdapter (ActivityContext);
+RecyclerView rv = ...;
+//setLayoutManager etc;
+rv.setAdapter(adapter);
+```
+
+adapter set data like below:
+
+
+
+## ViewHolder
+
+
+
+## Advance Usages
+
