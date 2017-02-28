@@ -1,7 +1,7 @@
 #DelegateAdapter
 This is an advanced RecyclerView's Adapter library. With this library, writing custom adapter class is not necessary in most conditions. Using DelegateAdapter can satisfy most of what you need.
 
-The most amazing this in is binding multi types data and ViewHolder with Injections.
+The most amazing thing is binding multi types data and ViewHolder with Injections.
 
 #Download
 Grab via Meven:
