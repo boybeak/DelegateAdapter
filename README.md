@@ -32,7 +32,7 @@ This library requires minSdkVersion 15(Don't ask me why, I just dislike previour
 
 # Usage
 
-I will introduce this library by 4 parts:Data, Adapter, ViewHolder and Advance Usages.
+I will introduce this library by 4 parts: Data, Adapter, ViewHolder and Advance Usages.
 
 ## Data
 
@@ -248,6 +248,8 @@ In this ViewHolder class you can bind data, bind event etc.
 
 ## Advance Usages
 
+## Bind event
+
 With version 1.2.0, you can bind itemView click and longClick event via **@DelegateInfo**, **@OnClick**, **@OnLongClick** injections.
 
 ```java
@@ -270,5 +272,50 @@ public class UserAnnotationDelegate extends AnnotationDelegate<User> {
 }
 ```
 
-> If you define **onClick** and **onLongClick** attribute, **@OnClick** and **@OnLongClick** will not work.
+> If you define **onClick** and **onLongClick** attribute in **@DelegateInfo**, **@OnClick** and **@OnLongClick** will not work.
+
+## DelegateParser, DelegateListParser, DelegateFilter, SimpleFilter
+
+A serious of code snippets show you usage.
+
+```java
+/*DelegateParser*/
+User[] users = ...; //Make your data yourself.
+adapter.addAll (users, new DelegateParser<User>() {
+    @Override
+    public LayoutImpl parse(DelegateAdapter adapter, User data) {
+      	return new UserDelegate(data); //return a LayoutImpl or its sub class
+    }
+});
+```
+
+```java
+/*DelegateListParser*/
+User[] users = ...; //Make your data yourself.
+adapter.addAll (users, new DelegateListParser () {
+    public List<LayoutImpl> parse (DelegateAdapter adapter, User data) {
+		List<LayoutImpl> list = new ArrayList<LayoutImpl>();
+      	list.add (new UserHeaderDelegate("I'm a good teacher"));
+      	list.add (new UserDelegate (data));
+      	if (data.isGood()) {
+        	list.add(new UserFooterDelegate ("I am really a good teacher!"));
+      	}
+      	return list;
+    }
+});
+```
+
+```java
+/*DelegateFilter*/
+List<LayoutImpl> subUserDelegateList = adapter.getSubList (new DelegateAdapter() {
+  	public boolean accept (DelegateAdapter adapter, LayoutImpl impl) {
+      	return impl != null && impl instanceof UserDelegate;
+  	}
+});
+```
+
+```java
+/*SimpleFilter*/
+List<User> userList = adapter.getDataSourceArrayList (new SimpleFilter<User>());
+```
 
