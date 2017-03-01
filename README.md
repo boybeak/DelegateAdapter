@@ -21,7 +21,7 @@ or Gradle:
 compile 'com.github.boybeak:adapter:1.2.0'
 ```
 
-This library requires minSdkVersion 15(Don't ask me why, I just dislike previours versions).
+This library requires minSdkVersion 15(Don't ask me why, I just dislike previous versions).
 
 # What's new in version 1.2.0
 
