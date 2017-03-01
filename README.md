@@ -23,6 +23,13 @@ compile 'com.github.boybeak:adapter:1.2.0'
 
 This library requires minSdkVersion 15(Don't ask me why, I just dislike previours versions).
 
+# What's new in version 1.2.0
+
+1. add click and long click event support;
+2. LayoutInfo annotation now can work with LayoutID, HolderClass, OnClick, OnLongClick together.
+
+
+
 # Usage
 
 I will introduce this library by 4 parts:Data, Adapter, ViewHolder and Advance Usages.
@@ -31,7 +38,7 @@ I will introduce this library by 4 parts:Data, Adapter, ViewHolder and Advance U
 
 [DelegateAdapter](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/DelegateAdapter.java) only accept [LayoutImpl](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/impl/LayoutImpl.java) data. So your data model must be changed into one of the two types as below:
 
-1. implement LayoutImpl or DelegateImpl;
+1. implements LayoutImpl or DelegateImpl;
 2. with a delegate class extends LayoutImpl's sub classes ([AbsDelegate](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/AbsDelegate.java), [AnnotationDelegate](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/annotation/AnnotationDelegate.java)).
 
 An example class as below:
@@ -44,10 +51,10 @@ public class User {
 }
 ```
 
-Implement LayoutImpl:
+Implements LayoutImpl:
 
 ```java
-public class User {
+public class UserLayoutImpl implements LayoutImpl{
 	private int avatar;
     private String name;
     private String description;
@@ -74,17 +81,17 @@ public class User {
 }
 ```
 
-implement DelegateImpl:
+implements DelegateImpl:
 
 ```java
-public class User implements DelegateImpl<User> {
+public class UserDelegateImpl implements DelegateImpl<UserDelegateImpl> {
 
     private int avatar;
     private String name;
     private String description;
   	
 	@Override
-    public User getSource() {
+    public UserDelegateImpl getSource() {
         return this;
     }
 
@@ -146,12 +153,19 @@ public class UserDelegate extends AbsDelegate<User> {
 with a delegate class extend AnnotationDelegate and injections:
 
 ```java
-@DelegateInfo(layoutID = R.layout.layout_user, holderClass = UserHolder.class)
-public class UserDelegate extends AnnotationDelegate<User> {
+@DelegateInfo(
+  	layoutID = R.layout.layout_user,
+  	holderClass = UserHolder.class,
+  	onClick = UserClickListener.class,
+  	onLongClick = UserLongClickListener.class
+)
+public class UserAnnotationDelegate extends AnnotationDelegate<User> {
+  
     @OnClick
     public Class<UserClickListener> onClick = UserClickListener.class;
   	@OnLongClick
   	public Class<UserLongClickListener> onLongClick = UserLongClickListener.class;
+  
     public UserDelegate(User user) {
         super(user);
     }
@@ -171,13 +185,90 @@ RecyclerView rv = ...;
 rv.setAdapter(adapter);
 ```
 
-adapter set data like below:
+adapter add data like below:
+
+```java
+UserLayoutImpl userLayoutImpl = ...;
+UserDelegateImpl userDelegateImple = ...;
+
+User user = ...;
+UserDelegate userDelegate = new UserDelegate (user);
+UserAnnotationDeleagate annoDelegate = new UserAnnotationDelegate (user);
+//create these User data or decode by gson from json
+adapter.add (userLayoutImpl);
+adapter.add (userDelegateImple);
+adapter.add (userDelegate);
+adapter.add (annoDelegate);
+//Don't forget notifyDataSetChanged();
+adapter.notifyDataSetChanged();
+```
+
+or you can add User model collection directly with a [DelegateParser](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/DelegateParser.java).
+
+```java
+List<User> userList = ...;//make this data your self, generally from json array
+mAdapter.addAll(userList, new DelegateParser<User>() {
+    @Override
+    public LayoutImpl parse(DelegateAdapter adapter, User data) {
+      	return new UserDelegate(data); //return a LayoutImpl or its sub class
+    }
+});
+```
 
 
 
 ## ViewHolder
 
+all your ViewHolder classes should extend [AbsViewHolder](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/AbsViewHolder.java) class.
 
+```java
+public class UserHolder extends AbsViewHolder<UserDelegate> {
+
+    private ImageView avatar;
+    private TextView nameTv, descTv;
+
+    public UserHolder(View itemView) {
+        super(itemView);
+        avatar = (ImageView)findViewById(R.id.avatar);
+        nameTv = (TextView)findViewById(R.id.name);
+        descTv = (TextView)findViewById(R.id.desc);
+    }
+
+    @Override
+    public void onBindView(Context context, UserDelegate userDelegate, int position, DelegateAdapter adapter) {
+        User user = userDelegate.getSource();
+        avatar.setImageResource(user.getAvatar());
+        nameTv.setText(user.getName() + " - " + getClass().getSimpleName());
+        descTv.setText(user.getDescription());
+    }
+}
+```
+
+In this ViewHolder class you can bind data, bind event etc.
 
 ## Advance Usages
+
+With version 1.2.0, you can bind itemView click and longClick event via **@DelegateInfo**, **@OnClick**, **@OnLongClick** injections.
+
+```java
+@DelegateInfo(
+  	layoutID = R.layout.layout_user,
+  	holderClass = UserHolder.class,
+  	onClick = UserClickListener.class,
+  	onLongClick = UserLongClickListener.class
+)
+public class UserAnnotationDelegate extends AnnotationDelegate<User> {
+  
+    @OnClick
+    public Class<UserClickListener> onClick = UserClickListener.class;
+  	@OnLongClick
+  	public Class<UserLongClickListener> onLongClick = UserLongClickListener.class;
+  
+    public UserDelegate(User user) {
+        super(user);
+    }
+}
+```
+
+> If you define **onClick** and **onLongClick** attribute, **@OnClick** and **@OnLongClick** will not work.
 

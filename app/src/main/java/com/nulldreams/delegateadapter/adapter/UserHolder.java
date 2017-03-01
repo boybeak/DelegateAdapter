@@ -21,9 +21,9 @@ public class UserHolder extends AbsViewHolder<UserDelegate> {
 
     public UserHolder(View itemView) {
         super(itemView);
-        avatar = (ImageView)itemView.findViewById(R.id.avatar);
-        nameTv = (TextView)itemView.findViewById(R.id.name);
-        descTv = (TextView)itemView.findViewById(R.id.desc);
+        avatar = (ImageView)findViewById(R.id.avatar);
+        nameTv = (TextView)findViewById(R.id.name);
+        descTv = (TextView)findViewById(R.id.desc);
     }
 
     @Override
