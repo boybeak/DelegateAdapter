@@ -37,6 +37,10 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         mTypeHolderMap = new SparseArrayCompat<Class<? extends AbsViewHolder>>();
     }
 
+    public Context getContext () {
+        return mContext;
+    }
+
     @Override
     public final AbsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(mContext).inflate(viewType, null);
