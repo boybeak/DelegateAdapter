@@ -26,7 +26,7 @@ This library requires minSdkVersion 15(Don't ask me why, I just dislike previous
 # What's new in version 1.2.0
 
 1. add click and long click event support;
-2. LayoutInfo annotation now can work with LayoutID, HolderClass, OnClick, OnLongClick together.
+2. **@LayoutInfo** annotation now can work with **@LayoutID**, **@HolderClass**, **@OnClick**, **@OnLongClick** together.
 
 
 
