@@ -274,6 +274,29 @@ public class UserAnnotationDelegate extends AnnotationDelegate<User> {
 
 > If you define **onClick** and **onLongClick** attribute in **@DelegateInfo**, **@OnClick** and **@OnLongClick** will not work.
 
+```java
+public class UserClickListener implements OnItemClickListener<UserDelegate, UserHolder> {
+    @Override
+    public void onClick(View view, Context context, UserDelegate userDelegate, UserHolder userHolder, int position, DelegateAdapter adapter) {
+        Toast.makeText(context, UserHolder.class.getSimpleName(), Toast.LENGTH_SHORT).show();
+    }
+}
+```
+
+```java
+public class UserLongClickListener implements OnItemLongClickListener<UserDelegate, UserHolder> {
+    @Override
+    public boolean onLongClick(View view, Context context, UserDelegate userDelegate, UserHolder userHolder, int position, DelegateAdapter adapter) {
+        new AlertDialog.Builder(context)
+                .setMessage(userDelegate.getSource().getName())
+                .show();
+        return true;
+    }
+}
+```
+
+
+
 ## DelegateParser, DelegateListParser, DelegateFilter, SimpleFilter
 
 A serious of code snippets show you usage.
