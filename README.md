@@ -25,7 +25,7 @@ This library requires minSdkVersion 15(Don't ask me why, I just dislike previous
 
 # What's new in version 1.2.0
 
-1. add click and long click event support;
+1. add click and long click event support for itemView;
 2. **@LayoutInfo** annotation now can work with **@LayoutID**, **@HolderClass**, **@OnClick**, **@OnLongClick** together.
 
 
@@ -38,7 +38,7 @@ I will introduce this library by 4 parts: Data, Adapter, ViewHolder and Advance 
 
 [DelegateAdapter](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/DelegateAdapter.java) only accept [LayoutImpl](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/impl/LayoutImpl.java) data. So your data model must be changed into one of the two types as below:
 
-1. implements LayoutImpl or DelegateImpl;
+1. implements [LayoutImpl](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/impl/LayoutImpl.java) or [DelegateImpl](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/impl/DelegateImpl.java);
 2. with a delegate class extends LayoutImpl's sub classes ([AbsDelegate](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/AbsDelegate.java), [AnnotationDelegate](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/annotation/AnnotationDelegate.java)). In case of original data model pollution, I strongly suggest you use this.
 
 An example class as below:
@@ -51,7 +51,7 @@ public class User {
 }
 ```
 
-Implements LayoutImpl:
+Implements [LayoutImpl](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/impl/LayoutImpl.java):
 
 ```java
 public class UserLayoutImpl implements LayoutImpl{
@@ -81,7 +81,7 @@ public class UserLayoutImpl implements LayoutImpl{
 }
 ```
 
-implements DelegateImpl:
+implements [DelegateImpl](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/impl/DelegateImpl.java):
 
 ```java
 public class UserDelegateImpl implements DelegateImpl<UserDelegateImpl> {
@@ -117,7 +117,7 @@ public class UserDelegateImpl implements DelegateImpl<UserDelegateImpl> {
 }
 ```
 
-with a delegate class extends AbsDelegate:
+with a delegate class extends [AbsDelegate](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/AbsDelegate.java):
 
 ```java
 public class UserDelegate extends AbsDelegate<User> {
@@ -150,7 +150,7 @@ public class UserDelegate extends AbsDelegate<User> {
 }
 ```
 
-with a delegate class extend AnnotationDelegate and injections:
+with a delegate class extend [AnnotationDelegate](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/annotation/AnnotationDelegate.java) and injections:
 
 ```java
 @DelegateInfo(
