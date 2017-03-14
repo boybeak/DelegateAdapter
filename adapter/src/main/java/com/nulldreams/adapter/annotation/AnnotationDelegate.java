@@ -1,5 +1,7 @@
 package com.nulldreams.adapter.annotation;
 
+import android.os.Bundle;
+
 import com.nulldreams.adapter.AbsDelegate;
 import com.nulldreams.adapter.AbsViewHolder;
 import com.nulldreams.adapter.impl.LayoutImpl;
@@ -28,7 +30,7 @@ import java.lang.reflect.Method;
  * Created by gaoyunfei on 2016/12/17.
  */
 
-public class AnnotationDelegate<T> extends AbsDelegate<T> {
+public abstract class AnnotationDelegate<T> extends AbsDelegate<T> {
 
     private int layoutID = 0;
     private Class<? extends AbsViewHolder> holderClass;
@@ -41,6 +43,10 @@ public class AnnotationDelegate<T> extends AbsDelegate<T> {
 
     public AnnotationDelegate(T t) {
         super(t);
+    }
+
+    public AnnotationDelegate(T t, Bundle bundle) {
+        super(t, bundle);
     }
 
     /**
