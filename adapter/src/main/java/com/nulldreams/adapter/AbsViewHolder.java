@@ -12,6 +12,8 @@ import com.nulldreams.adapter.impl.DelegateImpl;
  */
 public abstract class AbsViewHolder<T> extends RecyclerView.ViewHolder {
 
+    private boolean isViewAttachedToWindow;
+
     public AbsViewHolder(View itemView) {
         super(itemView);
     }
@@ -25,10 +27,11 @@ public abstract class AbsViewHolder<T> extends RecyclerView.ViewHolder {
     public abstract void onBindView (Context context, T t, int position, DelegateAdapter adapter);
 
     public void onViewAttachedToWindow (Context context) {
-
+        isViewAttachedToWindow = true;
     }
 
     public void onViewDetachedFromWindow (Context context) {
+        isViewAttachedToWindow = false;
     }
 
     public final View findViewById (int id) {
@@ -37,5 +40,9 @@ public abstract class AbsViewHolder<T> extends RecyclerView.ViewHolder {
 
     public final View findViewByTag (Object tag) {
         return itemView.findViewWithTag(tag);
+    }
+
+    public boolean isViewAttachedToWindow() {
+        return isViewAttachedToWindow;
     }
 }
