@@ -90,49 +90,61 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         final LayoutImpl layoutImpl = mDelegateImplList.get(position);
         holder.onBindView(mContext, layoutImpl, position, this);
         if (layoutImpl.getOnItemClickListener() != null) {
+            View.OnClickListener clickListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    layoutImpl.getOnItemClickListener()
+                            .onClick(v, mContext, layoutImpl, holder, position, DelegateAdapter.this);
+                }
+            };
             int[] ids = layoutImpl.getOnClickIds();
-            final int length = ids.length;
-            for (int i = 0; i < length; i++) {
-                int id = ids[i];
-                View v = null;
-                if (id == ITEM_VIEW_ID) {
-                    v = holder.itemView;
-                } else {
-                    v = holder.itemView.findViewById(id);
+            if (ids != null) {
+                final int length = ids.length;
+                for (int i = 0; i < length; i++) {
+                    int id = ids[i];
+                    View v = null;
+                    if (id == ITEM_VIEW_ID) {
+                        v = holder.itemView;
+                    } else {
+                        v = holder.itemView.findViewById(id);
+                    }
+                    if (v != null) {
+                        v.setOnClickListener(clickListener);
+                    }
                 }
-                if (v != null) {
-                    v.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            layoutImpl.getOnItemClickListener()
-                                    .onClick(view, mContext, layoutImpl, holder, position, DelegateAdapter.this);
-                        }
-                    });
-                }
+            } else {
+                holder.itemView.setOnClickListener(clickListener);
             }
+
         }
         if (layoutImpl.getOnItemLongClickListener() != null) {
+            View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return layoutImpl.getOnItemLongClickListener().onLongClick(
+                            v, mContext, layoutImpl, holder, position, DelegateAdapter.this
+                    );
+                }
+            };
             int[] ids = layoutImpl.getOnLongClickIds();
-            final int length = ids.length;
-            for (int i = 0; i < length; i++) {
-                int id = ids[i];
-                View v = null;
-                if (id == ITEM_VIEW_ID) {
-                    v = holder.itemView;
-                } else {
-                    v = holder.itemView.findViewById(id);
+            if (ids != null) {
+                final int length = ids.length;
+                for (int i = 0; i < length; i++) {
+                    int id = ids[i];
+                    View v = null;
+                    if (id == ITEM_VIEW_ID) {
+                        v = holder.itemView;
+                    } else {
+                        v = holder.itemView.findViewById(id);
+                    }
+                    if (v != null) {
+                        v.setOnLongClickListener(longClickListener);
+                    }
                 }
-                if (v != null) {
-                    v.setOnLongClickListener(new View.OnLongClickListener() {
-                        @Override
-                        public boolean onLongClick(View view) {
-                            return layoutImpl.getOnItemLongClickListener().onLongClick(
-                                    view, mContext, layoutImpl, holder, position, DelegateAdapter.this
-                            );
-                        }
-                    });
-                }
+            } else {
+                holder.itemView.setOnLongClickListener(longClickListener);
             }
+
         }
     }
 

@@ -8,7 +8,7 @@
 <dependency>
   <groupId>com.github.boybeak</groupId>
   <artifactId>adapter</artifactId>
-  <version>1.2.0</version>
+  <version>1.3.1</version>
   <type>pom</type>
 </dependency>
 ```
@@ -16,15 +16,15 @@
 或者通过Gradle:
 
 ```groovy
-compile 'com.github.boybeak:adapter:1.2.0'
+compile 'com.github.boybeak:adapter:1.3.1'
 ```
 
 该库要求 minSdkVersion 15(别问我为什么，只是不喜欢适配更早的版本)。
 
-# What's new in version 1.2.0
+# What's new in version 1.3.x
 
-1. 添加了itemView的点击与长按事件支持；
-2. **@LayoutInfo** 注解能够和 **@LayoutID**, **@HolderClass**, **@OnClick**, **@OnLongClick** 等注解一同使用了。
+1. [AbsDelegate](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/AbsDelegate.java) 中可以通过内置的Bundle携带参数.
+2. 可以为ItemView的子View指定点击和长按事件，在**@DelegateInfo**中添加了**onClickIds**和**onLongClickIds**属性，在**@OnClick**和**@OnLongClick**中添加了ids属性。
 
 # Usage
 
@@ -74,6 +74,14 @@ public class UserLayoutImpl implements LayoutImpl{
     public OnItemLongClickListener<LayoutImpl, AbsViewHolder> getOnItemLongClickListener() {
         return null;
     }
+  	@Override
+    public int[] getOnClickIds() {
+        return null;
+    }
+  	@Override
+    public int[] getOnLongClickIds() {
+        return null;
+    }
 }
 ```
 
@@ -110,6 +118,14 @@ public class UserDelegateImpl implements DelegateImpl<UserDelegateImpl> {
     public OnItemLongClickListener<LayoutImpl, AbsViewHolder> getOnItemLongClickListener() {
         return null;
     }
+  	@Override
+    public int[] getOnClickIds() {
+        return null;
+    }
+  	@Override
+    public int[] getOnLongClickIds() {
+        return null;
+    }
 }
 ```
 
@@ -143,6 +159,14 @@ public class UserDelegate extends AbsDelegate<User> {
     public OnItemLongClickListener<LayoutImpl, AbsViewHolder> getOnItemLongClickListener() {
         return onLongClick;
     }
+  	@Override
+    public int[] getOnClickIds() {
+        return null;
+    }
+  	@Override
+    public int[] getOnLongClickIds() {
+        return null;
+    }
 }
 ```
 
@@ -153,13 +177,15 @@ public class UserDelegate extends AbsDelegate<User> {
   	layoutID = R.layout.layout_user,
   	holderClass = UserHolder.class,
   	onClick = UserClickListener.class,
-  	onLongClick = UserLongClickListener.class
+  	onLongClick = UserLongClickListener.class,
+  	onClickIds = {DelegateAdapter.ITEM_VIEW_ID, R.id.user_avatar},
+  	onLongClickIds = {DelegateAdapter.ITEM_VIEW_ID, R.id.user_avatar}
 )
 public class UserAnnotationDelegate extends AnnotationDelegate<User> {
   
-    @OnClick
+    @OnClick(ids = {DelegateAdapter.ITEM_VIEW_ID, R.id.user_avatar})
     public Class<UserClickListener> onClick = UserClickListener.class;
-  	@OnLongClick
+  	@OnLongClick(ids = {DelegateAdapter.ITEM_VIEW_ID, R.id.user_avatar})
   	public Class<UserLongClickListener> onLongClick = UserLongClickListener.class;
   
     public UserDelegate(User user) {
@@ -253,13 +279,15 @@ public class UserHolder extends AbsViewHolder<UserDelegate> {
   	layoutID = R.layout.layout_user,
   	holderClass = UserHolder.class,
   	onClick = UserClickListener.class,
-  	onLongClick = UserLongClickListener.class
+  	onLongClick = UserLongClickListener.class,
+  	onClickIds = {DelegateAdapter.ITEM_VIEW_ID, R.id.user_avatar},
+  	onLongClickIds = {DelegateAdapter.ITEM_VIEW_ID, R.id.user_avatar}
 )
 public class UserAnnotationDelegate extends AnnotationDelegate<User> {
   
-    @OnClick
+    @OnClick(ids = {DelegateAdapter.ITEM_VIEW_ID, R.id.text_tv})
     public Class<UserClickListener> onClick = UserClickListener.class;
-  	@OnLongClick
+  	@OnLongClick(ids = {DelegateAdapter.ITEM_VIEW_ID, R.id.text_tv})
   	public Class<UserLongClickListener> onLongClick = UserLongClickListener.class;
   
     public UserDelegate(User user) {

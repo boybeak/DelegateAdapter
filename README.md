@@ -1,4 +1,6 @@
 #DelegateAdapter
+
+
 This is an advanced RecyclerView's Adapter library. With this library, writing custom adapter class is not necessary in most conditions. Using DelegateAdapter can satisfy most of what you need.
 
 The most amazing thing is binding multi types data and ViewHolder with Injections.
@@ -12,7 +14,7 @@ Grab via Meven:
 <dependency>
   <groupId>com.github.boybeak</groupId>
   <artifactId>adapter</artifactId>
-  <version>1.2.0</version>
+  <version>1.3.1</version>
   <type>pom</type>
 </dependency>
 ```
@@ -20,15 +22,15 @@ Grab via Meven:
 or Gradle:
 
 ```groovy
-compile 'com.github.boybeak:adapter:1.2.0'
+compile 'com.github.boybeak:adapter:1.3.1'
 ```
 
 This library requires minSdkVersion 15(Don't ask me why, I just dislike previous versions).
 
-# What's new in version 1.2.0
+# What's new in version 1.3.x
 
-1. add click and long click event support for itemView;
-2. **@LayoutInfo** annotation now can work with **@LayoutID**, **@HolderClass**, **@OnClick**, **@OnLongClick** together.
+1. [AbsDelegate](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/AbsDelegate.java) can bring parameters with using a Bundle.
+2. Click and long click event now also works on ItemView's child views. You can define **onClickIds** and **onLongClickIds** attribute in **@DelegateInfo** injection, or alternative define **ids** attribute in **@OnClick** and **@OnLongClick**.
 
 
 You can read a full [release note](https://github.com/boybeak/DelegateAdapter/blob/master/ReleaseNote.md).
@@ -81,6 +83,14 @@ public class UserLayoutImpl implements LayoutImpl{
     public OnItemLongClickListener<LayoutImpl, AbsViewHolder> getOnItemLongClickListener() {
         return null;
     }
+  	@Override
+    public int[] getOnClickIds() {
+        return null;
+    }
+  	@Override
+    public int[] getOnLongClickIds() {
+        return null;
+    }
 }
 ```
 
@@ -115,6 +125,14 @@ public class UserDelegateImpl implements DelegateImpl<UserDelegateImpl> {
 
     @Override
     public OnItemLongClickListener<LayoutImpl, AbsViewHolder> getOnItemLongClickListener() {
+        return null;
+    }
+  	@Override
+    public int[] getOnClickIds() {
+        return null;
+    }
+  	@Override
+    public int[] getOnLongClickIds() {
         return null;
     }
 }
@@ -160,13 +178,15 @@ with a delegate class extend [AnnotationDelegate](https://github.com/boybeak/Del
   	layoutID = R.layout.layout_user,
   	holderClass = UserHolder.class,
   	onClick = UserClickListener.class,
-  	onLongClick = UserLongClickListener.class
+  	onLongClick = UserLongClickListener.class,
+  	onClickIds = {DelegateAdapter.ITEM_VIEW_ID, R.id.user_avatar},
+  	onLongClickIds = {DelegateAdapter.ITEM_VIEW_ID, R.id.user_avatar}
 )
 public class UserAnnotationDelegate extends AnnotationDelegate<User> {
   
-    @OnClick
+    @OnClick(ids = {DelegateAdapter.ITEM_VIEW_ID, R.id.user_avatar})
     public Class<UserClickListener> onClick = UserClickListener.class;
-  	@OnLongClick
+  	@OnLongClick(ids = {DelegateAdapter.ITEM_VIEW_ID, R.id.text_tv})
   	public Class<UserLongClickListener> onLongClick = UserLongClickListener.class;
   
     public UserDelegate(User user) {
@@ -174,6 +194,8 @@ public class UserAnnotationDelegate extends AnnotationDelegate<User> {
     }
 }
 ```
+
+If you define the same type attribute both in **@DelegateInfo** and class member variables, only the **@DelegateInfo** will work.
 
 
 
@@ -260,13 +282,15 @@ With version 1.2.0, you can bind itemView click and longClick event via **@Deleg
   	layoutID = R.layout.layout_user,
   	holderClass = UserHolder.class,
   	onClick = UserClickListener.class,
-  	onLongClick = UserLongClickListener.class
+  	onLongClick = UserLongClickListener.class,
+  	onClickIds = {DelegateAdapter.ITEM_VIEW_ID, R.id.user_avatar},
+  	onLongClickIds = {DelegateAdapter.ITEM_VIEW_ID, R.id.user_avatar}
 )
 public class UserAnnotationDelegate extends AnnotationDelegate<User> {
   
-    @OnClick
+    @OnClick(ids = {DelegateAdapter.ITEM_VIEW_ID, R.id.text_tv})
     public Class<UserClickListener> onClick = UserClickListener.class;
-  	@OnLongClick
+  	@OnLongClick(ids = {DelegateAdapter.ITEM_VIEW_ID, R.id.text_tv})
   	public Class<UserLongClickListener> onLongClick = UserLongClickListener.class;
   
     public UserDelegate(User user) {
@@ -275,7 +299,7 @@ public class UserAnnotationDelegate extends AnnotationDelegate<User> {
 }
 ```
 
-> If you define **onClick** and **onLongClick** attribute in **@DelegateInfo**, **@OnClick** and **@OnLongClick** will not work.
+> If you define **onClick** and **onLongClick** attribute in **@DelegateInfo**, **@OnClick** and **@OnLongClick** will not work. This principles also to their inner attributes.
 
 ```java
 public class UserClickListener implements OnItemClickListener<UserDelegate, UserHolder> {
