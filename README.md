@@ -31,6 +31,7 @@ This library requires minSdkVersion 15(Don't ask me why, I just dislike previous
 2. **@LayoutInfo** annotation now can work with **@LayoutID**, **@HolderClass**, **@OnClick**, **@OnLongClick** together.
 
 
+You can read a full [release note](https://github.com/boybeak/DelegateAdapter/blob/master/ReleaseNote.md).
 
 # Usage
 
