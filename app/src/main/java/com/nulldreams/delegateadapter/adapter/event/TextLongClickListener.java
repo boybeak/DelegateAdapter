@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.nulldreams.adapter.DelegateAdapter;
 import com.nulldreams.adapter.widget.OnItemLongClickListener;
+import com.nulldreams.delegateadapter.R;
 import com.nulldreams.delegateadapter.adapter.TextDelegate;
 import com.nulldreams.delegateadapter.adapter.TextHolder;
 
@@ -16,7 +17,11 @@ import com.nulldreams.delegateadapter.adapter.TextHolder;
 public class TextLongClickListener implements OnItemLongClickListener<TextDelegate, TextHolder> {
     @Override
     public boolean onLongClick(View view, Context context, TextDelegate textDelegate, TextHolder textHolder, int position, DelegateAdapter adapter) {
-        Toast.makeText(context, TextHolder.class.getSimpleName(), Toast.LENGTH_SHORT).show();
+        if (view.getId() == R.id.text_tv) {
+            Toast.makeText(context, TextHolder.class.getSimpleName() + " " + textDelegate.getSource(), Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, TextHolder.class.getSimpleName(), Toast.LENGTH_SHORT).show();
+        }
         return true;
     }
 }

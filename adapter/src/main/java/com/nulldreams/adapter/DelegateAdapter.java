@@ -9,11 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.nulldreams.adapter.annotation.AnnotationDelegate;
+import com.nulldreams.adapter.annotation.DelegateInfo;
+import com.nulldreams.adapter.annotation.HolderClass;
+import com.nulldreams.adapter.annotation.LayoutID;
+import com.nulldreams.adapter.annotation.NullHolder;
 import com.nulldreams.adapter.impl.DelegateImpl;
 import com.nulldreams.adapter.impl.LayoutImpl;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -24,6 +31,8 @@ import java.util.List;
  * Created by gaoyunfei on 16/7/29.
  */
 public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
+
+    public static final int ITEM_VIEW_ID = Integer.MIN_VALUE;
 
     private Context mContext = null;
     private List<LayoutImpl> mDelegateImplList = null;  //DataSource
@@ -81,23 +90,49 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         final LayoutImpl layoutImpl = mDelegateImplList.get(position);
         holder.onBindView(mContext, layoutImpl, position, this);
         if (layoutImpl.getOnItemClickListener() != null) {
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    layoutImpl.getOnItemClickListener()
-                            .onClick(v, mContext, layoutImpl, holder, position, DelegateAdapter.this);
+            int[] ids = layoutImpl.getOnClickIds();
+            final int length = ids.length;
+            for (int i = 0; i < length; i++) {
+                int id = ids[i];
+                View v = null;
+                if (id == ITEM_VIEW_ID) {
+                    v = holder.itemView;
+                } else {
+                    v = holder.itemView.findViewById(id);
                 }
-            });
+                if (v != null) {
+                    v.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            layoutImpl.getOnItemClickListener()
+                                    .onClick(view, mContext, layoutImpl, holder, position, DelegateAdapter.this);
+                        }
+                    });
+                }
+            }
         }
         if (layoutImpl.getOnItemLongClickListener() != null) {
-            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    return layoutImpl.getOnItemLongClickListener().onLongClick(
-                            v, mContext, layoutImpl, holder, position, DelegateAdapter.this
-                    );
+            int[] ids = layoutImpl.getOnLongClickIds();
+            final int length = ids.length;
+            for (int i = 0; i < length; i++) {
+                int id = ids[i];
+                View v = null;
+                if (id == ITEM_VIEW_ID) {
+                    v = holder.itemView;
+                } else {
+                    v = holder.itemView.findViewById(id);
                 }
-            });
+                if (v != null) {
+                    v.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View view) {
+                            return layoutImpl.getOnItemLongClickListener().onLongClick(
+                                    view, mContext, layoutImpl, holder, position, DelegateAdapter.this
+                            );
+                        }
+                    });
+                }
+            }
         }
     }
 
@@ -111,7 +146,7 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         LayoutImpl impl = mDelegateImplList.get(position);
         int type = impl.getLayout();
         if (type == 0) {
-            type = AnnotationDelegate.getLayoutFromAnnotation(impl);
+            type = getLayoutFromAnnotation(impl);
         }
         if (type <= 0) {
             throw new IllegalStateException("layout not be defined by class(" + impl.getClass().getName()
@@ -124,7 +159,7 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         }*/
         Class<? extends AbsViewHolder> holderClass = impl.getHolderClass();
         if (holderClass == null) {
-            holderClass = AnnotationDelegate.getHolderClassFromAnnotation(impl);
+            holderClass = getHolderClassFromAnnotation(impl);
         }
         /*if (holderClass == null) {
             throw new IllegalStateException("holderClass not be defined by class(" + impl.getClass().getName()
@@ -561,6 +596,85 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
             return false;
         }
         return mDelegateImplList.get(0).equals(delegate);
+    }
+
+    public static int getLayoutFromAnnotation (LayoutImpl impl) {
+        Class clz = impl.getClass();
+        int layoutID = 0;
+        Annotation anno = clz.getAnnotation(DelegateInfo.class);
+        if (anno != null) {
+            Class<? extends Annotation> annoClz = anno.annotationType();
+            try {
+                Method method = annoClz.getMethod("layoutID");
+                layoutID = (int)method.invoke(anno);
+                if (layoutID != 0) {
+                    return layoutID;
+                }
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        layoutID = getLayoutFromAnnotation(clz, impl);
+        return layoutID;
+    }
+
+    private static int getLayoutFromAnnotation (Class clz, LayoutImpl impl) {
+        Field[] fields = clz.getDeclaredFields();
+        for (Field field : fields) {
+            LayoutID anno = field.getAnnotation(LayoutID.class);
+            if (anno != null) {
+                try {
+                    return field.getInt(impl);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return 0;
+    }
+
+    public static Class<? extends AbsViewHolder> getHolderClassFromAnnotation (LayoutImpl impl) {
+        Class clz = impl.getClass();
+
+        Annotation anno = clz.getAnnotation(DelegateInfo.class);
+        Class<? extends AbsViewHolder> holderClass;
+        if (anno != null) {
+            Class<? extends Annotation> annoClz = anno.annotationType();
+            try {
+                Method method = annoClz.getMethod("holderClass");
+                holderClass = (Class<? extends AbsViewHolder>)method.invoke(anno);
+                if (holderClass != null && !holderClass.equals(NullHolder.class)) {
+                    return holderClass;
+                }
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        holderClass = getHolderClassFromAnnotation(clz, impl);
+        return holderClass;
+    }
+
+    private static Class<? extends AbsViewHolder> getHolderClassFromAnnotation (Class<? extends AnnotationDelegate> clz, LayoutImpl impl) {
+        Field[] fields = clz.getDeclaredFields();
+        for (Field field : fields) {
+            HolderClass anno = field.getAnnotation(HolderClass.class);
+            if (anno != null) {
+                try {
+                    return (Class<? extends AbsViewHolder>)field.get(impl);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
     }
 
 }

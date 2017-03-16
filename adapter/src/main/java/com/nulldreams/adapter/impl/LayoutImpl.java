@@ -15,4 +15,6 @@ public interface LayoutImpl {
     Class<? extends AbsViewHolder> getHolderClass ();
     OnItemClickListener<LayoutImpl, AbsViewHolder> getOnItemClickListener ();
     OnItemLongClickListener<LayoutImpl, AbsViewHolder> getOnItemLongClickListener ();
+    int[] getOnClickIds ();
+    int[] getOnLongClickIds ();
 }

@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
+//        mAdapter.add(new TextDelegate(0 + ""));
         mAdapter.notifyDataSetChanged();
     }
 }

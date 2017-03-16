@@ -10,7 +10,7 @@ import com.nulldreams.adapter.DelegateAdapter;
  * Created by gaoyunfei on 2017/2/28.
  */
 
-final class NullHolder extends AbsViewHolder {
+public final class NullHolder extends AbsViewHolder {
 
     private NullHolder(View itemView) {
         super(itemView);

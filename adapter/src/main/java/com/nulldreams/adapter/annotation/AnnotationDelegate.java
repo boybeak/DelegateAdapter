@@ -1,9 +1,11 @@
 package com.nulldreams.adapter.annotation;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.nulldreams.adapter.AbsDelegate;
 import com.nulldreams.adapter.AbsViewHolder;
+import com.nulldreams.adapter.DelegateAdapter;
 import com.nulldreams.adapter.impl.LayoutImpl;
 import com.nulldreams.adapter.throwable.ConstructorException;
 import com.nulldreams.adapter.widget.OnItemClickListener;
@@ -13,6 +15,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
+import static com.nulldreams.adapter.DelegateAdapter.getLayoutFromAnnotation;
 
 /**
  *
@@ -32,6 +36,8 @@ import java.lang.reflect.Method;
 
 public abstract class AnnotationDelegate<T> extends AbsDelegate<T> {
 
+    private static final String TAG = AnnotationDelegate.class.getSimpleName();
+
     private int layoutID = 0;
     private Class<? extends AbsViewHolder> holderClass;
 
@@ -41,6 +47,10 @@ public abstract class AnnotationDelegate<T> extends AbsDelegate<T> {
     private OnItemLongClickListener onItemLongClickListener;
     private boolean doNotGetOnLongClickListener = false;
 
+    private int[] clickIds, longClickIds;
+
+    private Field[] fields = null;
+
     public AnnotationDelegate(T t) {
         super(t);
     }
@@ -48,6 +58,10 @@ public abstract class AnnotationDelegate<T> extends AbsDelegate<T> {
     public AnnotationDelegate(T t, Bundle bundle) {
         super(t, bundle);
     }
+
+    /*private void init () {
+        getFieldsFromDelegateInfo();
+    }*/
 
     /**
      * find layout res id in {@link DelegateInfo}, if not found, then with {@link LayoutID}
@@ -71,7 +85,7 @@ public abstract class AnnotationDelegate<T> extends AbsDelegate<T> {
         if (holderClass != null) {
             return holderClass;
         }
-        holderClass = getHolderClassFromAnnotation(this);
+        holderClass = DelegateAdapter.getHolderClassFromAnnotation(this);
         return holderClass;
     }
 
@@ -103,6 +117,14 @@ public abstract class AnnotationDelegate<T> extends AbsDelegate<T> {
     }
 
     @Override
+    public int[] getOnClickIds() {
+        if (clickIds == null) {
+            clickIds = getClickIdsFromAnnotation(this);
+        }
+        return clickIds;
+    }
+
+    @Override
     public OnItemLongClickListener<LayoutImpl, AbsViewHolder> getOnItemLongClickListener() {
         if (onItemLongClickListener == null && !doNotGetOnLongClickListener) {
             Class<? extends OnItemLongClickListener> clz = getOnItemLongClickListenerFromAnnotation(this);
@@ -129,84 +151,161 @@ public abstract class AnnotationDelegate<T> extends AbsDelegate<T> {
         return onItemLongClickListener;
     }
 
-    public static int getLayoutFromAnnotation (LayoutImpl impl) {
-        Class clz = impl.getClass();
-        int layoutID = 0;
-        Annotation anno = clz.getAnnotation(DelegateInfo.class);
-        if (anno != null) {
-            Class<? extends Annotation> annoClz = anno.annotationType();
-            try {
-                Method method = annoClz.getMethod("layoutID");
-                layoutID = (int)method.invoke(anno);
-                if (layoutID != 0) {
-                    return layoutID;
-                }
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
+    @Override
+    public int[] getOnLongClickIds() {
+        if (longClickIds == null) {
+            longClickIds = getLongClickIdsFromAnnotation(this);
         }
-        layoutID = getLayoutFromAnnotation(clz, impl);
-        return layoutID;
+        return longClickIds;
     }
 
-    private static int getLayoutFromAnnotation (Class<? extends LayoutImpl> clz, LayoutImpl impl) {
-        Field[] fields = clz.getDeclaredFields();
-        for (Field field : fields) {
-            LayoutID anno = field.getAnnotation(LayoutID.class);
-            if (anno != null) {
-                try {
-                    return field.getInt(impl);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
+/*    private void makeLayoutByDelegateInfo (Annotation delegateInfo, Class<? extends Annotation> annoClz)
+            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Method layoutIdMethod = annoClz.getMethod("layoutID");
+        if (layoutIdMethod != null) {
+            layoutID = (int)layoutIdMethod.invoke(delegateInfo);
         }
-        return 0;
+//        return layoutID > 0;
     }
 
-    public static Class<? extends AbsViewHolder> getHolderClassFromAnnotation (LayoutImpl impl) {
-        Class clz = impl.getClass();
+    private void makeHolderClassByDelegateInfo (Annotation delegateInfo, Class<? extends Annotation> annoClz)
+            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Method holderClassMethod = annoClz.getMethod("holderClass");
 
-        Annotation anno = clz.getAnnotation(DelegateInfo.class);
-        Class<? extends AbsViewHolder> holderClass;
-        if (anno != null) {
-            Class<? extends Annotation> annoClz = anno.annotationType();
-            try {
-                Method method = annoClz.getMethod("holderClass");
-                holderClass = (Class<? extends AbsViewHolder>)method.invoke(anno);
-                if (holderClass != null && !holderClass.equals(NullHolder.class)) {
-                    return holderClass;
-                }
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
+        if (holderClassMethod != null) {
+            holderClass = (Class<? extends AbsViewHolder>)holderClassMethod.invoke(delegateInfo);
         }
-        holderClass = getHolderClassFromAnnotation(clz, impl);
-        return holderClass;
+//        return holderClass != null;
     }
 
-    private static Class<? extends AbsViewHolder> getHolderClassFromAnnotation (Class<? extends AnnotationDelegate> clz, LayoutImpl impl) {
-        Field[] fields = clz.getDeclaredFields();
-        for (Field field : fields) {
-            HolderClass anno = field.getAnnotation(HolderClass.class);
-            if (anno != null) {
-                try {
-                    return (Class<? extends AbsViewHolder>)field.get(impl);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
+    private void makeOnItemClickListenerByDelegateInfo (Annotation delegateInfo, Class<? extends Annotation> annoClz)
+            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
+        Method clickMethod = annoClz.getMethod("onClick");
+        if (clickMethod != null) {
+            Class<? extends OnItemClickListener> clickClass =
+                    (Class<? extends OnItemClickListener>)clickMethod.invoke(delegateInfo);
+            if (clickClass != null) {
+                if (clickClass.equals(NullOnItemClickListener.class)) {
+                    doNotGetOnClickListener = true;
+                } else {
+                    onItemClickListener = clickClass.newInstance();
                 }
             }
+//            return clickClass != null && !clickClass.equals(NullOnItemClickListener.class);
         }
-        return null;
     }
+
+    private void makeOnItemLongClickListenerByDelegateInfo (Annotation delegateInfo, Class<? extends Annotation> annoClz)
+            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
+        Method longClickMethod = annoClz.getMethod("onLongClick");
+        if (longClickMethod != null) {
+            Class<? extends OnItemLongClickListener> longClickClass =
+                    (Class<? extends OnItemLongClickListener>)longClickMethod.invoke(delegateInfo);
+            if (longClickClass != null) {
+                if (longClickClass.equals(NullOnItemLongClickListener.class)) {
+                    doNotGetOnLongClickListener = true;
+                } else {
+                    onItemLongClickListener = longClickClass.newInstance();
+                }
+            }
+//            return longClickClass != null && !longClickClass.equals(NullOnItemLongClickListener.class);
+        }
+    }
+
+    private void makeClickIds (Annotation delegateInfo, Class<? extends Annotation> annoClz)
+            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Method clickIdsMethod = annoClz.getMethod("onClickIds");
+        clickIds = (int[])clickIdsMethod.invoke(delegateInfo);
+    }
+
+    private void makeLongClickIds (Annotation delegateInfo, Class<? extends Annotation> annoClz)
+            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Method longClickIdsMethod = annoClz.getMethod("onLongClickIds");
+        longClickIds = (int[])longClickIdsMethod.invoke(delegateInfo);
+    }*/
+
+    /*private void getFieldsFromDelegateInfo () {
+        Annotation delegateInfo = getClass().getAnnotation(DelegateInfo.class);
+
+        try {
+            if (delegateInfo != null) {
+                Class<? extends Annotation> annoClz = delegateInfo.annotationType();
+                if (annoClz != null) {
+                    makeLayoutByDelegateInfo(delegateInfo, annoClz);
+                    makeHolderClassByDelegateInfo(delegateInfo, annoClz);
+                    makeOnItemClickListenerByDelegateInfo(delegateInfo, annoClz);
+                    makeOnItemLongClickListenerByDelegateInfo(delegateInfo, annoClz);
+                    makeClickIds(delegateInfo, annoClz);
+                    makeLongClickIds(delegateInfo, annoClz);
+                }
+            }
+
+            fields = getClass().getDeclaredFields();
+            for (Field field : fields) {
+                LayoutID layoutAnno = field.getAnnotation(LayoutID.class);
+                if (layoutAnno != null) {
+                    int layout = field.getInt(this);
+                    if (layout > 0) {
+                        layoutID = layout;
+                    }
+                }
+
+                HolderClass holderAnno = field.getAnnotation(HolderClass.class);
+                if (holderAnno != null) {
+                    Class<? extends AbsViewHolder> holderClass
+                            = (Class<? extends AbsViewHolder>)field.get(this);
+                    if (holderClass != null) {
+                        this.holderClass = holderClass;
+                    }
+                }
+
+                OnClick onClickAnno = field.getAnnotation(OnClick.class);
+                if (onClickAnno != null) {
+                    Class<? extends OnItemClickListener> clickClass
+                            = (Class<? extends OnItemClickListener>)field.get(this);
+                    if (clickClass != null) {
+                        if (clickClass.equals(NullOnItemClickListener.class)) {
+                            doNotGetOnClickListener = true;
+                        } else {
+                            onItemClickListener = clickClass.newInstance();
+                        }
+                        Method clickIdsMethod = clickClass.getMethod("ids");
+                        int[] clickIds = (int[])clickIdsMethod.invoke(onClickAnno);
+                        if (clickIds == null || (clickIds.length == 1 && clickIds[0] == DelegateAdapter.ITEM_VIEW_ID)) {
+                            this.clickIds = clickIds;
+                        }
+                    }
+                }
+
+                OnLongClick onLongClickAnno = field.getAnnotation(OnLongClick.class);
+                if (onLongClickAnno != null) {
+                    Class<? extends OnItemLongClickListener> longClickClass
+                            = (Class<? extends OnItemLongClickListener>)field.get(this);
+                    if (longClickClass != null) {
+                        if (longClickClass.equals(NullOnItemLongClickListener.class)) {
+                            doNotGetOnLongClickListener = true;
+                        } else {
+                            onItemLongClickListener = longClickClass.newInstance();
+                        }
+                        Method longClickIdsMethod = longClickClass.getMethod("ids");
+                        int[] longClickIds = (int[])longClickIdsMethod.invoke(onLongClickAnno);
+                        if (longClickIds == null || (longClickIds.length == 1 && longClickIds[0] == DelegateAdapter.ITEM_VIEW_ID)) {
+                            this.longClickIds = longClickIds;
+                        }
+                    }
+                }
+            }
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
+
+    }*/
 
     public static Class<? extends OnItemClickListener> getOnItemClickListenerFromAnnotation (LayoutImpl impl) {
         Class clz = impl.getClass();
@@ -286,5 +385,79 @@ public abstract class AnnotationDelegate<T> extends AbsDelegate<T> {
             }
         }
         return null;
+    }
+
+    public static int[] getClickIdsFromAnnotation (LayoutImpl impl) {
+        Class clz = impl.getClass();
+
+        Annotation anno = clz.getAnnotation(DelegateInfo.class);
+        //Class<? extends OnItemLongClickListener> listenerClass;
+        int[] ids = null;
+        if (anno != null) {
+            Class<? extends Annotation> annoClz = anno.annotationType();
+            try {
+                Method method = annoClz.getMethod("onClickIds");
+                ids = (int[])method.invoke(anno);
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        if (ids == null || (ids.length == 1 && ids[0] == DelegateAdapter.ITEM_VIEW_ID)) {
+            ids = getClickIdsFromAnnotation(clz, impl);
+        }
+        return ids;
+    }
+
+    private static int[] getClickIdsFromAnnotation (Class<? extends AnnotationDelegate> clz, LayoutImpl impl) {
+        Field[] fields = clz.getDeclaredFields();
+        for (Field field : fields) {
+            OnClick anno = field.getAnnotation(OnClick.class);
+            if (anno != null) {
+                int[] clickIds = (int[])anno.ids();
+                return clickIds;
+            }
+        }
+        return new int[]{DelegateAdapter.ITEM_VIEW_ID};
+    }
+
+    public static int[] getLongClickIdsFromAnnotation (LayoutImpl impl) {
+        Class clz = impl.getClass();
+
+        Annotation anno = clz.getAnnotation(DelegateInfo.class);
+        //Class<? extends OnItemLongClickListener> listenerClass;
+        int[] ids = null;
+        if (anno != null) {
+            Class<? extends Annotation> annoClz = anno.annotationType();
+            try {
+                Method method = annoClz.getMethod("onLongClickIds");
+                ids = (int[])method.invoke(anno);
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        if (ids == null || (ids.length == 1 && ids[0] == DelegateAdapter.ITEM_VIEW_ID)) {
+            ids = getLongClickIdsFromAnnotation(clz, impl);
+        }
+        return ids;
+    }
+
+    private static int[] getLongClickIdsFromAnnotation (Class<? extends AnnotationDelegate> clz, LayoutImpl impl) {
+        Field[] fields = clz.getDeclaredFields();
+        for (Field field : fields) {
+            OnLongClick anno = field.getAnnotation(OnLongClick.class);
+            if (anno != null) {
+                int[] longClickIds = anno.ids();
+                return longClickIds;
+            }
+        }
+        return new int[]{DelegateAdapter.ITEM_VIEW_ID};
     }
 }

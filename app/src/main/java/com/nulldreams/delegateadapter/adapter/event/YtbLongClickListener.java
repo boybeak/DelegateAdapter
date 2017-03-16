@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.nulldreams.adapter.DelegateAdapter;
 import com.nulldreams.adapter.widget.OnItemLongClickListener;
+import com.nulldreams.delegateadapter.R;
 import com.nulldreams.delegateadapter.adapter.delegate.YtbDelegate;
 import com.nulldreams.delegateadapter.adapter.holder.YtbHolder;
 
@@ -16,9 +17,19 @@ import com.nulldreams.delegateadapter.adapter.holder.YtbHolder;
 public class YtbLongClickListener implements OnItemLongClickListener<YtbDelegate, YtbHolder> {
     @Override
     public boolean onLongClick(View view, Context context, YtbDelegate ytbDelegate, YtbHolder ytbHolder, int position, DelegateAdapter adapter) {
-        new AlertDialog.Builder(context)
-                .setMessage(ytbDelegate.getSource().getCaption())
-                .show();
+        switch (view.getId()) {
+            case R.id.thumb:
+                new AlertDialog.Builder(context)
+                        .setMessage("thubm:" + ytbDelegate.getSource().getCaption())
+                        .show();
+                break;
+            default:
+                new AlertDialog.Builder(context)
+                        .setMessage(ytbDelegate.getSource().getCaption())
+                        .show();
+                break;
+        }
+
         return true;
     }
 }
