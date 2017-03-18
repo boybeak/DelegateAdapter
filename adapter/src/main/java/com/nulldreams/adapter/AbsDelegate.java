@@ -58,193 +58,193 @@ public abstract class AbsDelegate<T> implements DelegateImpl {
         return bundle;
     }
 
-    public Bundle putAll (Bundle bundle) {
+    public AbsDelegate putAll (Bundle bundle) {
         ensureBundle();
         bundle.putAll(bundle);
-        return bundle;
+        return this;
     }
 
-    public Bundle putInt (String key, int value) {
+    public AbsDelegate putInt (String key, int value) {
         ensureBundle();
         bundle.putInt(key, value);
-        return bundle;
+        return this;
     }
 
-    public Bundle putIntArray (String key, int[] value) {
+    public AbsDelegate putIntArray (String key, int[] value) {
         ensureBundle();
         bundle.putIntArray(key, value);
-        return bundle;
+        return this;
     }
 
-    public Bundle putIntegerArrayList (String key, ArrayList<Integer> value) {
+    public AbsDelegate putIntegerArrayList (String key, ArrayList<Integer> value) {
         ensureBundle();
         bundle.putIntegerArrayList(key, value);
-        return bundle;
+        return this;
     }
 
-    public Bundle putBoolean (String key, boolean value) {
+    public AbsDelegate putBoolean (String key, boolean value) {
         ensureBundle();
         bundle.putBoolean(key, value);
-        return bundle;
+        return this;
     }
 
-    public Bundle putBooleanArray (String key, boolean[] value) {
+    public AbsDelegate putBooleanArray (String key, boolean[] value) {
         ensureBundle();
         bundle.putBooleanArray(key, value);
-        return bundle;
+        return this;
     }
 
-    public Bundle putString (String key, String value) {
+    public AbsDelegate putString (String key, String value) {
         ensureBundle();
         bundle.putString(key, value);
-        return bundle;
+        return this;
     }
 
-    public Bundle putStringArray (String key, String[] value) {
+    public AbsDelegate putStringArray (String key, String[] value) {
         ensureBundle();
         bundle.putStringArray(key, value);
-        return bundle;
+        return this;
     }
 
-    public Bundle putStringArrayList (String key, ArrayList<String> value) {
+    public AbsDelegate putStringArrayList (String key, ArrayList<String> value) {
         ensureBundle();
         bundle.putStringArrayList(key, value);
-        return bundle;
+        return this;
     }
 
-    public Bundle putLong (String key, long value) {
+    public AbsDelegate putLong (String key, long value) {
         ensureBundle();
         bundle.putLong(key, value);
-        return bundle;
+        return this;
     }
 
-    public Bundle putLongArray (String key, long[] value) {
+    public AbsDelegate putLongArray (String key, long[] value) {
         ensureBundle();
         bundle.putLongArray(key, value);
-        return bundle;
+        return this;
     }
 
-    public Bundle putFloat (String key, float value) {
+    public AbsDelegate putFloat (String key, float value) {
         ensureBundle();
         bundle.putFloat(key, value);
-        return bundle;
+        return this;
     }
 
-    public Bundle putFloatArray (String key, float[] value) {
+    public AbsDelegate putFloatArray (String key, float[] value) {
         ensureBundle();
         bundle.putFloatArray(key, value);
-        return bundle;
+        return this;
     }
 
-    public Bundle putDouble (String key, double value) {
+    public AbsDelegate putDouble (String key, double value) {
         ensureBundle();
         bundle.putDouble(key, value);
-        return bundle;
+        return this;
     }
 
-    public Bundle putDoubleArray (String key, double[] value) {
+    public AbsDelegate putDoubleArray (String key, double[] value) {
         ensureBundle();
         bundle.putDoubleArray(key, value);
-        return bundle;
+        return this;
     }
 
-    public Bundle putByte (String key, byte value) {
+    public AbsDelegate putByte (String key, byte value) {
         ensureBundle();
         bundle.putByte(key, value);
-        return bundle;
+        return this;
     }
 
-    public Bundle putByteArray (String key, byte[] value) {
+    public AbsDelegate putByteArray (String key, byte[] value) {
         ensureBundle();
         bundle.putByteArray(key, value);
-        return bundle;
+        return this;
     }
 
-    public Bundle putChar (String key, char value) {
+    public AbsDelegate putChar (String key, char value) {
         ensureBundle();
         bundle.putChar(key, value);
-        return bundle;
+        return this;
     }
 
-    public Bundle putCharArray (String key, char[] value) {
+    public AbsDelegate putCharArray (String key, char[] value) {
         ensureBundle();
         bundle.putCharArray(key, value);
-        return bundle;
+        return this;
     }
 
-    public Bundle putCharSequence (String key, CharSequence value) {
+    public AbsDelegate putCharSequence (String key, CharSequence value) {
         ensureBundle();
         bundle.putCharSequence(key, value);
-        return bundle;
+        return this;
     }
 
-    public Bundle putCharSequenceArray (String key, CharSequence[] value) {
+    public AbsDelegate putCharSequenceArray (String key, CharSequence[] value) {
         ensureBundle();
         bundle.putCharSequenceArray(key, value);
-        return bundle;
+        return this;
     }
 
-    public Bundle putCharSequenceArrayList (String key, ArrayList<CharSequence> value) {
+    public AbsDelegate putCharSequenceArrayList (String key, ArrayList<CharSequence> value) {
         ensureBundle();
         bundle.putCharSequenceArrayList(key, value);
-        return bundle;
+        return this;
     }
 
 
-    public Bundle putShort (String key, short value) {
+    public AbsDelegate putShort (String key, short value) {
         ensureBundle();
         bundle.putShort(key, value);
-        return bundle;
+        return this;
     }
 
-    public Bundle putShortArray (String key, short[] value) {
+    public AbsDelegate putShortArray (String key, short[] value) {
         ensureBundle();
         bundle.putShortArray(key, value);
-        return bundle;
+        return this;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public Bundle putSize (String key, Size value) {
+    public AbsDelegate putSize (String key, Size value) {
         ensureBundle();
         bundle.putSize(key, value);
-        return bundle;
+        return this;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public Bundle putSizeF (String key, SizeF value) {
+    public AbsDelegate putSizeF (String key, SizeF value) {
         ensureBundle();
         bundle.putSizeF(key, value);
-        return bundle;
+        return this;
     }
 
-    public Bundle putParcelable (String key, Parcelable value) {
+    public AbsDelegate putParcelable (String key, Parcelable value) {
         ensureBundle();
         bundle.putParcelable(key, value);
-        return bundle;
+        return this;
     }
 
-    public Bundle putParcelableArray (String key, Parcelable[] value) {
+    public AbsDelegate putParcelableArray (String key, Parcelable[] value) {
         ensureBundle();
         bundle.putParcelableArray(key, value);
-        return bundle;
+        return this;
     }
 
-    public Bundle putParcelableArrayList (String key, ArrayList<? extends Parcelable> value) {
+    public AbsDelegate putParcelableArrayList (String key, ArrayList<? extends Parcelable> value) {
         ensureBundle();
         bundle.putParcelableArrayList(key, value);
-        return bundle;
+        return this;
     }
 
-    public Bundle putSparseParcelableArray (String key, SparseArray<? extends Parcelable> value) {
+    public AbsDelegate putSparseParcelableArray (String key, SparseArray<? extends Parcelable> value) {
         ensureBundle();
         bundle.putSparseParcelableArray(key, value);
-        return bundle;
+        return this;
     }
 
-    public Bundle putSerializable (String key, Serializable value) {
+    public AbsDelegate putSerializable (String key, Serializable value) {
         ensureBundle();
         bundle.putSerializable(key, value);
-        return bundle;
+        return this;
     }
 
     public int getInt (String key) {

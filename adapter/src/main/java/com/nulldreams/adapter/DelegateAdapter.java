@@ -205,6 +205,14 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         mDelegateImplList.add(impl);
     }
 
+    public <T> void add (T t, DelegateListParser<T> parser) {
+        mDelegateImplList.addAll(parser.parse(this, t));
+    }
+
+    public <T> void add (int position, T t, DelegateListParser<T> parser) {
+        mDelegateImplList.addAll(position, parser.parse(this, t));
+    }
+
     public void addIfNotExist (@NonNull DelegateImpl impl) {
         if (contains(impl)) {
             return;
