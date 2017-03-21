@@ -34,10 +34,10 @@ public abstract class AbsViewHolder<T> extends RecyclerView.ViewHolder {
         isViewAttachedToWindow = false;
     }
 
-    public void onViewRecycled () {
+    public void onViewRecycled (Context context) {
     }
 
-    public boolean onFailedToRecycleView () {
+    public boolean onFailedToRecycleView (Context context) {
         return false;
     }
 

@@ -195,12 +195,12 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
 
     @Override
     public void onViewRecycled(AbsViewHolder holder) {
-        holder.onViewRecycled();
+        holder.onViewRecycled(mContext);
     }
 
     @Override
     public boolean onFailedToRecycleView(AbsViewHolder holder) {
-        return holder.onFailedToRecycleView();
+        return holder.onFailedToRecycleView(mContext);
     }
 
     public boolean isEmpty () {
