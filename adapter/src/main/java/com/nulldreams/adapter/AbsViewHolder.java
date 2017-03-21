@@ -34,6 +34,13 @@ public abstract class AbsViewHolder<T> extends RecyclerView.ViewHolder {
         isViewAttachedToWindow = false;
     }
 
+    public void onViewRecycled () {
+    }
+
+    public boolean onFailedToRecycleView () {
+        return false;
+    }
+
     public final View findViewById (int id) {
         return itemView.findViewById(id);
     }

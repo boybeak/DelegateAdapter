@@ -193,6 +193,16 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         holder.onViewDetachedFromWindow(mContext);
     }
 
+    @Override
+    public void onViewRecycled(AbsViewHolder holder) {
+        holder.onViewRecycled();
+    }
+
+    @Override
+    public boolean onFailedToRecycleView(AbsViewHolder holder) {
+        return holder.onFailedToRecycleView();
+    }
+
     public boolean isEmpty () {
         return mDelegateImplList.isEmpty();
     }
