@@ -412,7 +412,7 @@ public abstract class AbsDelegate<T> implements DelegateImpl {
         return bundle.getStringArrayList(key);
     }
 
-    public Parcelable getParcelable (String key) {
+    public <T extends Parcelable> T getParcelable (String key) {
         ensureBundle();
         return bundle.getParcelable(key);
     }
@@ -422,12 +422,12 @@ public abstract class AbsDelegate<T> implements DelegateImpl {
         return bundle.getParcelableArray(key);
     }
 
-    public ArrayList<Parcelable> getParcelableArrayList (String key) {
+    public <T extends Parcelable> ArrayList<T> getParcelableArrayList (String key) {
         ensureBundle();
         return bundle.getParcelableArrayList(key);
     }
 
-    public SparseArray<Parcelable> getSparseParcelableArray (String key) {
+    public <T extends Parcelable> SparseArray<T> getSparseParcelableArray (String key) {
         ensureBundle();
         return bundle.getSparseParcelableArray(key);
     }
