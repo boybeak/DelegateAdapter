@@ -211,16 +211,17 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         mDelegateImplList.clear();
     }
 
-    public void add(DelegateImpl impl) {
+    public DataChange add(DelegateImpl impl) {
         mDelegateImplList.add(impl);
+        return new DataChange(this, 0, DataChange.TYPE_ITEM_INSERTED);
     }
 
-    public <T> void add (T t, DelegateListParser<T> parser) {
-        mDelegateImplList.addAll(parser.parse(this, t));
+    public <T> DataChange add (T t, DelegateListParser<T> parser) {
+        return addAll(parser.parse(this, t));
     }
 
-    public <T> void add (int position, T t, DelegateListParser<T> parser) {
-        mDelegateImplList.addAll(position, parser.parse(this, t));
+    public <T> DataChange add (int position, T t, DelegateListParser<T> parser) {
+        return addAll(position, parser.parse(this, t));
     }
 
     public void addIfNotExist (@NonNull DelegateImpl impl) {
@@ -237,119 +238,132 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         mDelegateImplList.add(position, impl);
     }
 
-    public void add(int position, @NonNull LayoutImpl impl) {
+    public DataChange add(int position, @NonNull LayoutImpl impl) {
         mDelegateImplList.add(position, impl);
+        return new DataChange(this, position, DataChange.TYPE_ITEM_INSERTED);
     }
 
-    public void addAll(@NonNull Collection<? extends LayoutImpl> list) {
+    public DataChange addAll(@NonNull Collection<? extends LayoutImpl> list) {
         mDelegateImplList.addAll(list);
+        return new DataChange(this, 0, list.size(), DataChange.TYPE_ITEM_RANGE_INSERTED);
     }
 
-    public void addAll(int position, @NonNull Collection<? extends LayoutImpl> list) {
+    public DataChange addAll(int position, @NonNull Collection<? extends LayoutImpl> list) {
         mDelegateImplList.addAll(position, list);
+        return new DataChange(this, position, list.size(), DataChange.TYPE_ITEM_RANGE_INSERTED);
     }
 
-    public void addAll(LayoutImpl[] array) {
+    public DataChange addAll(LayoutImpl[] array) {
         mDelegateImplList.addAll(Arrays.asList(array));
+        return new DataChange(this, 0, array.length, DataChange.TYPE_ITEM_RANGE_INSERTED);
     }
 
-    public void addAll(int position, LayoutImpl[] array) {
+    public DataChange addAll(int position, LayoutImpl[] array) {
         mDelegateImplList.addAll(position, Arrays.asList(array));
+        return new DataChange(this, position, array.length, DataChange.TYPE_ITEM_RANGE_INSERTED);
     }
 
-    public <T> void addAll (T[] tArray, DelegateParser<T> parser) {
+    public <T> DataChange addAll (T[] tArray, DelegateParser<T> parser) {
         Collection<T> collection = Arrays.asList(tArray);
         List<LayoutImpl> delegates = generateDelegateImpls(collection, parser);
         if (delegates != null) {
-            addAll(delegates);
+            return addAll(delegates);
         }
+        return null;
     }
 
-    public <T> void addAll (int position, T[] tArray, DelegateParser<T> parser) {
+    public <T> DataChange addAll (int position, T[] tArray, DelegateParser<T> parser) {
         Collection<T> collection = Arrays.asList(tArray);
         List<LayoutImpl> delegates = generateDelegateImpls(collection, parser);
         if (delegates != null) {
-            addAll(position, delegates);
+            return addAll(position, delegates);
         }
+        return null;
     }
 
-    public <T> void addAll(Collection<T> data, DelegateParser<T> parser) {
+    public <T> DataChange addAll(Collection<T> data, DelegateParser<T> parser) {
         List<LayoutImpl> delegates = generateDelegateImpls(data, parser);
         if (delegates != null) {
             addAll(delegates);
         }
+        return null;
     }
 
-    public <T> void addAll(int position, Collection<T> data, DelegateParser<T> parser) {
+    public <T> DataChange addAll(int position, Collection<T> data, DelegateParser<T> parser) {
         List<LayoutImpl> delegates = generateDelegateImpls(data, parser);
         if (delegates != null) {
             addAll(position, delegates);
         }
+        return null;
     }
 
-    public <T> void addAllAtFirst (DelegateFilter filter, Collection<T> data, DelegateParser<T> parser) {
+    public <T> DataChange addAllAtFirst (DelegateFilter filter, Collection<T> data, DelegateParser<T> parser) {
         final int index = firstIndexOf(filter);
         if (index >= 0) {
-            addAll(index, data, parser);
+            return addAll(index, data, parser);
         } else {
-            addAll(0, data, parser);
+            return addAll(0, data, parser);
         }
     }
 
-    public <T> void addAllAtLast (DelegateFilter filter, Collection<T> data, DelegateParser<T> parser) {
+    public <T> DataChange addAllAtLast (DelegateFilter filter, Collection<T> data, DelegateParser<T> parser) {
         final int index = lastIndexOf(filter);
         if (index >= 0) {
-            addAll(index, data, parser);
+            return addAll(index, data, parser);
         } else {
-            addAll(data, parser);
+            return addAll(data, parser);
         }
     }
 
-    public <T> void addAll (T[] tArray, DelegateListParser<T> parser) {
+    public <T> DataChange addAll (T[] tArray, DelegateListParser<T> parser) {
         Collection<T> collection = Arrays.asList(tArray);
         List<LayoutImpl> delegates = generateDelegateImpls(collection, parser);
         if (delegates != null) {
-            addAll(delegates);
+            return addAll(delegates);
         }
+        return null;
     }
 
-    public <T> void addAll (int position, T[] tArray, DelegateListParser<T> parser) {
+    public <T> DataChange addAll (int position, T[] tArray, DelegateListParser<T> parser) {
         Collection<T> collection = Arrays.asList(tArray);
         List<LayoutImpl> delegates = generateDelegateImpls(collection, parser);
         if (delegates != null) {
-            addAll(position, delegates);
+            return addAll(position, delegates);
         }
+        return null;
     }
 
-    public <T> void addAll(Collection<T> data, DelegateListParser<T> parser) {
+    public <T> DataChange addAll(Collection<T> data, DelegateListParser<T> parser) {
         List<LayoutImpl> delegates = generateDelegateImpls(data, parser);
         if (delegates != null) {
-            addAll(delegates);
+            return addAll(delegates);
         }
+        return null;
     }
 
-    public <T> void addAll(int position, Collection<T> data, DelegateListParser<T> parser) {
+    public <T> DataChange addAll(int position, Collection<T> data, DelegateListParser<T> parser) {
         List<LayoutImpl> delegates = generateDelegateImpls(data, parser);
         if (delegates != null) {
-            addAll(position, delegates);
+            return addAll(position, delegates);
         }
+        return null;
     }
 
-    public <T> void addAllAtFirst (DelegateFilter filter, Collection<T> data, DelegateListParser<T> parser) {
+    public <T> DataChange addAllAtFirst (DelegateFilter filter, Collection<T> data, DelegateListParser<T> parser) {
         final int index = firstIndexOf(filter);
         if (index >= 0) {
-            addAll(index, data, parser);
+            return addAll(index, data, parser);
         } else {
-            addAll(0, data, parser);
+            return addAll(0, data, parser);
         }
     }
 
-    public <T> void addAllAtLast (DelegateFilter filter, Collection<T> data, DelegateListParser<T> parser) {
+    public <T> DataChange addAllAtLast (DelegateFilter filter, Collection<T> data, DelegateListParser<T> parser) {
         final int index = lastIndexOf(filter);
         if (index >= 0) {
-            addAll(index, data, parser);
+            return addAll(index, data, parser);
         } else {
-            addAll(data, parser);
+            return addAll(data, parser);
         }
     }
 
@@ -473,39 +487,39 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         return -1;
     }
 
-    public void addAtLast (DelegateFilter filter, DelegateImpl delegate) {
+    public DataChange addAtLast (DelegateFilter filter, DelegateImpl delegate) {
         final int index = lastIndexOf(filter);
         if (index >= 0) {
-            add(index, delegate);
+            return add(index, delegate);
         } else {
-            add(delegate);
+            return add(delegate);
         }
     }
 
-    public void addAllAtLast (DelegateFilter filter, Collection<DelegateImpl> delegate) {
+    public DataChange addAllAtLast (DelegateFilter filter, Collection<DelegateImpl> delegate) {
         final int index = lastIndexOf(filter);
         if (index >= 0) {
-            addAll(index, delegate);
+            return addAll(index, delegate);
         } else {
-            addAll(delegate);
+            return addAll(delegate);
         }
     }
 
-    public void addAtFirst (DelegateFilter filter, DelegateImpl delegate) {
+    public DataChange addAtFirst (DelegateFilter filter, DelegateImpl delegate) {
         final int index = firstIndexOf(filter);
         if (index >= 0) {
-            add(index, delegate);
+            return add(index, delegate);
         } else {
-            add(0, delegate);
+            return add(0, delegate);
         }
     }
 
-    public void addAllAtFirst (DelegateFilter filter, Collection<DelegateImpl> delegate) {
+    public DataChange addAllAtFirst (DelegateFilter filter, Collection<DelegateImpl> delegate) {
         final int index = firstIndexOf(filter);
         if (index >= 0) {
-            addAll(index, delegate);
+            return addAll(index, delegate);
         } else {
-            addAll(0, delegate);
+            return addAll(0, delegate);
         }
     }
 
