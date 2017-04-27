@@ -224,18 +224,18 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         return addAll(position, parser.parse(this, t));
     }
 
-    public void addIfNotExist (@NonNull DelegateImpl impl) {
+    public DataChange addIfNotExist (@NonNull DelegateImpl impl) {
         if (contains(impl)) {
-            return;
+            return DataChange.doNothingInstance();
         }
-        mDelegateImplList.add(impl);
+        return add(impl);
     }
 
-    public void addIfNotExist (int position, @NonNull DelegateImpl impl) {
+    public DataChange addIfNotExist (int position, @NonNull DelegateImpl impl) {
         if (contains(impl)) {
-            return;
+            return DataChange.doNothingInstance();
         }
-        mDelegateImplList.add(position, impl);
+        return add(position, impl);
     }
 
     public DataChange add(int position, @NonNull LayoutImpl impl) {
@@ -269,7 +269,7 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         if (delegates != null) {
             return addAll(delegates);
         }
-        return null;
+        return DataChange.doNothingInstance();
     }
 
     public <T> DataChange addAll (int position, T[] tArray, DelegateParser<T> parser) {
@@ -278,7 +278,7 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         if (delegates != null) {
             return addAll(position, delegates);
         }
-        return null;
+        return DataChange.doNothingInstance();
     }
 
     public <T> DataChange addAll(Collection<T> data, DelegateParser<T> parser) {
@@ -286,7 +286,7 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         if (delegates != null) {
             addAll(delegates);
         }
-        return null;
+        return DataChange.doNothingInstance();
     }
 
     public <T> DataChange addAll(int position, Collection<T> data, DelegateParser<T> parser) {
@@ -294,7 +294,7 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         if (delegates != null) {
             addAll(position, delegates);
         }
-        return null;
+        return DataChange.doNothingInstance();
     }
 
     public <T> DataChange addAllAtFirst (DelegateFilter filter, Collection<T> data, DelegateParser<T> parser) {
@@ -321,7 +321,7 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         if (delegates != null) {
             return addAll(delegates);
         }
-        return null;
+        return DataChange.doNothingInstance();
     }
 
     public <T> DataChange addAll (int position, T[] tArray, DelegateListParser<T> parser) {
@@ -330,7 +330,7 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         if (delegates != null) {
             return addAll(position, delegates);
         }
-        return null;
+        return DataChange.doNothingInstance();
     }
 
     public <T> DataChange addAll(Collection<T> data, DelegateListParser<T> parser) {
@@ -338,7 +338,7 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         if (delegates != null) {
             return addAll(delegates);
         }
-        return null;
+        return DataChange.doNothingInstance();
     }
 
     public <T> DataChange addAll(int position, Collection<T> data, DelegateListParser<T> parser) {
@@ -346,7 +346,7 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         if (delegates != null) {
             return addAll(position, delegates);
         }
-        return null;
+        return DataChange.doNothingInstance();
     }
 
     public <T> DataChange addAllAtFirst (DelegateFilter filter, Collection<T> data, DelegateListParser<T> parser) {

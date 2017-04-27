@@ -16,6 +16,11 @@ public final class DataChange {
             TYPE_ITEM_REMOVED = 5,
             TYPE_ITEM_RANGE_REMOVED = 6,
             TYPE_ITEM_MOVED = 7;
+
+    public static DataChange doNothingInstance () {
+        return new DataChange(true);
+    }
+
     @IntDef({
             TYPE_ITEM_INSERTED,
             TYPE_ITEM_RANGE_INSERTED,
@@ -30,6 +35,7 @@ public final class DataChange {
     private DelegateAdapter mAdapter;
     private int fromPosition, itemCountOrToPosition;
     private @DataChange.Type int type;
+    private boolean doNothing = false;
 
     /**
      * @param adapter
@@ -51,11 +57,18 @@ public final class DataChange {
         this(adapter, from, 0, type);
     }
 
+    private DataChange (boolean doNothing) {
+        this.doNothing = doNothing;
+    }
+
     public DelegateAdapter autoNotify () {
         return autoNotify(null);
     }
 
     public DelegateAdapter autoNotify (Object payLoad) {
+        if (doNothing) {
+            return mAdapter;
+        }
         switch (type) {
             case TYPE_ITEM_INSERTED:
                 mAdapter.notifyItemInserted(fromPosition);
