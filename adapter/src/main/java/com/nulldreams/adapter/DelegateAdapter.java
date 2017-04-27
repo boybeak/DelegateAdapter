@@ -207,8 +207,10 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         return mDelegateImplList.isEmpty();
     }
 
-    public void clear () {
+    public DataChange clear () {
+        int count = getItemCount();
         mDelegateImplList.clear();
+        return new DataChange(this, 0, count, DataChange.TYPE_ITEM_RANGE_REMOVED);
     }
 
     public DataChange add(DelegateImpl impl) {
@@ -553,13 +555,15 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         return count;
     }
 
-    public void remove (int position) {
+    public DataChange remove (int position) {
         mDelegateImplList.remove(position);
+        return new DataChange(this, position, 0, DataChange.TYPE_ITEM_REMOVED);
     }
 
-    public void remove (int position, @NonNull DoAfter after) {
-        remove(position);
+    public DataChange remove (int position, @NonNull DoAfter after) {
+        DataChange change = remove(position);
         after.doAfter(this);
+        return change;
     }
 
     public int remove (@NonNull DelegateFilter filter) {
