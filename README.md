@@ -14,7 +14,7 @@ Grab via Meven:
 <dependency>
   <groupId>com.github.boybeak</groupId>
   <artifactId>adapter</artifactId>
-  <version>1.3.1</version>
+  <version>1.4.1</version>
   <type>pom</type>
 </dependency>
 ```
@@ -22,15 +22,12 @@ Grab via Meven:
 or Gradle:
 
 ```groovy
-compile 'com.github.boybeak:adapter:1.3.1'
+compile 'com.github.boybeak:adapter:1.4.1'
 ```
 
-This library requires minSdkVersion 15(Don't ask me why, I just dislike previous versions).
+# What's new in version 1.4.x
 
-# What's new in version 1.3.x
-
-1. [AbsDelegate](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/AbsDelegate.java) can bring parameters with using a Bundle.
-2. Click and long click event now also works on ItemView's child views. You can define **onClickIds** and **onLongClickIds** attribute in **@DelegateInfo** injection, or alternative define **ids** attribute in **@OnClick** and **@OnLongClick**.
+1. Add [DataChange](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/DataChange.java) class and autoNotify data change.
 
 
 You can read a full [release note](https://github.com/boybeak/DelegateAdapter/blob/master/ReleaseNote.md).
@@ -369,5 +366,26 @@ List<LayoutImpl> subUserDelegateList = adapter.getSubList (new DelegateAdapter()
 ```java
 /*SimpleFilter*/
 List<User> userList = adapter.getDataSourceArrayList (new SimpleFilter<User>());
+```
+
+## DataChange
+
+[**DelegateAdapter** ](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/DelegateAdapter.java) returns a [DataChange](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/DataChange.java) instance after add, addAll and remove actions. You can call autoNotify directly.
+
+```java
+mAdapter.add(new TextDelegate("The Beatles")).autoNotify();
+```
+
+```java
+mAdapter.remove(4).autoNotify();
+```
+
+```java
+mAdapter.addAll(Data.getTwitterList(v), new DelegateParser<Twitter>() {
+                    @Override
+                    public DelegateImpl parse(DelegateAdapter adapter, Twitter data) {
+                        return new TwitterDelegate(data);
+                    }
+                }).autoNotify();
 ```
 

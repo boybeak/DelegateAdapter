@@ -8,7 +8,7 @@
 <dependency>
   <groupId>com.github.boybeak</groupId>
   <artifactId>adapter</artifactId>
-  <version>1.3.1</version>
+  <version>1.4.1</version>
   <type>pom</type>
 </dependency>
 ```
@@ -16,15 +16,12 @@
 或者通过Gradle:
 
 ```groovy
-compile 'com.github.boybeak:adapter:1.3.1'
+compile 'com.github.boybeak:adapter:1.4.1'
 ```
 
-该库要求 minSdkVersion 15(别问我为什么，只是不喜欢适配更早的版本)。
+# What's new in version 1.4.x
 
-# What's new in version 1.3.x
-
-1. [AbsDelegate](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/AbsDelegate.java) 中可以通过内置的Bundle携带参数.
-2. 可以为ItemView的子View指定点击和长按事件，在**@DelegateInfo**中添加了**onClickIds**和**onLongClickIds**属性，在**@OnClick**和**@OnLongClick**中添加了ids属性。
+1. 增加 [DataChange](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/DataChange.java) 类，该类中有一个autoNotify方法，替代了notifyDataItemInserted 等操作.
 
 # Usage
 
@@ -366,5 +363,26 @@ List<LayoutImpl> subUserDelegateList = adapter.getSubList (new DelegateAdapter()
 ```java
 /*SimpleFilter*/
 List<User> userList = adapter.getDataSourceArrayList (new SimpleFilter<User>());
+```
+
+## DataChange
+
+[**DelegateAdapter** ](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/DelegateAdapter.java) 进行add, addAll, remove等操作后，返回了 [DataChange](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/DataChange.java) 实例, 如此便可以直接调用autoNofify方法，通知UI更新.
+
+```java
+mAdapter.add(new TextDelegate("The Beatles")).autoNotify();
+```
+
+```java
+mAdapter.remove(4).autoNotify();
+```
+
+```java
+mAdapter.addAll(Data.getTwitterList(v), new DelegateParser<Twitter>() {
+                    @Override
+                    public DelegateImpl parse(DelegateAdapter adapter, Twitter data) {
+                        return new TwitterDelegate(data);
+                    }
+                }).autoNotify();
 ```
 
