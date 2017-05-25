@@ -10,8 +10,8 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 141
-        versionName "1.4.1"
+        versionCode 142
+        versionName "1.4.2"
     }
     buildTypes {
         release {
@@ -31,7 +31,7 @@ dependencies {
     compile "com.android.support:support-v4:$rootProject.supportLibVersion"
 }
 
-version = "1.4.1"
+version = "1.4.2"
 def siteUrl = 'https://github.com/boybeak/DelegateAdapter'
 def gitUrl = 'https://github.com/boybeak/DelegateAdapter.git'
 group = "com.github.boybeak"

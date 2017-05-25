@@ -286,7 +286,7 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
     public <T> DataChange addAll(Collection<T> data, DelegateParser<T> parser) {
         List<LayoutImpl> delegates = generateDelegateImpls(data, parser);
         if (delegates != null) {
-            addAll(delegates);
+            return addAll(delegates);
         }
         return DataChange.doNothingInstance();
     }
@@ -294,7 +294,7 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
     public <T> DataChange addAll(int position, Collection<T> data, DelegateParser<T> parser) {
         List<LayoutImpl> delegates = generateDelegateImpls(data, parser);
         if (delegates != null) {
-            addAll(position, delegates);
+            return addAll(position, delegates);
         }
         return DataChange.doNothingInstance();
     }
