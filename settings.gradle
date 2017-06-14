@@ -1,1 +1,1 @@
-include ':app', ':adapter', ':adapterx'
+include ':app', ':adapter', ':adapterx', ':x-demo'

@@ -1,33 +1,26 @@
 package com.github.boybeak.adapter;
 
-import android.text.BoringLayout;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by gaoyunfei on 2017/6/13.
  */
 
-public class Order<T> {
+public class Order {
 
-    public List<T> mDataList = null;
+    public List mDataList = null;
     //public DelegateAdapter mAdapter = null;
 
 
-    public Order(List<T> dataList) {
+    public Order(List dataList) {
         this.mDataList = dataList;
     }
 
-    public <E> List<E> findAll (Class<E> eClass) {
-        List<E> eList = new ArrayList<>();
-        for (T t : mDataList) {
-            if (eClass.isInstance(t)) {
-                eList.add((E)t);
-            }
+    public <T> Selector<T> selector (Class<T> tClass) {
+        return new Selector<T>(tClass, this);
+    }
 
-        }
-        return eList;
-
+    public List getDataList () {
+        return mDataList;
     }
 }
