@@ -1,50 +1,50 @@
 package com.github.boybeak.adapter;
 
 import android.support.annotation.IntDef;
-import android.support.annotation.StringDef;
+import android.text.TextUtils;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 
 /**
  * Created by gaoyunfei on 2017/6/14.
  */
 
-public class Where<T> {
+public class Where<T, V> {
+
+    private static final String TAG = Where.class.getSimpleName();
 
     static final int NONE = 0, AND = 1, OR = 2, XOR = 3;
 
-    public static final String OPERATOR_EQUALS = "equals",
-            OPERATOR_NOT_EQUALS = "not equals", OPERATOR_GT = ">", OPERATOR_LT = "<",
-            OPERATOR_GT_EQUALS = ">=", OPERATOR_LT_EQUALS = "<=", OPERATOR_IN = "in",
-            OPERATOR_NOT_IN = "not in", OPERATOR_BETWEEN = "between", OPERATOR_IS_NULL = "is null",
-            OPERATOR_IS = "is", OPERATOR_IS_NOT = "is not";
+    /*public static final String  = "<=",  = "in",
+             = "not in",  = "between",  = "is null",
+            OPERATOR_IS = "is", OPERATOR_IS_NOT = "is not";*/
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({NONE, AND, OR, XOR})
     public @interface Connector{}
 
-    @Retention(RetentionPolicy.SOURCE)
+    /*@Retention(RetentionPolicy.SOURCE)
     @StringDef({
             OPERATOR_EQUALS, OPERATOR_NOT_EQUALS, OPERATOR_GT,
             OPERATOR_LT, OPERATOR_GT_EQUALS, OPERATOR_LT_EQUALS,
             OPERATOR_IN, OPERATOR_NOT_IN, OPERATOR_BETWEEN,
             OPERATOR_IS_NULL, OPERATOR_IS, OPERATOR_IS_NOT
     })
-    public @interface Operator{}
+    public @interface Operator{}*/
 
-    private String key, value;
-    private @Operator String operator;
+    private String key;
+    private Operator operator;
+    private V[] value;
 
     private @Connector int connector = NONE;
 
-    public Where (String key, @Operator String operator, String value) {
-        this (key, operator, value, NONE);
+    public Where (String key, Operator operator, V ... value) {
+        this (NONE, key, operator, value);
     }
 
-    Where (String key, @Operator String operator, String value, @Connector int connector) {
+    Where (@Connector int connector, String key, Operator operator, V ... value) {
         this.key = key;
         this.operator = operator;
         this.value = value;
@@ -59,54 +59,43 @@ public class Where<T> {
         this.connector = connector;
     }
 
+    public String getKey() {
+        return key;
+    }
+
+    public V[] getValue() {
+        return value;
+    }
+
     boolean accept (T t) {
-        switch (operator) {
-            case OPERATOR_EQUALS:
-                break;
-            case OPERATOR_NOT_EQUALS:
-                break;
-            case OPERATOR_GT:
-                break;
-            case OPERATOR_LT:
-                break;
-            case OPERATOR_GT_EQUALS:
-                break;
-            case OPERATOR_LT_EQUALS:
-                break;
-            case OPERATOR_IN:
-                break;
-            case OPERATOR_NOT_IN:
-                break;
-            case OPERATOR_BETWEEN:
-                break;
-            case OPERATOR_IS_NULL:
-                break;
-            case OPERATOR_IS:
-                break;
-            case OPERATOR_IS_NOT:
-                break;
+        try {
+            Object obj = getKey(t);
+            return operator.accept(obj, value);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
         }
         return false;
     }
 
     private Object getKey (T t) throws NoSuchFieldException {
-        String[] path = key.split(".");
+        String[] path = key.split("\\.");
         if (path.length == 0) {
             return t;
         }
-        Class clz = t.getClass();
-        Object obj = null;
+        Object obj = t;
         for (String fieldName : path) {
-            Field field = clz.getDeclaredField(fieldName);
+            if (TextUtils.isEmpty(fieldName)) {
+                continue;
+            }
+            Field field = obj.getClass().getDeclaredField(fieldName);
             try {
-                Method method = clz.getDeclaredMethod(fieldName);
-                method.invoke()
-            } catch (NoSuchMethodException e) {
+                obj = field.get(obj);
+            } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
-            if (clz.getDeclaredField())
         }
-        //t.getClass().getSimpleName()
+
+        return obj;
     }
 
     @Override

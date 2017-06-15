@@ -1,6 +1,7 @@
 package com.github.boybeak.adapter;
 
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,23 +12,29 @@ import java.util.List;
 
 public class Selector<T> {
 
+    private static final String TAG = Selector.class.getSimpleName();
+
+    public static <T> Selector<T> selector (Class<T> tClass, List list) {
+        return new Selector<>(tClass, list);
+    }
+
     private Class<T> mTClass;
-    private Order mOrder;
+    private List mList;
 
     private WhereDelegate<T> mWhereDelegate;
 
-    Selector (Class<T> tClass, Order order) {
+    Selector (Class<T> tClass, List list) {
         mTClass = tClass;
-        mOrder = order;
+        mList = list;
 
         mWhereDelegate = new WhereDelegate<T>();
     }
 
-    public WhereDelegate<T> where (String key, String operator, String value) {
-        return where(new Where<T>(key, operator, value));
+    public <V> WhereDelegate<T> where (String key, Operator operator, V ... value) {
+        return where(new Where<T, V>(key, operator, value));
     }
 
-    public WhereDelegate<T> where (Where<T> where) {
+    public <V> WhereDelegate<T> where (Where<T, V> where) {
 
         mWhereDelegate.addWithCheck(where);
         return mWhereDelegate;
@@ -41,6 +48,10 @@ public class Selector<T> {
         return mWhereDelegate.findAll();
     }
 
+    public int count () {
+        return mWhereDelegate.count();
+    }
+
     private boolean isT (Object object) {
         return mTClass.isInstance(object);
     }
@@ -49,27 +60,27 @@ public class Selector<T> {
 
         private List<Where> whereList = new ArrayList<>();
 
-        public WhereDelegate<T> and (String key, String operator, String value) {
-            return and(new Where<T>(key, operator, value, Where.AND));
+        public <V> WhereDelegate<T> and (String key, Operator operator, V ... value) {
+            return and(new Where<T, V>(Where.AND, key, operator, value));
         }
 
-        public WhereDelegate<T> and (Where<T> where) {
+        public <V> WhereDelegate<T> and (Where<T, V> where) {
             where.setConnector(Where.AND);
             addWithCheck(where);
             return this;
         }
 
-        public WhereDelegate<T> or (String key, String operator, String value) {
-            return or(new Where<T>(key, operator, value, Where.OR));
+        public <V> WhereDelegate<T> or (String key, Operator operator, V ... value) {
+            return or(new Where<T, V>(Where.OR, key, operator, value));
         }
 
-        public WhereDelegate<T> or (Where<T> where) {
+        public <V> WhereDelegate<T> or (Where<T, V> where) {
             where.setConnector(Where.OR);
             addWithCheck (where);
             return this;
         }
 
-        void addWithCheck (Where<T> where) {
+        <V> void addWithCheck (Where<T, V> where) {
             if (!whereList.contains(where)) {
                 whereList.add(where);
             }
@@ -87,14 +98,16 @@ public class Selector<T> {
             return a == b;
         }
 
-        boolean accept (T t) {
+        <V> boolean accept (T t) {
             if (whereList.isEmpty()) {
                 return true;
             }
             final int length = whereList.size();
             boolean result = whereList.get(0).accept(t);
+//            Log.v(TAG, "accept before loop=" + result);
             for (int i = 1; i < length; i++) {
-                Where<T> where = whereList.get(i);
+                Where<T, V> where = whereList.get(i);
+//                Log.v(TAG, "accept " + where.getConnector() + " " + where.getKey());
                 switch (where.getConnector()) {
                     case Where.AND:
                         result = acceptAnd(result, where.accept(t));
@@ -108,12 +121,13 @@ public class Selector<T> {
                     case Where.NONE:
                         continue;
                 }
+//                Log.v(TAG, "accept result=" + result + " after=" + where.getKey());
             }
             return result;
         }
 
         public void map (Action<T> tAction) {
-            for (Object object : mOrder.getDataList()) {
+            for (Object object : mList) {
                 if (isT(object)) {
                     T t = (T)object;
                     if (accept(t)) {
@@ -125,11 +139,9 @@ public class Selector<T> {
 
         public @Nullable List<T> findAll () {
 
-            List dataList = mOrder.getDataList();
-            if (dataList != null && !dataList.isEmpty()) {
+            if (mList != null && !mList.isEmpty()) {
                 List<T> tList = new ArrayList<>();
-                for (Object object : dataList) {
-
+                for (Object object : mList) {
                     if (isT(object)) {
                         T t = (T)object;
                         if (whereList.isEmpty() || accept(t)) {
@@ -140,6 +152,23 @@ public class Selector<T> {
                 return tList;
             }
             return null;
+        }
+
+        public int count () {
+            if (mList != null && !mList.isEmpty()) {
+                int count = 0;
+                for (Object object : mList) {
+
+                    if (isT(object)) {
+                        T t = (T)object;
+                        if (whereList.isEmpty() || accept(t)) {
+                            count++;
+                        }
+                    }
+                }
+                return count;
+            }
+            return 0;
         }
 
     }

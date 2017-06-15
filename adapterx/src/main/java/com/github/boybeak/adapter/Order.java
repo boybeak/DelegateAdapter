@@ -16,11 +16,4 @@ public class Order {
         this.mDataList = dataList;
     }
 
-    public <T> Selector<T> selector (Class<T> tClass) {
-        return new Selector<T>(tClass, this);
-    }
-
-    public List getDataList () {
-        return mDataList;
-    }
 }
