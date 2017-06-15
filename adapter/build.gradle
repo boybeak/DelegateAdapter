@@ -29,6 +29,7 @@ dependencies {
     compile "com.android.support:recyclerview-v7:$rootProject.supportLibVersion"
     compile "com.android.support:support-annotations:$rootProject.supportLibVersion"
     compile "com.android.support:support-v4:$rootProject.supportLibVersion"
+    compile project(':selector')
 }
 
 version = "1.4.2"

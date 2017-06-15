@@ -1,4 +1,4 @@
-package com.github.boybeak.adapter;
+package com.github.boybeak.selector;
 
 import android.util.Log;
 
