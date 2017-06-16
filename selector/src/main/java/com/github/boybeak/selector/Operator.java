@@ -14,13 +14,13 @@ import java.util.List;
 
 public enum Operator {
 
-    OPERATOR_EQUALS{
+    OPERATOR_EQUAL {
         @Override
         <V> boolean accept(V v1, V ... v2) {
             return v1 != null && v1.equals(v2[0]);
         }
     },
-    OPERATOR_NOT_EQUALS {
+    OPERATOR_NOT_EQUAL {
         @Override
         <V> boolean accept(V v1, V ... v2) {
             if (v1 == null) {
@@ -46,8 +46,7 @@ public enum Operator {
         @Override
         <V> boolean accept(V v1, V ... v2) {
             if (v1 != null && v2 != null) {
-                if (v1 instanceof Comparable
-                        && v1.getClass().isInstance(v2)) {
+                if (v1 instanceof Comparable) {
                     Comparable c1 = (Comparable)v1;
                     Comparable c2 = (Comparable)v2[0];
                     return c1.compareTo(c2) < 0;
@@ -56,12 +55,11 @@ public enum Operator {
             return false;
         }
     },
-    OPERATOR_GT_EQUALS {
+    OPERATOR_GT_EQUAL {
         @Override
         <V> boolean accept(V v1, V ... v2) {
             if (v1 != null && v2 != null) {
-                if (v1 instanceof Comparable
-                        && v1.getClass().isInstance(v2)) {
+                if (v1 instanceof Comparable) {
                     Comparable c1 = (Comparable)v1;
                     Comparable c2 = (Comparable)v2[0];
                     return c1.compareTo(c2) >= 0;
@@ -70,12 +68,11 @@ public enum Operator {
             return false;
         }
     },
-    OPERATOR_LT_EQUALS {
+    OPERATOR_LT_EQUAL {
         @Override
         <V> boolean accept(V v1, V ... v2) {
             if (v1 != null && v2 != null) {
-                if (v1 instanceof Comparable
-                        && v1.getClass().isInstance(v2)) {
+                if (v1 instanceof Comparable) {
                     Comparable c1 = (Comparable)v1;
                     Comparable c2 = (Comparable)v2[0];
                     return c1.compareTo(c2) <= 0;
@@ -164,4 +161,6 @@ public enum Operator {
     <V> boolean accept (V v1, V ... v2) {
         return false;
     }
+
+    private static final String TAG = Operator.class.getSimpleName();
 }

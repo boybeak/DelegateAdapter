@@ -2,10 +2,13 @@ package com.github.boybeak.selector;
 
 import android.support.annotation.IntDef;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * Created by gaoyunfei on 2017/6/14.
@@ -25,27 +28,18 @@ public class Where<T, V> {
     @IntDef({NONE, AND, OR, XOR})
     public @interface Connector{}
 
-    /*@Retention(RetentionPolicy.SOURCE)
-    @StringDef({
-            OPERATOR_EQUALS, OPERATOR_NOT_EQUALS, OPERATOR_GT,
-            OPERATOR_LT, OPERATOR_GT_EQUALS, OPERATOR_LT_EQUALS,
-            OPERATOR_IN, OPERATOR_NOT_IN, OPERATOR_BETWEEN,
-            OPERATOR_IS_NULL, OPERATOR_IS, OPERATOR_IS_NOT
-    })
-    public @interface Operator{}*/
-
-    private String key;
+    private Path<T, V> path;
     private Operator operator;
     private V[] value;
 
     private @Connector int connector = NONE;
 
-    public Where (String key, Operator operator, V ... value) {
-        this (NONE, key, operator, value);
+    public Where (Path<T, V> path, Operator operator, V ... value) {
+        this (NONE, path, operator, value);
     }
 
-    Where (@Connector int connector, String key, Operator operator, V ... value) {
-        this.key = key;
+    Where (@Connector int connector, Path<T, V> path, Operator operator, V ... value) {
+        this.path = path;
         this.operator = operator;
         this.value = value;
         this.connector = connector;
@@ -59,8 +53,8 @@ public class Where<T, V> {
         this.connector = connector;
     }
 
-    public String getKey() {
-        return key;
+    public Path<T, V> getPath() {
+        return path;
     }
 
     public V[] getValue() {
@@ -68,17 +62,14 @@ public class Where<T, V> {
     }
 
     boolean accept (T t) {
-        try {
-            Object obj = getKey(t);
-            return operator.accept(obj, value);
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        }
-        return false;
+
+        Object obj = path.extract(t);
+        return operator.accept(obj, value);
+
     }
 
-    private Object getKey (T t) throws NoSuchFieldException {
-        String[] path = key.split("\\.");
+    /*private Object getKeyByField (T t) {
+        String[] path = this.path.split("\\.");
         if (path.length == 0) {
             return t;
         }
@@ -87,22 +78,39 @@ public class Where<T, V> {
             if (TextUtils.isEmpty(fieldName)) {
                 continue;
             }
-            Field field = obj.getClass().getDeclaredField(fieldName);
+            Class clz = obj.getClass();
+            Field field = null;
             try {
-                obj = field.get(obj);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+                field = clz.getField(fieldName);
+                try {
+                    obj = field.get(obj);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            } catch (NoSuchFieldException e) {
+                //e.printStackTrace();
+                try {
+                    Method method = clz.getMethod(fieldName);
+                    obj = method.invoke(obj);
+                } catch (NoSuchMethodException e1) {
+                    e1.printStackTrace();
+                } catch (InvocationTargetException e1) {
+                    e1.printStackTrace();
+                } catch (IllegalAccessException e1) {
+                    e1.printStackTrace();
+                }
             }
+
         }
 
         return obj;
-    }
+    }*/
 
     @Override
     public boolean equals(Object obj) {
         if (obj != null && obj instanceof Where) {
             Where ow = (Where)obj;
-            return key != null && key.equals(ow.key)
+            return path != null && path.equals(ow.path)
                 && operator != null && operator.equals(ow.operator)
                 && value != null && value.equals(ow.value);
         }

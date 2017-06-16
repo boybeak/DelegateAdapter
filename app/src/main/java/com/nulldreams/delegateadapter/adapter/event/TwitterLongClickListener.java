@@ -4,8 +4,8 @@ import android.content.Context;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 
-import com.nulldreams.adapter.DelegateAdapter;
-import com.nulldreams.adapter.widget.OnItemLongClickListener;
+import com.github.boybeak.adapter.DelegateAdapter;
+import com.github.boybeak.adapter.widget.OnItemLongClickListener;
 import com.nulldreams.delegateadapter.adapter.delegate.TwitterDelegate;
 import com.nulldreams.delegateadapter.adapter.holder.TwitterHolder;
 

@@ -5,8 +5,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.nulldreams.adapter.AbsViewHolder;
-import com.nulldreams.adapter.DelegateAdapter;
+import com.github.boybeak.adapter.AbsViewHolder;
+import com.github.boybeak.adapter.DelegateAdapter;
 import com.nulldreams.delegateadapter.R;
 import com.nulldreams.delegateadapter.User;
 

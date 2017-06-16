@@ -28,4 +28,15 @@ public class User {
         return description;
     }
 
+    public void setAvatar(int avatar) {
+        this.avatar = avatar;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

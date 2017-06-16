@@ -14,15 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.nulldreams.adapter.DelegateAdapter;
-import com.nulldreams.adapter.DelegateParser;
-import com.nulldreams.adapter.impl.DelegateImpl;
-import com.nulldreams.delegateadapter.adapter.TextDelegate;
+import com.github.boybeak.adapter.DelegateAdapter;
 import com.nulldreams.delegateadapter.adapter.UserDelegate;
-import com.nulldreams.delegateadapter.adapter.delegate.TwitterDelegate;
-import com.nulldreams.delegateadapter.adapter.delegate.YtbDelegate;
-import com.nulldreams.delegateadapter.model.Twitter;
-import com.nulldreams.delegateadapter.model.Ytb;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -83,30 +76,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addData () {
-        int f = 5;
-        for (int i = 0; i < 100; i++) {
-            int v = i % f;
-            if (v == 0) {
-                mAdapter.add(new TextDelegate(i + ""));
-            } else if (v == 1) {
-            } else if (v == 2) {
-                mAdapter.add(new UserDelegate(users[i % users.length]));
-            } else if (v == 3) {
-                mAdapter.addAll(Data.getYtbList(this, v * 2), new DelegateParser<Ytb>() {
-                    @Override
-                    public DelegateImpl parse(DelegateAdapter adapter, Ytb data) {
-                        return new YtbDelegate(data);
-                    }
-                });
-            } else if (v == 4) {
-                mAdapter.addAll(Data.getTwitterList(v), new DelegateParser<Twitter>() {
-                    @Override
-                    public DelegateImpl parse(DelegateAdapter adapter, Twitter data) {
-                        return new TwitterDelegate(data);
-                    }
-                });
-            }
-
+        for (int i = 0; i < 10; i++) {
+            mAdapter.add(new UserDelegate(users[i % users.length]));
         }
 //        mAdapter.add(new TextDelegate(0 + ""));
         mAdapter.notifyDataSetChanged();

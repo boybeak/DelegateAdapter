@@ -4,8 +4,8 @@ import android.content.Context;
 import android.view.View;
 import android.widget.Toast;
 
-import com.nulldreams.adapter.DelegateAdapter;
-import com.nulldreams.adapter.widget.OnItemLongClickListener;
+import com.github.boybeak.adapter.DelegateAdapter;
+import com.github.boybeak.adapter.widget.OnItemLongClickListener;
 import com.nulldreams.delegateadapter.R;
 import com.nulldreams.delegateadapter.adapter.TextDelegate;
 import com.nulldreams.delegateadapter.adapter.TextHolder;

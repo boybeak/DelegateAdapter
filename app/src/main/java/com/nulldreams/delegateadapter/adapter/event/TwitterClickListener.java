@@ -4,8 +4,8 @@ import android.content.Context;
 import android.view.View;
 import android.widget.Toast;
 
-import com.nulldreams.adapter.DelegateAdapter;
-import com.nulldreams.adapter.widget.OnItemClickListener;
+import com.github.boybeak.adapter.DelegateAdapter;
+import com.github.boybeak.adapter.widget.OnItemClickListener;
 import com.nulldreams.delegateadapter.adapter.delegate.TwitterDelegate;
 import com.nulldreams.delegateadapter.adapter.holder.TwitterHolder;
 

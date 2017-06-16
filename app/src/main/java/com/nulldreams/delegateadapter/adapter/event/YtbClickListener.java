@@ -6,8 +6,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.nulldreams.adapter.DelegateAdapter;
-import com.nulldreams.adapter.widget.OnItemClickListener;
+import com.github.boybeak.adapter.DelegateAdapter;
+import com.github.boybeak.adapter.widget.OnItemClickListener;
 import com.nulldreams.delegateadapter.R;
 import com.nulldreams.delegateadapter.adapter.delegate.YtbDelegate;
 import com.nulldreams.delegateadapter.adapter.holder.YtbHolder;

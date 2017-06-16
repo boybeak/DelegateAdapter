@@ -4,8 +4,8 @@ import android.content.Context;
 import android.util.Log;
 import android.view.View;
 
-import com.nulldreams.adapter.DelegateAdapter;
-import com.nulldreams.adapter.widget.OnItemClickListener;
+import com.github.boybeak.adapter.DelegateAdapter;
+import com.github.boybeak.adapter.widget.OnItemClickListener;
 import com.nulldreams.delegateadapter.adapter.TextDelegate;
 import com.nulldreams.delegateadapter.adapter.TextHolder;
 

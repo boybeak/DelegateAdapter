@@ -1,7 +1,7 @@
 package com.nulldreams.delegateadapter.adapter.delegate;
 
-import com.nulldreams.adapter.annotation.AnnotationDelegate;
-import com.nulldreams.adapter.annotation.DelegateInfo;
+import com.github.boybeak.adapter.annotation.AnnotationDelegate;
+import com.github.boybeak.adapter.annotation.DelegateInfo;
 import com.nulldreams.delegateadapter.R;
 import com.nulldreams.delegateadapter.adapter.event.TwitterClickListener;
 import com.nulldreams.delegateadapter.adapter.event.TwitterLongClickListener;

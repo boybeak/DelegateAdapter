@@ -1,8 +1,8 @@
 package com.nulldreams.delegateadapter.adapter;
 
-import com.nulldreams.adapter.annotation.AnnotationDelegate;
-import com.nulldreams.adapter.annotation.DelegateInfo;
-import com.nulldreams.adapter.annotation.OnClick;
+import com.github.boybeak.adapter.annotation.AnnotationDelegate;
+import com.github.boybeak.adapter.annotation.DelegateInfo;
+import com.github.boybeak.adapter.annotation.OnClick;
 import com.nulldreams.delegateadapter.R;
 import com.nulldreams.delegateadapter.User;
 import com.nulldreams.delegateadapter.adapter.event.UserClickListener;

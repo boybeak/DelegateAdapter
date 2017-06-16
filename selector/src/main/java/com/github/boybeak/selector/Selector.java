@@ -1,6 +1,7 @@
 package com.github.boybeak.selector;
 
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +30,8 @@ public class Selector<T> {
         mWhereDelegate = new WhereDelegate<T>();
     }
 
-    public <V> WhereDelegate<T> where (String key, Operator operator, V ... value) {
-        return where(new Where<T, V>(key, operator, value));
+    public <V> WhereDelegate<T> where (Path<T, V> path, Operator operator, V ... value) {
+        return where(new Where<T, V>(path, operator, value));
     }
 
     public <V> WhereDelegate<T> where (Where<T, V> where) {
@@ -51,6 +52,10 @@ public class Selector<T> {
         return mWhereDelegate.count();
     }
 
+    public <V> List<V> extract (Path<T, V> path) {
+        return mWhereDelegate.extract(path);
+    }
+
     private boolean isT (Object object) {
         return mTClass.isInstance(object);
     }
@@ -59,8 +64,8 @@ public class Selector<T> {
 
         private List<Where> whereList = new ArrayList<>();
 
-        public <V> WhereDelegate<T> and (String key, Operator operator, V ... value) {
-            return and(new Where<T, V>(Where.AND, key, operator, value));
+        public <V> WhereDelegate<T> and (Path<T, V> path, Operator operator, V ... value) {
+            return and(new Where<T, V>(Where.AND, path, operator, value));
         }
 
         public <V> WhereDelegate<T> and (Where<T, V> where) {
@@ -69,8 +74,8 @@ public class Selector<T> {
             return this;
         }
 
-        public <V> WhereDelegate<T> or (String key, Operator operator, V ... value) {
-            return or(new Where<T, V>(Where.OR, key, operator, value));
+        public <V> WhereDelegate<T> or (Path<T, V> path, Operator operator, V ... value) {
+            return or(new Where<T, V>(Where.OR, path, operator, value));
         }
 
         public <V> WhereDelegate<T> or (Where<T, V> where) {
@@ -126,20 +131,22 @@ public class Selector<T> {
         }
 
         public void map (Action<T> tAction) {
-            for (Object object : mList) {
+            final int size = mList.size();
+            for (int i = 0; i < size; i++) {
+                Object object = mList.get(i);
                 if (isT(object)) {
                     T t = (T)object;
                     if (accept(t)) {
-                        tAction.action((T)object);
+                        tAction.action(i, (T)object);
                     }
                 }
             }
         }
 
         public @Nullable List<T> findAll () {
-
+            List<T> tList = new ArrayList<>();
             if (mList != null && !mList.isEmpty()) {
-                List<T> tList = new ArrayList<>();
+
                 for (Object object : mList) {
                     if (isT(object)) {
                         T t = (T)object;
@@ -168,6 +175,24 @@ public class Selector<T> {
                 return count;
             }
             return 0;
+        }
+
+        public <V> List<V> extract (final Path<T, V> path) {
+            return extract(path, false);
+        }
+
+        public <V> List<V> extract (final Path<T, V> path, boolean ignoreRepeat) {
+            final List<V> vList = new ArrayList<>();
+            map(new Action<T>() {
+                @Override
+                public void action(int index, T t) {
+                    V v = path.extract(t);
+                    if (!vList.contains(v)) {
+                        vList.add(v);
+                    }
+                }
+            });
+            return vList;
         }
 
     }
