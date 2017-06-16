@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -193,6 +194,21 @@ public class Selector<T> {
                 }
             });
             return vList;
+        }
+
+        public void remove () {
+            if (mList != null && !mList.isEmpty()) {
+                Iterator iterator = mList.iterator();
+                while (iterator.hasNext()) {
+                    Object obj = iterator.next();
+                    if (isT(obj)) {
+                        T t = (T)obj;
+                        if (whereList.isEmpty() || accept(t)) {
+                            iterator.remove();
+                        }
+                    }
+                }
+            }
         }
 
     }
