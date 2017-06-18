@@ -45,22 +45,43 @@ public class Selector<T> {
         mWhereDelegate.map(action);
     }
 
-    public List<T> findAll () {
+    public @Nullable List<T> findAll () {
         return mWhereDelegate.findAll();
+    }
+
+    public @Nullable T findFirst () {
+        return mWhereDelegate.findFirst();
+    }
+
+    public @Nullable T findLast () {
+        return mWhereDelegate.findLast();
     }
 
     public int count () {
         return mWhereDelegate.count();
     }
 
-    public <V> List<V> extract (Path<T, V> path) {
-        return mWhereDelegate.extract(path);
+    public @Nullable <V> List<V> extractAll(Path<T, V> path) {
+        return mWhereDelegate.extractAll(path);
+    }
+
+    public @Nullable <V> V extractFirst (final Path<T, V> path) {
+        return mWhereDelegate.extractFirst(path);
+    }
+
+    public @Nullable <V> V extractLast (final Path<T, V> path) {
+        return mWhereDelegate.extractLast(path);
     }
 
     private boolean isT (Object object) {
         return mTClass.isInstance(object);
     }
 
+
+    /**
+     *
+     * @param <T>
+     */
     public class WhereDelegate<T> {
 
         private List<Where> whereList = new ArrayList<>();
@@ -132,13 +153,15 @@ public class Selector<T> {
         }
 
         public void map (Action<T> tAction) {
-            final int size = mList.size();
-            for (int i = 0; i < size; i++) {
-                Object object = mList.get(i);
-                if (isT(object)) {
-                    T t = (T)object;
-                    if (accept(t)) {
-                        tAction.action(i, (T)object);
+            if (mList != null && !mList.isEmpty()) {
+                final int size = mList.size();
+                for (int i = 0; i < size; i++) {
+                    Object object = mList.get(i);
+                    if (isT(object)) {
+                        T t = (T)object;
+                        if (accept(t)) {
+                            tAction.action(i, (T)object);
+                        }
                     }
                 }
             }
@@ -148,7 +171,9 @@ public class Selector<T> {
             List<T> tList = new ArrayList<>();
             if (mList != null && !mList.isEmpty()) {
 
-                for (Object object : mList) {
+                int size = mList.size();
+                for (int i = 0; i < size; i++) {
+                    Object object = mList.get(i);
                     if (isT(object)) {
                         T t = (T)object;
                         if (whereList.isEmpty() || accept(t)) {
@@ -157,6 +182,38 @@ public class Selector<T> {
                     }
                 }
                 return tList;
+            }
+            return null;
+        }
+
+        public @Nullable T findFirst () {
+            if (mList != null && !mList.isEmpty()) {
+                int size = mList.size();
+                for (int i = 0; i < size; i++) {
+                    Object object = mList.get(i);
+                    if (isT(object)) {
+                        T t = (T)object;
+                        if (whereList.isEmpty() || accept(t)) {
+                            return t;
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        public @Nullable T findLast () {
+            if (mList != null && !mList.isEmpty()) {
+                int size = mList.size();
+                for (int i = size - 1; i >= 0; i--) {
+                    Object object = mList.get(i);
+                    if (isT(object)) {
+                        T t = (T)object;
+                        if (whereList.isEmpty() || accept(t)) {
+                            return t;
+                        }
+                    }
+                }
             }
             return null;
         }
@@ -178,22 +235,68 @@ public class Selector<T> {
             return 0;
         }
 
-        public <V> List<V> extract (final Path<T, V> path) {
-            return extract(path, false);
+        public @Nullable <V> List<V> extractAll (final Path<T, V> path) {
+            return extractAll(path, false);
         }
 
-        public <V> List<V> extract (final Path<T, V> path, boolean ignoreRepeat) {
-            final List<V> vList = new ArrayList<>();
-            map(new Action<T>() {
-                @Override
-                public void action(int index, T t) {
-                    V v = path.extract(t);
-                    if (!vList.contains(v)) {
-                        vList.add(v);
+        public @Nullable <V> List<V> extractAll (final Path<T, V> path, final boolean ignoreRepeat) {
+
+            if (mList != null && !mList.isEmpty()) {
+                List<V> vList = new ArrayList<>();
+                final int size = mList.size();
+                for (int i = 0; i < size; i++) {
+                    Object object = mList.get(i);
+                    if (isT(object)) {
+                        T t = (T)object;
+                        if (accept(t)) {
+                            V v = path.extract(t);
+                            if (ignoreRepeat && vList.contains(v)) {
+                                continue;
+                            }
+                            vList.add(v);
+                        }
                     }
                 }
-            });
-            return vList;
+                return vList;
+            }
+            return null;
+
+        }
+
+        public @Nullable <V> V extractFirst (final Path<T, V> path) {
+
+            if (mList != null && !mList.isEmpty()) {
+                final int size = mList.size();
+                for (int i = 0; i < size; i++) {
+                    Object object = mList.get(i);
+                    if (isT(object)) {
+                        T t = (T)object;
+                        if (accept(t)) {
+                            return path.extract(t);
+                        }
+                    }
+                }
+            }
+            return null;
+
+        }
+
+        public @Nullable <V> V extractLast (final Path<T, V> path) {
+
+            if (mList != null && !mList.isEmpty()) {
+                final int size = mList.size();
+                for (int i = size - 1; i >= 0; i--) {
+                    Object object = mList.get(i);
+                    if (isT(object)) {
+                        T t = (T)object;
+                        if (accept(t)) {
+                            return path.extract(t);
+                        }
+                    }
+                }
+            }
+            return null;
+
         }
 
         public void remove () {

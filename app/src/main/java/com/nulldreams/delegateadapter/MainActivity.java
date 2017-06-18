@@ -15,7 +15,13 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.github.boybeak.adapter.DelegateAdapter;
+import com.github.boybeak.selector.Operator;
+import com.github.boybeak.selector.Path;
+import com.github.boybeak.selector.Selector;
 import com.nulldreams.delegateadapter.adapter.UserDelegate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,6 +44,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        List list = new ArrayList<>();
+
+        List<User> userList = Selector.selector(User.class, list)
+                .where(Path.with(User.class, Integer.class).methodWith("getName.length"), Operator.OPERATOR_GT, 5).findAll();
+
+
+
+        List<String> nameList = Selector.selector(User.class, list)
+                .where(Path.with(User.class, Integer.class).methodWith("getName.length"), Operator.OPERATOR_GT, 5)
+                .extractAll(Path.with(User.class, String.class).methodWith("getName"));
 
         mRv = (RecyclerView)findViewById(R.id.main_rv);
         final Paint paint = new Paint(Color.LTGRAY);

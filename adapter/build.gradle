@@ -32,7 +32,7 @@ dependencies {
     compile project(':selector')
 }
 
-version = "1.4.2"
+version = "2.0.0"
 def siteUrl = 'https://github.com/boybeak/DelegateAdapter'
 def gitUrl = 'https://github.com/boybeak/DelegateAdapter.git'
 group = "com.github.boybeak"
