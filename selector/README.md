@@ -3,7 +3,7 @@
 This is a very simple library for querying or modifying a List. You can query or modify a list with sql style.
 
 
-```
+```java
 List list = new ArrayList<>();
 //add some data different type.
 
