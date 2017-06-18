@@ -10,12 +10,12 @@ List list = new ArrayList<>();
 //get count of user.getName.length > 5
 int count = Selector.selector(User.class, list)
                 .where(Path.with(User.class, Integer.class).methodWith("getName.length"), Operator.OPERATOR_GT, 5)
-  .count();
+  				.count();
 
 //get all user of user.getName.length > 5
 List<User> userList = Selector.selector(User.class, list)
                 .where(Path.with(User.class, Integer.class).methodWith("getName.length"), Operator.OPERATOR_GT, 5)
-  .findAll();
+  				.findAll();
 
 //get all user.name of user.getName.length > 5
 List<String> nameList = Selector.selector(User.class, list)
