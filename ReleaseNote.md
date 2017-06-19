@@ -12,3 +12,9 @@
 **1.4.x**
 
 1. Add [DataChange](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/DataChange.java) class with a method **autoNotify**. This represents **notifyItemInserted**, **notifyItemRangeInserted**, **notifyItemChanged** and so on. After DelegateAdapter add, addAll or remove methods invoked, return a DataChange instance.
+
+**2.0.x**
+
+1. Add a very strong way to query data with conditions from DelegateAdapter with the library [Selector](https://github.com/boybeak/DelegateAdapter/tree/master/selector).
+2. Fix some bugs.
+

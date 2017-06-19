@@ -37,7 +37,7 @@ public class UserClickListener implements OnItemClickListener<UserDelegate, User
         });*/
         List<String> names = adapter.selector(UserDelegate.class)
                 .where(Path.with(UserDelegate.class, Integer.class).methodWith("getSource").methodWith("getName").methodWith("length"), Operator.OPERATOR_GT, 4)
-                .extract(Path.with(UserDelegate.class, String.class).methodWith("getSource").methodWith("getName"));
+                .extractAll(Path.with(UserDelegate.class, String.class).methodWith("getSource").methodWith("getName"));
         for (String name : names) {
             Log.v(TAG, "name is " + name);
         }

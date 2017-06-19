@@ -8,7 +8,7 @@
 <dependency>
   <groupId>com.github.boybeak</groupId>
   <artifactId>adapter</artifactId>
-  <version>1.4.1</version>
+  <version>2.0.0</version>
   <type>pom</type>
 </dependency>
 ```
@@ -16,12 +16,12 @@
 或者通过Gradle:
 
 ```groovy
-compile 'com.github.boybeak:adapter:1.4.1'
+compile 'com.github.boybeak:adapter:2.0.0'
 ```
 
-# What's new in version 1.4.x
+# What's new in version 2.0.x
 
-1. 增加 [DataChange](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/DataChange.java) 类，该类中有一个autoNotify方法，替代了notifyDataItemInserted 等操作.
+1. 通过[Selector](https://github.com/boybeak/DelegateAdapter/tree/master/selector)的支持, 增加了一种极为便捷的从DelegateAdapter中查询数据的方法. 我强烈建议你使用这种方法.
 
 # Usage
 
@@ -204,6 +204,8 @@ RecyclerView rv = ...;
 rv.setAdapter(adapter);
 ```
 
+### 添加数据
+
 如下方式添加数据:
 
 ```java
@@ -232,6 +234,22 @@ mAdapter.addAll(userList, new DelegateParser<User>() {
       	return new UserDelegate(data); //return a LayoutImpl or its sub class
     }
 });
+```
+
+### 查询数据
+
+带条件的数据查询
+
+```java
+//query count
+int count = adapter.selector(UserDelegate.class)
+                .where(Path.with(UserDelegate.class, Integer.class).methodWith("getSource").methodWith("getName").methodWith("length"), Operator.OPERATOR_GT, 4)
+                .count();
+
+//query names of users
+List<String> names = adapter.selector(UserDelegate.class)
+                .where(Path.with(UserDelegate.class, Integer.class).methodWith("getSource").methodWith("getName").methodWith("length"), Operator.OPERATOR_GT, 4)
+                .extractAll(Path.with(UserDelegate.class, String.class).methodWith("getSource").methodWith("getName"));
 ```
 
 

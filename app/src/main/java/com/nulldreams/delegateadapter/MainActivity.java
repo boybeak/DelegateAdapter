@@ -45,17 +45,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        List list = new ArrayList<>();
-
-        List<User> userList = Selector.selector(User.class, list)
-                .where(Path.with(User.class, Integer.class).methodWith("getName.length"), Operator.OPERATOR_GT, 5).findAll();
-
-
-
-        List<String> nameList = Selector.selector(User.class, list)
-                .where(Path.with(User.class, Integer.class).methodWith("getName.length"), Operator.OPERATOR_GT, 5)
-                .extractAll(Path.with(User.class, String.class).methodWith("getName"));
-
         mRv = (RecyclerView)findViewById(R.id.main_rv);
         final Paint paint = new Paint(Color.LTGRAY);
         mRv.addItemDecoration(new RecyclerView.ItemDecoration() {

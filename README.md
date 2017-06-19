@@ -7,6 +7,8 @@ The most amazing thing is binding multi types data and ViewHolder with Injection
 
 [中文Readme入口](https://github.com/boybeak/DelegateAdapter/blob/master/README_CN.md)
 
+[Selector](https://github.com/boybeak/DelegateAdapter/tree/master/selector)
+
 # Download
 Grab via Meven:
 
@@ -14,7 +16,7 @@ Grab via Meven:
 <dependency>
   <groupId>com.github.boybeak</groupId>
   <artifactId>adapter</artifactId>
-  <version>1.4.1</version>
+  <version>2.0.0</version>
   <type>pom</type>
 </dependency>
 ```
@@ -22,12 +24,12 @@ Grab via Meven:
 or Gradle:
 
 ```groovy
-compile 'com.github.boybeak:adapter:1.4.1'
+compile 'com.github.boybeak:adapter:2.0.0'
 ```
 
-# What's new in version 1.4.x
+# What's new in version 2.0.0
 
-1. Add [DataChange](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/DataChange.java) class and autoNotify data change.
+1. Querying data with conditions from DelegateAdaper is now very convenient with the [Selector](https://github.com/boybeak/DelegateAdapter/tree/master/selector) library support. I strongly recommend you to use this feature.
 
 
 You can read a full [release note](https://github.com/boybeak/DelegateAdapter/blob/master/ReleaseNote.md).
@@ -207,6 +209,8 @@ RecyclerView rv = ...;
 rv.setAdapter(adapter);
 ```
 
+### Add data
+
 adapter add data like below:
 
 ```java
@@ -235,6 +239,22 @@ mAdapter.addAll(userList, new DelegateParser<User>() {
       	return new UserDelegate(data); //return a LayoutImpl or its sub class
     }
 });
+```
+
+### Query Data
+
+Query data with conditions
+
+```java
+//query count
+int count = adapter.selector(UserDelegate.class)
+                .where(Path.with(UserDelegate.class, Integer.class).methodWith("getSource").methodWith("getName").methodWith("length"), Operator.OPERATOR_GT, 4)
+                .count();
+
+//query names of users
+List<String> names = adapter.selector(UserDelegate.class)
+                .where(Path.with(UserDelegate.class, Integer.class).methodWith("getSource").methodWith("getName").methodWith("length"), Operator.OPERATOR_GT, 4)
+                .extractAll(Path.with(UserDelegate.class, String.class).methodWith("getSource").methodWith("getName"));
 ```
 
 
