@@ -2,6 +2,14 @@
 
 This is a very simple library for querying or modifying a List. You can query or modify a list with sql style.
 
+## Install
+
+```groovy
+compile 'com.github.boybeak:selector:0.1.0'
+```
+
+## Usage
+
 
 ```java
 List list = new ArrayList<>();
