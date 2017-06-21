@@ -5,11 +5,11 @@ This is a very simple library for querying or modifying a List. You can query or
 ## Install
 
 ```groovy
-compile 'com.github.boybeak:selector:0.1.0'
+compile 'com.github.boybeak:selector:0.2.0'
 ```
 
 ## Usage
-**Start with version 0.2, you can handle an array with Selector.**
+**Start with version 0.2.0, you can handle an array with Selector.**
 
 With a List
 ```java

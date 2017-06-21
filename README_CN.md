@@ -8,7 +8,7 @@
 <dependency>
   <groupId>com.github.boybeak</groupId>
   <artifactId>adapter</artifactId>
-  <version>2.0.0</version>
+  <version>2.0.3</version>
   <type>pom</type>
 </dependency>
 ```
@@ -16,7 +16,7 @@
 或者通过Gradle:
 
 ```groovy
-compile 'com.github.boybeak:adapter:2.0.0'
+compile 'com.github.boybeak:adapter:2.0.3'
 ```
 
 # What's new in version 2.0.x
