@@ -2,6 +2,9 @@ package com.github.boybeak.adapter;
 
 import android.support.annotation.IntDef;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 /**
  * Created by gaoyunfei on 2017/4/27.
  */
@@ -21,6 +24,7 @@ public final class DataChange {
         return new DataChange(true);
     }
 
+    @Retention(RetentionPolicy.SOURCE)
     @IntDef({
             TYPE_ITEM_INSERTED,
             TYPE_ITEM_RANGE_INSERTED,

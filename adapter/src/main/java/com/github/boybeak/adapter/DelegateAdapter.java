@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.github.boybeak.selector.Selector;
 import com.github.boybeak.adapter.annotation.AnnotationDelegate;
 import com.github.boybeak.adapter.annotation.DelegateInfo;
 import com.github.boybeak.adapter.annotation.HolderClass;
@@ -16,6 +15,8 @@ import com.github.boybeak.adapter.annotation.LayoutID;
 import com.github.boybeak.adapter.annotation.NullHolder;
 import com.github.boybeak.adapter.impl.DelegateImpl;
 import com.github.boybeak.adapter.impl.LayoutImpl;
+import com.github.boybeak.selector.ListSelector;
+import com.github.boybeak.selector.Selector;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
@@ -204,8 +205,8 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         return holder.onFailedToRecycleView(mContext);
     }
 
-    public <T> Selector<T> selector (Class<T> tClass) {
-        return Selector.selector(tClass, this.mDelegateImplList);
+    public <T> ListSelector<T> selector (Class<T> tClass) {
+        return Selector.selector(tClass, mDelegateImplList);
     }
 
     public boolean isEmpty () {

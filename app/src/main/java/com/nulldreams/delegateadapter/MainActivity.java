@@ -15,13 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.github.boybeak.adapter.DelegateAdapter;
-import com.github.boybeak.selector.Operator;
-import com.github.boybeak.selector.Path;
-import com.github.boybeak.selector.Selector;
 import com.nulldreams.delegateadapter.adapter.UserDelegate;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 

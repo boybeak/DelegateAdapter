@@ -10,8 +10,8 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 142
-        versionName "1.4.2"
+        versionCode 202
+        versionName "2.0.2"
     }
     buildTypes {
         release {
@@ -25,14 +25,14 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile "com.android.support:appcompat-v7:$rootProject.supportLibVersion"
+//    compile "com.android.support:appcompat-v7:$rootProject.supportLibVersion"
     compile "com.android.support:recyclerview-v7:$rootProject.supportLibVersion"
-    compile "com.android.support:support-annotations:$rootProject.supportLibVersion"
-    compile "com.android.support:support-v4:$rootProject.supportLibVersion"
+    provided "com.android.support:support-annotations:$rootProject.supportLibVersion"
+//    provided "com.android.support:support-v4:$rootProject.supportLibVersion"
     compile project(':selector')
 }
 
-version = "2.0.0"
+version = "2.0.2"
 def siteUrl = 'https://github.com/boybeak/DelegateAdapter'
 def gitUrl = 'https://github.com/boybeak/DelegateAdapter.git'
 group = "com.github.boybeak"
