@@ -9,8 +9,9 @@ compile 'com.github.boybeak:selector:0.1.0'
 ```
 
 ## Usage
+**Start with version 0.2, you can handle an array with Selector.**
 
-
+With a List
 ```java
 List list = new ArrayList<>();
 //add some data different type.
