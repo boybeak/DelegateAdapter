@@ -30,4 +30,13 @@ List<User> userList = Selector.selector(User.class, list)
 List<String> nameList = Selector.selector(User.class, list)
                 .where(Path.with(User.class, Integer.class).methodWith("getName.length"), Operator.OPERATOR_GT, 5)
                 .extractAll(Path.with(User.class, String.class).methodWith("getName"));
+
+//travle with miltiple conditions
+Selector.selector(User.class, list).where(Path.with(User.class, Integer.class).methodWith("getName").methodWith("length"), Operator.OPERATOR_GT, 5)
+                .and(Path.with(User.class, String.class).methodWith("getAvatar"), Operator.OPERATOR_IS_NULL).map(new Action<User>() {
+            @Override
+            public void action(int index, User user) {
+                user.setDescription("This is a name length > 5 and null avatar user");
+            }
+        });
 ```

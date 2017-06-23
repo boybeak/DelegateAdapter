@@ -15,7 +15,15 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.github.boybeak.adapter.DelegateAdapter;
+import com.github.boybeak.selector.Action;
+import com.github.boybeak.selector.Operator;
+import com.github.boybeak.selector.Path;
+import com.github.boybeak.selector.Selector;
+import com.github.boybeak.selector.Where;
 import com.nulldreams.delegateadapter.adapter.UserDelegate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,6 +46,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        List list = new ArrayList();
+        Selector.selector(User.class, list).where(Path.with(User.class, Integer.class).methodWith("getName").methodWith("length"), Operator.OPERATOR_GT, 5)
+                .and(Path.with(User.class, String.class).methodWith("getAvatar"), Operator.OPERATOR_IS_NULL).map(new Action<User>() {
+            @Override
+            public void action(int index, User user) {
+                user.setDescription("This is a name length > 5 and null avatar user");
+            }
+        });
 
         mRv = (RecyclerView)findViewById(R.id.main_rv);
         final Paint paint = new Paint(Color.LTGRAY);
