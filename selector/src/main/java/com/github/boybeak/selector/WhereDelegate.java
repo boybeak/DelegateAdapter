@@ -243,6 +243,108 @@ public class WhereDelegate<T> {
 
     }
 
+    public @NonNull <V> T min (final Path<T, V> path) {
+        if (!mSelector.isEmpty()) {
+            final int size = mSelector.getSize();
+            T minT = null;
+            for (int i = 0; i < size; i++) {
+                Object object = mSelector.get(i);
+                if (isT(object)) {
+                    T t = (T)object;
+                    if (accept(t)) {
+                        if (minT == null) {
+                            minT = t;
+                        } else {
+                            minT = minT(minT, t, path);
+                        }
+                    }
+                }
+            }
+            return minT;
+        }
+        return null;
+    }
 
+    public @NonNull <V> T max (final Path<T, V> path) {
+        if (!mSelector.isEmpty()) {
+            final int size = mSelector.getSize();
+            T maxT = null;
+            for (int i = 0; i < size; i++) {
+                Object object = mSelector.get(i);
+                if (isT(object)) {
+                    T t = (T)object;
+                    if (accept(t)) {
+
+                        if (maxT == null) {
+                            maxT = t;
+                        } else {
+                            maxT = maxT(maxT, t, path);
+                        }
+                    }
+                }
+            }
+            return maxT;
+        }
+        return null;
+    }
+
+    private <V> T minT (T t1, T t2, Path<T, V> path) {
+        V v1 = path.extract(t1);
+        V v2 = path.extract(t2);
+        if (v1 instanceof Comparable && v2 instanceof Comparable) {
+            if (((Comparable) v1).compareTo(v2) <= 0) {
+                return t1;
+            } else {
+                return t2;
+            }
+        }
+        throw new UnsupportedOperationException(t1.getClass().getName() + " doesn't implement Comparable");
+    }
+
+    private <V> T maxT (T t1, T t2, Path<T, V> path) {
+        V v1 = path.extract(t1);
+        V v2 = path.extract(t2);
+        if (v1 instanceof Comparable && v2 instanceof Comparable) {
+            if (((Comparable) v1).compareTo(v2) >= 0) {
+                return t1;
+            } else {
+                return t2;
+            }
+        }
+
+        throw new UnsupportedOperationException(t1.getClass().getName() + " doesn't implement Comparable");
+    }
+
+    public <V> V avg (Path<T, V> path) {
+        double[] sumAndCount = sumAndCount(path);
+        return (V)(Double)(sumAndCount[0] / sumAndCount[1]);
+    }
+
+    public <V> double sum (Path<T, V> path) {
+        return sumAndCount(path)[0];
+    }
+
+    private <V> double[] sumAndCount (Path<T, V> path) {
+        double[] sumAndCount = new double[2];
+        if (!mSelector.isEmpty()) {
+            int size = mSelector.getSize();
+            for (int i = 0; i < size; i++) {
+                Object obj = mSelector.get(i);
+                if (isT(obj)) {
+                    T t = (T)obj;
+                    V v = path.extract(t);
+                    if (v instanceof Integer || v instanceof Long || v instanceof Byte || v instanceof Short) {
+                        sumAndCount[0] += (Long)v;
+                    } else if (v instanceof Float || v instanceof Double) {
+                        sumAndCount[0] += (Double) v;
+                    } else {
+                        throw new UnsupportedClassVersionError("can not calculate avg for this type " + v.getClass().getName());
+                    }
+                    sumAndCount[1]++;
+                }
+            }
+        }
+        return sumAndCount;
+    }
 
 }
