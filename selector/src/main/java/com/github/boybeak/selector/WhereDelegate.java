@@ -179,11 +179,11 @@ public class WhereDelegate<T> {
         return 0;
     }
 
-    public @Nullable <V> List<V> extractAll (final Path<T, V> path) {
+    public @Nullable <V> List<V> extractAll (@NonNull Path<T, V> path) {
         return extractAll(path, false);
     }
 
-    public @Nullable <V> List<V> extractAll (final Path<T, V> path, final boolean ignoreRepeat) {
+    public @Nullable <V> List<V> extractAll (@NonNull Path<T, V> path, final boolean ignoreRepeat) {
 
         if (!mSelector.isEmpty()) {
             List<V> vList = new ArrayList<>();
@@ -207,7 +207,7 @@ public class WhereDelegate<T> {
 
     }
 
-    public @Nullable <V> V extractFirst (final Path<T, V> path) {
+    public @Nullable <V> V extractFirst (@NonNull Path<T, V> path) {
 
         if (!mSelector.isEmpty()) {
             final int size = mSelector.getSize();
@@ -225,7 +225,7 @@ public class WhereDelegate<T> {
 
     }
 
-    public @Nullable <V> V extractLast (final Path<T, V> path) {
+    public @Nullable <V> V extractLast (@NonNull Path<T, V> path) {
 
         if (!mSelector.isEmpty()) {
             final int size = mSelector.getSize();
@@ -243,7 +243,7 @@ public class WhereDelegate<T> {
 
     }
 
-    public @NonNull <V> T min (final Path<T, V> path) {
+    public @NonNull <V> T min (@NonNull Path<T, V> path) {
         if (!mSelector.isEmpty()) {
             final int size = mSelector.getSize();
             T minT = null;
@@ -265,7 +265,7 @@ public class WhereDelegate<T> {
         return null;
     }
 
-    public @NonNull <V> T max (final Path<T, V> path) {
+    public @NonNull <V> T max (@NonNull Path<T, V> path) {
         if (!mSelector.isEmpty()) {
             final int size = mSelector.getSize();
             T maxT = null;
@@ -288,7 +288,7 @@ public class WhereDelegate<T> {
         return null;
     }
 
-    private <V> T minT (T t1, T t2, Path<T, V> path) {
+    private <V> T minT (T t1, T t2, @NonNull Path<T, V> path) {
         V v1 = path.extract(t1);
         V v2 = path.extract(t2);
         if (v1 instanceof Comparable && v2 instanceof Comparable) {

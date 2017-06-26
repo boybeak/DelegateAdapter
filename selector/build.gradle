@@ -32,7 +32,7 @@ dependencies {
     provided "com.android.support:support-annotations:$rootProject.supportLibVersion"
 }
 
-version = "0.2.0"
+version = "0.3.0"
 def siteUrl = 'https://github.com/boybeak/DelegateAdapter'
 def gitUrl = 'https://github.com/boybeak/DelegateAdapter.git'
 group = "com.github.boybeak"

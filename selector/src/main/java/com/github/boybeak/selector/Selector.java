@@ -38,11 +38,11 @@ public abstract class Selector<T> {
         return mTClass;
     }
 
-    public <V> WhereDelegate<T> where (Path<T, V> path, Operator operator, V ... value) {
+    public <V> WhereDelegate<T> where (@NonNull Path<T, V> path, @NonNull Operator operator, V ... value) {
         return where(new Where<T, V>(path, operator, value));
     }
 
-    public <V> WhereDelegate<T> where (Where<T, V> where) {
+    public <V> WhereDelegate<T> where (@NonNull Where<T, V> where) {
         getWhereDelegate().addWithCheck(where);
         return getWhereDelegate();
     }
@@ -67,16 +67,32 @@ public abstract class Selector<T> {
         return getWhereDelegate().count();
     }
 
-    public @Nullable <V> List<V> extractAll(Path<T, V> path) {
+    public @Nullable <V> List<V> extractAll(@NonNull Path<T, V> path) {
         return getWhereDelegate().extractAll(path);
     }
 
-    public @Nullable <V> V extractFirst (final Path<T, V> path) {
+    public @Nullable <V> V extractFirst (@NonNull Path<T, V> path) {
         return getWhereDelegate().extractFirst(path);
     }
 
-    public @Nullable <V> V extractLast (final Path<T, V> path) {
+    public @Nullable <V> V extractLast (@NonNull Path<T, V> path) {
         return getWhereDelegate().extractLast(path);
+    }
+
+    public <V> T max (@NonNull Path<T, V> path) {
+        return getWhereDelegate().max(path);
+    }
+
+    public <V> T min (@NonNull Path<T, V> path) {
+        return getWhereDelegate().min(path);
+    }
+
+    public <V> V avg (@NonNull Path<T, V> path) {
+        return getWhereDelegate().avg(path);
+    }
+
+    public <V> double sum (@NonNull Path<T, V> path) {
+        return getWhereDelegate().sum(path);
     }
 
 }

@@ -68,44 +68,6 @@ public class Where<T, V> {
 
     }
 
-    /*private Object getKeyByField (T t) {
-        String[] path = this.path.split("\\.");
-        if (path.length == 0) {
-            return t;
-        }
-        Object obj = t;
-        for (String fieldName : path) {
-            if (TextUtils.isEmpty(fieldName)) {
-                continue;
-            }
-            Class clz = obj.getClass();
-            Field field = null;
-            try {
-                field = clz.getField(fieldName);
-                try {
-                    obj = field.get(obj);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            } catch (NoSuchFieldException e) {
-                //e.printStackTrace();
-                try {
-                    Method method = clz.getMethod(fieldName);
-                    obj = method.invoke(obj);
-                } catch (NoSuchMethodException e1) {
-                    e1.printStackTrace();
-                } catch (InvocationTargetException e1) {
-                    e1.printStackTrace();
-                } catch (IllegalAccessException e1) {
-                    e1.printStackTrace();
-                }
-            }
-
-        }
-
-        return obj;
-    }*/
-
     @Override
     public boolean equals(Object obj) {
         if (obj != null && obj instanceof Where) {
