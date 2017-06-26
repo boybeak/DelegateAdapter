@@ -16,7 +16,7 @@ Grab via Meven:
 <dependency>
   <groupId>com.github.boybeak</groupId>
   <artifactId>adapter</artifactId>
-  <version>2.0.3</version>
+  <version>2.0.4</version>
   <type>pom</type>
 </dependency>
 ```
@@ -24,10 +24,10 @@ Grab via Meven:
 or Gradle:
 
 ```groovy
-compile 'com.github.boybeak:adapter:2.0.3'
+compile 'com.github.boybeak:adapter:2.0.4'
 ```
 
-# What's new in version 2.0.0
+# What's new in version 2.0.x
 
 1. Querying data with conditions from DelegateAdaper is now very convenient with the [Selector](https://github.com/boybeak/DelegateAdapter/tree/master/selector) library support. I strongly recommend you to use this feature.
 
