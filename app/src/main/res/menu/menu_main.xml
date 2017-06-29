@@ -7,4 +7,9 @@
         android:title="github"
         app:showAsAction="always"
         />
+    <item android:id="@+id/add"
+        android:icon="@drawable/ic_plus"
+        android:title="github"
+        app:showAsAction="always"
+        />
 </menu>

@@ -1,4 +1,4 @@
-package com.nulldreams.delegateadapter;
+package com.nulldreams.delegateadapter.model;
 
 /**
  * Created by gaoyunfei on 2016/12/18.

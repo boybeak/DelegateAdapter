@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.github.boybeak.adapter.AbsViewHolder;
 import com.github.boybeak.adapter.DelegateAdapter;
 import com.nulldreams.delegateadapter.R;
-import com.nulldreams.delegateadapter.User;
+import com.nulldreams.delegateadapter.model.User;
 
 /**
  * Created by gaoyunfei on 2016/12/18.

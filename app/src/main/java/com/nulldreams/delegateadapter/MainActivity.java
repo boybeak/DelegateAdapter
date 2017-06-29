@@ -1,78 +1,59 @@
 package com.nulldreams.delegateadapter;
 
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.net.Uri;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
+import com.github.boybeak.adapter.DataChange;
 import com.github.boybeak.adapter.DelegateAdapter;
-import com.github.boybeak.selector.Action;
-import com.github.boybeak.selector.Operator;
-import com.github.boybeak.selector.Path;
-import com.github.boybeak.selector.Selector;
-import com.github.boybeak.selector.Where;
-import com.nulldreams.delegateadapter.adapter.UserDelegate;
+import com.github.boybeak.adapter.DelegateParser;
+import com.github.boybeak.adapter.impl.LayoutImpl;
+import com.nulldreams.delegateadapter.adapter.delegate.StatusDelegate;
+import com.nulldreams.delegateadapter.model.Status;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
 
     private RecyclerView mRv;
 
     private DelegateAdapter mAdapter = null;
 
-    private User[] users = {
-            new User(R.drawable.img1, "Jack", "Jack slow f**k"),
-            new User(R.drawable.img2, "The Beatles", "Yesterday"),
-            new User(R.drawable.img3, "Michael Jackson", "Earth Song"),
-            new User(R.drawable.img4, "蒼井 そら", "复仇者之死")
-    };
-
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
+
+    private SwipeRefreshLayout mSrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        List list = new ArrayList();
-        Selector.selector(User.class, list).where(Path.with(User.class, Integer.class).methodWith("getName").methodWith("length"), Operator.OPERATOR_GT, 5)
-                .and(Path.with(User.class, String.class).methodWith("getAvatar"), Operator.OPERATOR_IS_NULL).map(new Action<User>() {
-            @Override
-            public void action(int index, User user) {
-                user.setDescription("This is a name length > 5 and null avatar user");
-            }
-        });
-
         mRv = (RecyclerView)findViewById(R.id.main_rv);
-        final Paint paint = new Paint(Color.LTGRAY);
-        mRv.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
-                final int count = parent.getChildCount() - 1;
-                for (int i = 0; i < count; i++) {
-                    View child = parent.getChildAt(i);
-                    c.drawLine(child.getLeft(), child.getBottom(), child.getRight(), child.getBottom(), paint);
-                }
-            }
-        });
-        mRv.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new DelegateAdapter(this);
         mRv.setAdapter(mAdapter);
 
-        addData();
+        mSrl = (SwipeRefreshLayout)findViewById(R.id.activity_main);
+        mSrl.setOnRefreshListener(this);
+
+        mSrl.post(new Runnable() {
+            @Override
+            public void run() {
+                mSrl.setRefreshing(true);
+                onRefresh();
+            }
+        });
     }
 
     @Override
@@ -88,15 +69,39 @@ public class MainActivity extends AppCompatActivity {
             it.setData(Uri.parse("https://github.com/boybeak/DelegateAdapter"));
             startActivity(it);
             return true;
+        } else if (item.getItemId() == R.id.add) {
+            final EditText editTv = new EditText(this);
+            editTv.setHint("add content here");
+            new AlertDialog.Builder(this)
+                    .setView(editTv)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            mAdapter.add(0, new StatusDelegate(new Status(
+                                    DataManager.getInstance().getMe(),
+                                    editTv.getText().toString(),
+                                    true
+                                    )
+                            )).autoNotify();
+                        }
+                    }).show();
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void addData () {
-        for (int i = 0; i < 10; i++) {
-            mAdapter.add(new UserDelegate(users[i % users.length]));
-        }
-//        mAdapter.add(new TextDelegate(0 + ""));
-        mAdapter.notifyDataSetChanged();
+    @Override
+    public void onRefresh() {
+        DataManager.getInstance().getStatus(new DataManager.OnStatusListener() {
+            @Override
+            public void onGet(List<Status> statuses) {
+                mAdapter.addAll(statuses, new DelegateParser<Status>() {
+                    @Override
+                    public LayoutImpl parse(DelegateAdapter adapter, Status data) {
+                        return new StatusDelegate(data);
+                    }
+                }).autoNotify();
+                mSrl.setRefreshing(false);
+            }
+        });
     }
 }

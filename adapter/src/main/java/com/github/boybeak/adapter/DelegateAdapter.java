@@ -252,8 +252,9 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
     }
 
     public DataChange addAll(@NonNull Collection<? extends LayoutImpl> list) {
+        int sizeBefore = getItemCount();
         mDelegateImplList.addAll(list);
-        return new DataChange(this, 0, list.size(), DataChange.TYPE_ITEM_RANGE_INSERTED);
+        return new DataChange(this, sizeBefore, list.size(), DataChange.TYPE_ITEM_RANGE_INSERTED);
     }
 
     public DataChange addAll(int position, @NonNull Collection<? extends LayoutImpl> list) {
