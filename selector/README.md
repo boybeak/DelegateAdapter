@@ -5,7 +5,7 @@ This is a very simple library for querying or modifying a List. You can query or
 ## Install
 
 ```groovy
-compile 'com.github.boybeak:selector:0.3.0'
+compile 'com.github.boybeak:selector:0.3.1'
 ```
 
 ## Usage
