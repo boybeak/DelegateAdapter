@@ -592,14 +592,20 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         return count;
     }
 
-    public boolean remove (LayoutImpl impl) {
-        return mDelegateImplList.remove(impl);
+    public DataChange remove (LayoutImpl impl) {
+        int index = mDelegateImplList.indexOf(impl);
+
+        if (index >= 0) {
+            mDelegateImplList.remove(impl);
+            return new DataChange(this, index, DataChange.TYPE_ITEM_REMOVED);
+        }
+        return DataChange.doNothingInstance();
     }
 
-    public boolean remove (LayoutImpl impl, @NonNull DoAfter after) {
-        boolean result = remove(impl);
+    public DataChange remove (LayoutImpl impl, @NonNull DoAfter after) {
+        DataChange change = remove(impl);
         after.doAfter(this);
-        return result;
+        return change;
     }
 
     public int actionWith (@NonNull DelegateAction action) {
