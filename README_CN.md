@@ -8,7 +8,7 @@
 <dependency>
   <groupId>com.github.boybeak</groupId>
   <artifactId>adapter</artifactId>
-  <version>2.0.6</version>
+  <version>2.1.0</version>
   <type>pom</type>
 </dependency>
 ```
@@ -16,12 +16,12 @@
 或者通过Gradle:
 
 ```groovy
-compile 'com.github.boybeak:adapter:2.0.6'
+compile 'com.github.boybeak:adapter:2.1.0'
 ```
 
-# What's new in version 2.0.x
+# What's new in version 2.1.x
 
-1. 通过[Selector](https://github.com/boybeak/DelegateAdapter/tree/master/selector)的支持, 增加了一种极为便捷的从DelegateAdapter中查询数据的方法. 我强烈建议你使用这种方法.
+1. 通过[TouchableAdapter](https://github.com/boybeak/DelegateAdapter/tree/master/adapter/src/main/java/com/github/boybeak/adapter/touch/TouchableAdapter.java)与[SimpleItemTouchHelperCallback](https://github.com/boybeak/DelegateAdapter/tree/master/adapter/src/main/java/com/github/boybeak/adapter/touch/SimpleItemTouchHelperCallback.java)两个类, 增加了滑动删除与长按拖动切换. [详情参见](https://github.com/boybeak/DelegateAdapter#item swap and delete)
 
 # Usage
 
@@ -402,5 +402,18 @@ mAdapter.addAll(Data.getTwitterList(v), new DelegateParser<Twitter>() {
                         return new TwitterDelegate(data);
                     }
                 }).autoNotify();
+```
+
+## Item swap and delete
+
+```java
+mRv = (RecyclerView)findViewById(R.id.main_rv);
+
+mAdapter = new TouchableAdapter(this);
+mRv.setAdapter(mAdapter);
+
+ItemTouchHelper helper = new ItemTouchHelper(new SimpleItemTouchHelperCallback(mAdapter,
+                ItemTouchHelper.UP|ItemTouchHelper.DOWN, ItemTouchHelper.END));
+helper.attachToRecyclerView(mRv);
 ```
 

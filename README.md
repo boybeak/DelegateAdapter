@@ -16,7 +16,7 @@ Grab via Meven:
 <dependency>
   <groupId>com.github.boybeak</groupId>
   <artifactId>adapter</artifactId>
-  <version>2.0.6</version>
+  <version>2.1.0</version>
   <type>pom</type>
 </dependency>
 ```
@@ -24,12 +24,12 @@ Grab via Meven:
 or Gradle:
 
 ```groovy
-compile 'com.github.boybeak:adapter:2.0.6'
+compile 'com.github.boybeak:adapter:2.1.0'
 ```
 
 # What's new in version 2.0.x
 
-1. Querying data with conditions from DelegateAdaper is now very convenient with the [Selector](https://github.com/boybeak/DelegateAdapter/tree/master/selector) library support. I strongly recommend you to use this feature.
+1. Add item swipe delete and long press drag swap with 2 classes, [TouchableAdapter](https://github.com/boybeak/DelegateAdapter/tree/master/adapter/src/main/java/com/github/boybeak/adapter/touch/TouchableAdapter.java) and [SimpleItemTouchHelperCallback](https://github.com/boybeak/DelegateAdapter/tree/master/adapter/src/main/java/com/github/boybeak/adapter/touch/SimpleItemTouchHelperCallback.java). see [detail](https://github.com/boybeak/DelegateAdapter#item swap and delete)
 
 
 You can read a full [release note](https://github.com/boybeak/DelegateAdapter/blob/master/ReleaseNote.md).
@@ -407,5 +407,18 @@ mAdapter.addAll(Data.getTwitterList(v), new DelegateParser<Twitter>() {
                         return new TwitterDelegate(data);
                     }
                 }).autoNotify();
+```
+
+## Item swap and delete
+
+```java
+mRv = (RecyclerView)findViewById(R.id.main_rv);
+
+mAdapter = new TouchableAdapter(this);
+mRv.setAdapter(mAdapter);
+
+ItemTouchHelper helper = new ItemTouchHelper(new SimpleItemTouchHelperCallback(mAdapter,
+                ItemTouchHelper.UP|ItemTouchHelper.DOWN, ItemTouchHelper.END));
+helper.attachToRecyclerView(mRv);
 ```
 

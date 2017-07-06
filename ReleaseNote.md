@@ -18,3 +18,7 @@
 1. Add a very strong way to query data with conditions from DelegateAdapter with the library [Selector](https://github.com/boybeak/DelegateAdapter/tree/master/selector).
 2. Fix some bugs.
 
+
+**2.1.0**
+
+1. Add item swipe delete and long press drag swap with 2 classes, [TouchableAdapter](https://github.com/boybeak/DelegateAdapter/tree/master/adapter/src/main/java/com/github/boybeak/adapter/touch/TouchableAdapter.java) and [SimpleItemTouchHelperCallback](https://github.com/boybeak/DelegateAdapter/tree/master/adapter/src/main/java/com/github/boybeak/adapter/touch/SimpleItemTouchHelperCallback.java).
