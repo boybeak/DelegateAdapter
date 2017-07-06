@@ -21,7 +21,7 @@ compile 'com.github.boybeak:adapter:2.1.0'
 
 # What's new in version 2.1.x
 
-1. 通过[TouchableAdapter](https://github.com/boybeak/DelegateAdapter/tree/master/adapter/src/main/java/com/github/boybeak/adapter/touch/TouchableAdapter.java)与[SimpleItemTouchHelperCallback](https://github.com/boybeak/DelegateAdapter/tree/master/adapter/src/main/java/com/github/boybeak/adapter/touch/SimpleItemTouchHelperCallback.java)两个类, 增加了滑动删除与长按拖动切换. [详情参见](https://github.com/boybeak/DelegateAdapter#item swap and delete)
+1. 通过[TouchableAdapter](https://github.com/boybeak/DelegateAdapter/tree/master/adapter/src/main/java/com/github/boybeak/adapter/touch/TouchableAdapter.java)与[SimpleItemTouchHelperCallback](https://github.com/boybeak/DelegateAdapter/tree/master/adapter/src/main/java/com/github/boybeak/adapter/touch/SimpleItemTouchHelperCallback.java)两个类, 增加了滑动删除与长按拖动切换. [详情参见](https://github.com/boybeak/DelegateAdapter/blob/master/README.md#item-swap-and-delete)
 
 # Usage
 

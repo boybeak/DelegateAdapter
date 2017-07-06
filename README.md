@@ -29,7 +29,7 @@ compile 'com.github.boybeak:adapter:2.1.0'
 
 # What's new in version 2.0.x
 
-1. Add item swipe delete and long press drag swap with 2 classes, [TouchableAdapter](https://github.com/boybeak/DelegateAdapter/tree/master/adapter/src/main/java/com/github/boybeak/adapter/touch/TouchableAdapter.java) and [SimpleItemTouchHelperCallback](https://github.com/boybeak/DelegateAdapter/tree/master/adapter/src/main/java/com/github/boybeak/adapter/touch/SimpleItemTouchHelperCallback.java). see [detail](https://github.com/boybeak/DelegateAdapter#item swap and delete)
+1. Add item swipe delete and long press drag swap with 2 classes, [TouchableAdapter](https://github.com/boybeak/DelegateAdapter/tree/master/adapter/src/main/java/com/github/boybeak/adapter/touch/TouchableAdapter.java) and [SimpleItemTouchHelperCallback](https://github.com/boybeak/DelegateAdapter/tree/master/adapter/src/main/java/com/github/boybeak/adapter/touch/SimpleItemTouchHelperCallback.java). see [detail](https://github.com/boybeak/DelegateAdapter/blob/master/README.md#item-swap-and-delete)
 
 
 You can read a full [release note](https://github.com/boybeak/DelegateAdapter/blob/master/ReleaseNote.md).
