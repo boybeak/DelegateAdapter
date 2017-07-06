@@ -9,15 +9,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.TextView;
 
-import com.github.boybeak.adapter.DataChange;
 import com.github.boybeak.adapter.DelegateAdapter;
 import com.github.boybeak.adapter.DelegateParser;
 import com.github.boybeak.adapter.impl.LayoutImpl;
+import com.github.boybeak.adapter.touch.SimpleItemTouchHelperCallback;
+import com.github.boybeak.adapter.touch.TouchableAdapter;
 import com.nulldreams.delegateadapter.adapter.delegate.StatusDelegate;
 import com.nulldreams.delegateadapter.model.Status;
 
@@ -25,9 +26,11 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
 
+    private static final String TAG = MainActivity.class.getSimpleName();
+
     private RecyclerView mRv;
 
-    private DelegateAdapter mAdapter = null;
+    private TouchableAdapter mAdapter = null;
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -41,8 +44,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         setContentView(R.layout.activity_main);
 
         mRv = (RecyclerView)findViewById(R.id.main_rv);
-        mAdapter = new DelegateAdapter(this);
+
+        mAdapter = new TouchableAdapter(this);
         mRv.setAdapter(mAdapter);
+
+        ItemTouchHelper helper = new ItemTouchHelper(new SimpleItemTouchHelperCallback(mAdapter,
+                ItemTouchHelper.UP|ItemTouchHelper.DOWN, ItemTouchHelper.END));
+        helper.attachToRecyclerView(mRv);
 
         mSrl = (SwipeRefreshLayout)findViewById(R.id.activity_main);
         mSrl.setOnRefreshListener(this);
@@ -74,6 +82,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             editTv.setHint("add content here");
             new AlertDialog.Builder(this)
                     .setView(editTv)
+                    .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    })
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -88,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     public void onRefresh() {
