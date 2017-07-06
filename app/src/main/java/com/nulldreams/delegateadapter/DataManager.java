@@ -44,7 +44,7 @@ public class DataManager {
             @Override
             public void run() {
                 List<Status> statuses = new ArrayList<Status>();
-                int size = new Random().nextInt(3) + 1;
+                int size = new Random().nextInt(5) + 1;
                 for (int i = 0; i < size; i++) {
                     Status status = new Status(users[i % users.length], contents[i % contents.length]);
                     statuses.add(status);

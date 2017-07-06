@@ -16,7 +16,7 @@ Grab via Meven:
 <dependency>
   <groupId>com.github.boybeak</groupId>
   <artifactId>adapter</artifactId>
-  <version>2.1.0</version>
+  <version>2.1.1</version>
   <type>pom</type>
 </dependency>
 ```
@@ -24,7 +24,7 @@ Grab via Meven:
 or Gradle:
 
 ```groovy
-compile 'com.github.boybeak:adapter:2.1.0'
+compile 'com.github.boybeak:adapter:2.1.1'
 ```
 
 # What's new in version 2.0.x
