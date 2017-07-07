@@ -70,6 +70,9 @@ install {
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
     classifier = 'sources'
+
+    exclude "**/R.class"
+    exclude "**/BuildConfig.class"
 }
 
 task javadoc(type: Javadoc) {
@@ -78,11 +81,17 @@ task javadoc(type: Javadoc) {
     options.encoding "UTF-8"
     options.charSet 'UTF-8'
     failOnError false
+
+    exclude "**/R.class"
+    exclude "**/BuildConfig.class"
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
+
+    exclude "**/R.class"
+    exclude "**/BuildConfig.class"
 }
 
 artifacts {
@@ -92,8 +101,7 @@ artifacts {
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 bintray {
-    /*properties.getProperty("bintray.user")*/
-    /*properties.getProperty("bintray.apikey")*/
+
     user = properties.getProperty("bintray.user")
     key = properties.getProperty("bintray.apikey")
     configurations = ['archives']
