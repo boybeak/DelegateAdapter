@@ -220,8 +220,9 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
     }
 
     public DataChange add(DelegateImpl impl) {
+        int sizeBefore = getItemCount();
         mDelegateImplList.add(impl);
-        return new DataChange(this, 0, DataChange.TYPE_ITEM_INSERTED);
+        return new DataChange(this, sizeBefore, DataChange.TYPE_ITEM_INSERTED);
     }
 
     public <T> DataChange add (T t, DelegateListParser<T> parser) {

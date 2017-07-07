@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            mAdapter.add(0, new StatusDelegate(new Status(
+                            mAdapter.add(new StatusDelegate(new Status(
                                     DataManager.getInstance().getMe(),
                                     editTv.getText().toString(),
                                     true
