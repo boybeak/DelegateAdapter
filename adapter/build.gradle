@@ -10,8 +10,8 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 211
-        versionName "2.1.1"
+        versionCode 212
+        versionName "2.1.2"
     }
     buildTypes {
         release {
@@ -32,7 +32,7 @@ dependencies {
     compile project(':selector')
 }
 
-version = "2.1.1"
+version = "2.1.2"
 def siteUrl = 'https://github.com/boybeak/DelegateAdapter'
 def gitUrl = 'https://github.com/boybeak/DelegateAdapter.git'
 group = "com.github.boybeak"
