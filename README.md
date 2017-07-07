@@ -27,7 +27,7 @@ or Gradle:
 compile 'com.github.boybeak:adapter:2.1.2'
 ```
 
-# What's new in version 2.0.x
+# What's new in version 2.1.x
 
 1. Add item swipe delete and long press drag swap with 2 classes, [TouchableAdapter](https://github.com/boybeak/DelegateAdapter/tree/master/adapter/src/main/java/com/github/boybeak/adapter/touch/TouchableAdapter.java) and [SimpleItemTouchHelperCallback](https://github.com/boybeak/DelegateAdapter/tree/master/adapter/src/main/java/com/github/boybeak/adapter/touch/SimpleItemTouchHelperCallback.java). see [detail](https://github.com/boybeak/DelegateAdapter/blob/master/README.md#item-swap-and-delete)
 
