@@ -26,11 +26,11 @@ public class StatusHolder extends AbsViewHolder<StatusDelegate> {
     public StatusHolder(View itemView) {
         super(itemView);
 
-        mProfileIv = (ImageView)findViewById(R.id.avatar);
-        mNameTv = (TextView)findViewById(R.id.name);
-        mDescTv = (TextView)findViewById(R.id.desc);
-        mContentTv = (TextView)findViewById(R.id.status_content);
-        mDelBtn = (Button)findViewById(R.id.status_delete);
+        mProfileIv = findViewById(R.id.avatar);
+        mNameTv = findViewById(R.id.name);
+        mDescTv = findViewById(R.id.desc);
+        mContentTv = findViewById(R.id.status_content);
+        mDelBtn = findViewById(R.id.status_delete);
     }
 
     @Override

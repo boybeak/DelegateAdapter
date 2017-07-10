@@ -41,11 +41,11 @@ public abstract class AbsViewHolder<T> extends RecyclerView.ViewHolder {
         return false;
     }
 
-    public final View findViewById (int id) {
+    public final <V extends View> V findViewById (int id) {
         return itemView.findViewById(id);
     }
 
-    public final View findViewByTag (Object tag) {
+    public final <V extends View> V findViewByTag (Object tag) {
         return itemView.findViewWithTag(tag);
     }
 

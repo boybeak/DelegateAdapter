@@ -75,6 +75,13 @@ task sourcesJar(type: Jar) {
     exclude "**/BuildConfig.class"
 }
 
+task jar(type: Jar) {
+    from 'build/intermediates/classes/release'
+    exclude '**/BuildConfig.class'
+    exclude '**/R.class'
+
+}
+
 task javadoc(type: Javadoc) {
     source = android.sourceSets.main.java.srcDirs
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
@@ -82,19 +89,20 @@ task javadoc(type: Javadoc) {
     options.charSet 'UTF-8'
     failOnError false
 
-    exclude "**/R.class"
-    exclude "**/BuildConfig.class"
+    exclude "**/R.java"
+    exclude "**/BuildConfig.java"
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
 
-    exclude "**/R.class"
-    exclude "**/BuildConfig.class"
+    exclude "**/R.java"
+    exclude "**/BuildConfig.java"
 }
 
 artifacts {
+    archives jar
     archives javadocJar
     archives sourcesJar
 }
