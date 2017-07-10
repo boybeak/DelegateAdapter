@@ -70,16 +70,6 @@ install {
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
     classifier = 'sources'
-
-    exclude "**/R.class"
-    exclude "**/BuildConfig.class"
-}
-
-task jar(type: Jar) {
-    from 'build/intermediates/classes/release'
-    exclude '**/BuildConfig.class'
-    exclude '**/R.class'
-
 }
 
 task javadoc(type: Javadoc) {
@@ -88,21 +78,14 @@ task javadoc(type: Javadoc) {
     options.encoding "UTF-8"
     options.charSet 'UTF-8'
     failOnError false
-
-    exclude "**/R.java"
-    exclude "**/BuildConfig.java"
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
-
-    exclude "**/R.java"
-    exclude "**/BuildConfig.java"
 }
 
 artifacts {
-    archives jar
     archives javadocJar
     archives sourcesJar
 }

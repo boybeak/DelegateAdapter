@@ -10,21 +10,11 @@ The most amazing thing is binding multi types data and ViewHolder with Injection
 [Selector](https://github.com/boybeak/DelegateAdapter/tree/master/selector)
 
 # Download
-Grab via Meven:
 
-```xml
-<dependency>
-  <groupId>com.github.boybeak</groupId>
-  <artifactId>adapter</artifactId>
-  <version>2.1.4</version>
-  <type>pom</type>
-</dependency>
-```
-
-or Gradle:
+Grab via Gradle:
 
 ```groovy
-compile 'com.github.boybeak:adapter:2.1.4'
+compile 'com.github.boybeak:adapter:2.1.4@aar'
 ```
 
 # What's new in version 2.1.x

@@ -2,21 +2,10 @@
 这是一个改进的RecyclerView框架下的适配Adapter库。使用这个库，在大多数情况下，你都不需要再写自定义的适配器Adapter类了。
 # Download
 
-通过Meven使用:
-
-```xml
-<dependency>
-  <groupId>com.github.boybeak</groupId>
-  <artifactId>adapter</artifactId>
-  <version>2.1.4</version>
-  <type>pom</type>
-</dependency>
-```
-
-或者通过Gradle:
+通过Gradle:
 
 ```groovy
-compile 'com.github.boybeak:adapter:2.1.4'
+compile 'com.github.boybeak:adapter:2.1.4@aar'
 ```
 
 # What's new in version 2.1.x
