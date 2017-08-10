@@ -27,7 +27,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
 //    compile "com.android.support:appcompat-v7:$rootProject.supportLibVersion"
     compile "com.android.support:recyclerview-v7:$rootProject.supportLibVersion"
-    provided "com.android.support:support-annotations:$rootProject.supportLibVersion"
+    compile "com.android.support:support-annotations:$rootProject.supportLibVersion"
 //    provided "com.android.support:support-v4:$rootProject.supportLibVersion"
     compile project(':selector')
 }

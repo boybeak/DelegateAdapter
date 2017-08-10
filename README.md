@@ -1,3 +1,5 @@
+[ ![Download](https://api.bintray.com/packages/boybeak/nulldreams/adapter/images/download.svg) ](https://bintray.com/boybeak/nulldreams/adapter/_latestVersion)
+
 # DelegateAdapter
 
 
