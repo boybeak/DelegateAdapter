@@ -14,7 +14,7 @@ The most amazing thing is binding multi types data and ViewHolder with Injection
 Grab via Gradle:
 
 ```groovy
-compile 'com.github.boybeak:adapter:2.1.4@aar'
+compile 'com.github.boybeak:adapter:2.1.5@aar'
 ```
 
 # What's new in version 2.1.x

@@ -156,6 +156,13 @@ public enum Operator {
         <V> boolean accept(V v1, V ... v2) {
             return v1 == null;
         }
+    },
+
+    OPERATOR_IS_NOT_NULL {
+        @Override
+        <V> boolean accept(V v1, V... v2) {
+            return v1 != null;
+        }
     };
 
     <V> boolean accept (V v1, V ... v2) {
