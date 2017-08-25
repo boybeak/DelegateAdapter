@@ -16,12 +16,15 @@ The most amazing thing is binding multi types data and ViewHolder with Injection
 Grab via Gradle:
 
 ```groovy
-compile 'com.github.boybeak:adapter:2.1.5@aar'
+compile 'com.github.boybeak:adapter:2.2.0'
 ```
+If you need selector operations, add this in your build.gradle
+```groovy
+compile 'com.github.boybeak:selector:1.0.0'
+```
+# What's new in version 2.2.0
 
-# What's new in version 2.1.x
-
-1. Add item swipe delete and long press drag swap with 2 classes, [TouchableAdapter](https://github.com/boybeak/DelegateAdapter/tree/master/adapter/src/main/java/com/github/boybeak/adapter/touch/TouchableAdapter.java) and [SimpleItemTouchHelperCallback](https://github.com/boybeak/DelegateAdapter/tree/master/adapter/src/main/java/com/github/boybeak/adapter/touch/SimpleItemTouchHelperCallback.java). see [detail](https://github.com/boybeak/DelegateAdapter/blob/master/README.md#item-swap-and-delete)
+1. [DelegateAdapter](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/github/boybeak/adapter/DelegateAdapter.java) can hold some states via bundle() method, such as checkable, selectable etc.
 
 
 You can read a full [release note](https://github.com/boybeak/DelegateAdapter/blob/master/ReleaseNote.md).

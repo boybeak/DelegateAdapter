@@ -95,6 +95,9 @@ public enum Operator {
             return !list.contains(v1);
         }
     },
+    /**
+     * data in ()
+     */
     OPERATOR_BETWEEN {
         @Override
         <V> boolean accept(V v1, V ... v2) {
@@ -109,6 +112,9 @@ public enum Operator {
             return false;
         }
     },
+    /**
+     * data in [)
+     */
     OPERATOR_I_BETWEEN {
         @Override
         <V> boolean accept(V v1, V ... v2) {
@@ -123,6 +129,9 @@ public enum Operator {
             return false;
         }
     },
+    /**
+     * data in (]
+     */
     OPERATOR_BETWEEN_I {
         @Override
         <V> boolean accept(V v1, V ... v2) {
@@ -137,6 +146,9 @@ public enum Operator {
             return false;
         }
     },
+    /**
+     * data in []
+     */
     OPERATOR_I_BETWEEN_I {
         @Override
         <V> boolean accept(V v1, V ... v2) {

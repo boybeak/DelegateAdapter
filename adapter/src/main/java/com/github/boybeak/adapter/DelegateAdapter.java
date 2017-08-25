@@ -1,6 +1,7 @@
 package com.github.boybeak.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.widget.RecyclerView;
@@ -40,14 +41,28 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
     private List<LayoutImpl> mDelegateImplList = null;  //DataSource
     private SparseArrayCompat<Class<? extends AbsViewHolder>> mTypeHolderMap = null; // key -- layout, value -- holderClass
 
+    private Bundle mBundle;
+
     public DelegateAdapter (Context context) {
+        this(context, null);
+    }
+
+    public DelegateAdapter (Context context, Bundle bundle) {
         mContext = context;
         mDelegateImplList = new ArrayList<>();
         mTypeHolderMap = new SparseArrayCompat<Class<? extends AbsViewHolder>>();
+        mBundle = bundle;
     }
 
     public Context getContext () {
         return mContext;
+    }
+
+    public Bundle bundle () {
+        if (mBundle == null) {
+            mBundle = new Bundle();
+        }
+        return mBundle;
     }
 
     @Override
@@ -187,22 +202,22 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
 
     @Override
     public void onViewAttachedToWindow(AbsViewHolder holder) {
-        holder.onViewAttachedToWindow(mContext);
+        holder.onViewAttachedToWindow(this, mContext);
     }
 
     @Override
     public void onViewDetachedFromWindow(AbsViewHolder holder) {
-        holder.onViewDetachedFromWindow(mContext);
+        holder.onViewDetachedFromWindow(this, mContext);
     }
 
     @Override
     public void onViewRecycled(AbsViewHolder holder) {
-        holder.onViewRecycled(mContext);
+        holder.onViewRecycled(this, mContext);
     }
 
     @Override
     public boolean onFailedToRecycleView(AbsViewHolder holder) {
-        return holder.onFailedToRecycleView(mContext);
+        return holder.onFailedToRecycleView(this, mContext);
     }
 
     public <T> ListSelector<T> selector (Class<T> tClass) {

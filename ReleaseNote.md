@@ -22,3 +22,7 @@
 **2.1.0**
 
 1. Add item swipe delete and long press drag swap with 2 classes, [TouchableAdapter](https://github.com/boybeak/DelegateAdapter/tree/master/adapter/src/main/java/com/github/boybeak/adapter/touch/TouchableAdapter.java) and [SimpleItemTouchHelperCallback](https://github.com/boybeak/DelegateAdapter/tree/master/adapter/src/main/java/com/github/boybeak/adapter/touch/SimpleItemTouchHelperCallback.java).
+
+**2.2.0**
+
+1. [DelegateAdapter](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/github/boybeak/adapter/DelegateAdapter.java) can hold some states via bundle() method, such as checkable, selectable etc.

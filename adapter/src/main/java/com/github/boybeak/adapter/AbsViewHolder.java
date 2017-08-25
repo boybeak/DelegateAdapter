@@ -26,18 +26,18 @@ public abstract class AbsViewHolder<T> extends RecyclerView.ViewHolder {
      */
     public abstract void onBindView (Context context, T t, int position, DelegateAdapter adapter);
 
-    public void onViewAttachedToWindow (Context context) {
+    public void onViewAttachedToWindow (DelegateAdapter adapter, Context context) {
         isViewAttachedToWindow = true;
     }
 
-    public void onViewDetachedFromWindow (Context context) {
+    public void onViewDetachedFromWindow (DelegateAdapter adapter, Context context) {
         isViewAttachedToWindow = false;
     }
 
-    public void onViewRecycled (Context context) {
+    public void onViewRecycled (DelegateAdapter adapter, Context context) {
     }
 
-    public boolean onFailedToRecycleView (Context context) {
+    public boolean onFailedToRecycleView (DelegateAdapter adapter, Context context) {
         return false;
     }
 

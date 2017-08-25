@@ -19,6 +19,7 @@ import com.github.boybeak.adapter.DelegateParser;
 import com.github.boybeak.adapter.impl.LayoutImpl;
 import com.github.boybeak.adapter.touch.SimpleItemTouchHelperCallback;
 import com.github.boybeak.adapter.touch.TouchableAdapter;
+import com.github.boybeak.selector.Path;
 import com.nulldreams.delegateadapter.adapter.delegate.StatusDelegate;
 import com.nulldreams.delegateadapter.model.Status;
 
