@@ -18,7 +18,7 @@ compile 'com.github.boybeak:selector:1.0.0'
 
 # What's new in version 2.1.x
 
-1. 通过[TouchableAdapter](https://github.com/boybeak/DelegateAdapter/tree/master/adapter/src/main/java/com/github/boybeak/adapter/touch/TouchableAdapter.java)与[SimpleItemTouchHelperCallback](https://github.com/boybeak/DelegateAdapter/tree/master/adapter/src/main/java/com/github/boybeak/adapter/touch/SimpleItemTouchHelperCallback.java)两个类, 增加了滑动删除与长按拖动切换. [详情参见](https://github.com/boybeak/DelegateAdapter/blob/master/README.md#item-swap-and-delete)
+1. [DelegateAdapter](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/github/boybeak/adapter/DelegateAdapter.java)可以保存一些临时的状态变量。比如说整个列表是否处于selectable, checkable状态等。
 
 # Usage
 
