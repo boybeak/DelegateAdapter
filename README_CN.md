@@ -7,13 +7,13 @@
 通过Gradle:
 
 ```groovy
-compile 'com.github.boybeak:adapter:2.2.0'
+compile 'com.github.boybeak:adapter:2.2.1'
 ```
 
 如果你需要使用selector操作，需要添加以下引用
 
 ```groovy
-compile 'com.github.boybeak:selector:1.0.0'
+compile 'com.github.boybeak:selector:1.0.1'
 ```
 
 # What's new in version 2.1.x

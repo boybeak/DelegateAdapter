@@ -5,5 +5,5 @@ package com.github.boybeak.selector;
  */
 
 public interface Action<T> {
-    public void action (int index, T t);
+    void action (int index, T t);
 }

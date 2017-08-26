@@ -16,11 +16,11 @@ The most amazing thing is binding multi types data and ViewHolder with Injection
 Grab via Gradle:
 
 ```groovy
-compile 'com.github.boybeak:adapter:2.2.0'
+compile 'com.github.boybeak:adapter:2.2.1'
 ```
 If you need selector operations, add this in your build.gradle
 ```groovy
-compile 'com.github.boybeak:selector:1.0.0'
+compile 'com.github.boybeak:selector:1.0.1'
 ```
 # What's new in version 2.2.0
 

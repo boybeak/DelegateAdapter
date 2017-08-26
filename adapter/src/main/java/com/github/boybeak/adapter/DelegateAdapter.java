@@ -234,7 +234,7 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         return new DataChange(this, 0, count, DataChange.TYPE_ITEM_RANGE_REMOVED);
     }
 
-    public DataChange add(DelegateImpl impl) {
+    public DataChange add(LayoutImpl impl) {
         int sizeBefore = getItemCount();
         mDelegateImplList.add(impl);
         return new DataChange(this, sizeBefore, DataChange.TYPE_ITEM_INSERTED);
@@ -248,14 +248,14 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         return addAll(position, parser.parse(this, t));
     }
 
-    public DataChange addIfNotExist (@NonNull DelegateImpl impl) {
+    public DataChange addIfNotExist (@NonNull LayoutImpl impl) {
         if (contains(impl)) {
             return DataChange.doNothingInstance();
         }
         return add(impl);
     }
 
-    public DataChange addIfNotExist (int position, @NonNull DelegateImpl impl) {
+    public DataChange addIfNotExist (int position, @NonNull LayoutImpl impl) {
         if (contains(impl)) {
             return DataChange.doNothingInstance();
         }
@@ -512,7 +512,7 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         return -1;
     }
 
-    public DataChange addAtLast (DelegateFilter filter, DelegateImpl delegate) {
+    public DataChange addAtLast (DelegateFilter filter, LayoutImpl delegate) {
         final int index = lastIndexOf(filter);
         if (index >= 0) {
             return add(index, delegate);
@@ -521,7 +521,7 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         }
     }
 
-    public DataChange addAllAtLast (DelegateFilter filter, Collection<DelegateImpl> delegate) {
+    public DataChange addAllAtLast (DelegateFilter filter, Collection<LayoutImpl> delegate) {
         final int index = lastIndexOf(filter);
         if (index >= 0) {
             return addAll(index, delegate);
@@ -530,7 +530,7 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         }
     }
 
-    public DataChange addAtFirst (DelegateFilter filter, DelegateImpl delegate) {
+    public DataChange addAtFirst (DelegateFilter filter, LayoutImpl delegate) {
         final int index = firstIndexOf(filter);
         if (index >= 0) {
             return add(index, delegate);
@@ -539,7 +539,7 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         }
     }
 
-    public DataChange addAllAtFirst (DelegateFilter filter, Collection<DelegateImpl> delegate) {
+    public DataChange addAllAtFirst (DelegateFilter filter, Collection<LayoutImpl> delegate) {
         final int index = firstIndexOf(filter);
         if (index >= 0) {
             return addAll(index, delegate);
@@ -657,18 +657,18 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         return count;
     }
 
-    public boolean contains (DelegateImpl delegate) {
+    public boolean contains (LayoutImpl delegate) {
         return mDelegateImplList.contains(delegate);
     }
 
-    public boolean endWith (DelegateImpl delegate) {
+    public boolean endWith (LayoutImpl delegate) {
         if (mDelegateImplList.isEmpty()) {
             return false;
         }
         return mDelegateImplList.get(getItemCount() - 1).equals(delegate);
     }
 
-    public boolean startWith (DelegateImpl delegate) {
+    public boolean startWith (LayoutImpl delegate) {
         if (mDelegateImplList.isEmpty()) {
             return false;
         }
