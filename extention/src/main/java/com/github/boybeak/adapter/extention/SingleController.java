@@ -13,7 +13,7 @@ public class SingleController implements Controller {
 
     private Checkable mCurrentCheckable;
 
-    private OnSingleListener onSingleListener;
+    private OnSingleCheckedListener onSingleListener;
 
     public SingleController(DelegateAdapter adapter) {
         this.mAdapter = adapter;
@@ -40,11 +40,15 @@ public class SingleController implements Controller {
         mCurrentCheckable = checkable;
     }
 
-    public void setOnSingleListener(OnSingleListener onSingleListener) {
+    public Checkable getCheckedOne () {
+        return mCurrentCheckable;
+    }
+
+    public void setOnSingleCheckedListener(OnSingleCheckedListener onSingleListener) {
         this.onSingleListener = onSingleListener;
     }
 
-    public interface OnSingleListener {
+    public interface OnSingleCheckedListener {
         void onSingleChecked (Checkable newCheckable, Checkable oldCheckable);
     }
 }

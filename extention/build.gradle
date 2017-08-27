@@ -2,7 +2,6 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
@@ -10,8 +9,11 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 240
-        versionName "2.4.0"
+        versionCode 100
+        versionName "1.0.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
     buildTypes {
         release {
@@ -19,18 +21,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
     testCompile 'junit:junit:4.12'
-    //    compile "com.android.support:appcompat-v7:$rootProject.supportLibVersion"
-    compile "com.android.support:recyclerview-v7:$rootProject.supportLibVersion"
-    compile "com.android.support:support-annotations:$rootProject.supportLibVersion"
-    //    provided "com.android.support:support-v4:$rootProject.supportLibVersion"
-    compile 'com.github.boybeak:selector:1.1.4'
+    compile project(':adapter')
 }
+
 
 version = android.defaultConfig.versionName
 def siteUrl = 'https://github.com/boybeak/DelegateAdapter'
@@ -100,7 +101,7 @@ bintray {
     configurations = ['archives']
     pkg {
         repo = "nulldreams"
-        name = "adapter"                // project name in jcenter
+        name = "adapter-extention"                // project name in jcenter
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ["Apache-2.0"]
@@ -108,4 +109,3 @@ bintray {
         publicDownloadNumbers = true
     }
 }
-

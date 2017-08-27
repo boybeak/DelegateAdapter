@@ -15,7 +15,7 @@ public class MultipleController implements Controller {
 
     private DelegateAdapter mAdapter;
 
-    private OnMultipleListener onMultipleListener;
+    private OnMultipleCheckedListener onMultipleListener;
 
     public MultipleController(DelegateAdapter adapter) {
         this.mAdapter = adapter;
@@ -77,6 +77,14 @@ public class MultipleController implements Controller {
         return allCheckableCount == uncheckedCount;
     }
 
+    public List<Checkable> getAllCheckedOnes () {
+        return mAdapter.selector(Checkable.class).where(
+                Path.with(Checkable.class, Boolean.class).methodWith("isChecked"),
+                Operator.OPERATOR_EQUAL,
+                true
+        ).findAll();
+    }
+
     @Override
     public void check(Checkable checkable) {
         checkable.setChecked(!checkable.isChecked());
@@ -85,11 +93,11 @@ public class MultipleController implements Controller {
         }
     }
 
-    public void setOnMultipleListener(OnMultipleListener onMultipleListener) {
+    public void setOnMultipleCheckedListener(OnMultipleCheckedListener onMultipleListener) {
         this.onMultipleListener = onMultipleListener;
     }
 
-    public interface OnMultipleListener {
+    public interface OnMultipleCheckedListener {
         void onCheckChanged (Checkable checkable, boolean isAllChecked);
         void onAllChecked (List<Checkable> checkables);
         void onAllUnchecked (List<Checkable> checkables);

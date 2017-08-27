@@ -14,9 +14,6 @@ import com.github.boybeak.adapter.annotation.DelegateInfo;
 import com.github.boybeak.adapter.annotation.HolderClass;
 import com.github.boybeak.adapter.annotation.LayoutID;
 import com.github.boybeak.adapter.annotation.NullHolder;
-import com.github.boybeak.adapter.extention.Controller;
-import com.github.boybeak.adapter.extention.MultipleController;
-import com.github.boybeak.adapter.extention.SingleController;
 import com.github.boybeak.adapter.impl.DelegateImpl;
 import com.github.boybeak.adapter.impl.LayoutImpl;
 import com.github.boybeak.selector.ListSelector;
@@ -46,15 +43,17 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
 
     private Bundle mBundle;
 
-    private Controller mController;
-
     public DelegateAdapter (Context context) {
         this(context, null);
     }
 
     public DelegateAdapter (Context context, Bundle bundle) {
+        this (context, bundle, new ArrayList<LayoutImpl>());
+    }
+
+    public DelegateAdapter (Context context, Bundle bundle, List<LayoutImpl> dataLayoutList) {
         mContext = context;
-        mDelegateImplList = new ArrayList<>();
+        mDelegateImplList = dataLayoutList;
         mTypeHolderMap = new SparseArrayCompat<Class<? extends AbsViewHolder>>();
         mBundle = bundle;
     }
@@ -225,6 +224,12 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         return holder.onFailedToRecycleView(this, mContext);
     }
 
+    /**
+     * return a very powerful query tool instance of {@link Selector}
+     * @param tClass the item's class contains in this DelegateAdapter.
+     * @param <T>
+     * @return A {@link Selector} instance for querying data
+     */
     public <T> ListSelector<T> selector (Class<T> tClass) {
         return Selector.selector(tClass, mDelegateImplList);
     }
@@ -757,44 +762,6 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
             }
         }
         return null;
-    }
-
-    public SingleController singleControl () {
-        if (mController != null && mController instanceof SingleController) {
-            return (SingleController)mController;
-        }
-        SingleController singleController = new SingleController(this);
-        mController = singleController;
-        notifyDataSetChanged();
-        return singleController;
-    }
-
-    public MultipleController multipleControl () {
-        if (mController != null && mController instanceof SingleController) {
-            return (MultipleController)mController;
-        }
-        MultipleController multipleController = new MultipleController(this);
-        mController = multipleController;
-        notifyDataSetChanged();
-        return multipleController;
-    }
-
-    public boolean isUnderControl () {
-        return mController != null;
-    }
-
-    /*private  <C extends Controller> C takeControlWith (C c) {
-        if (isUnderControl() && c.getClass().isInstance(mController)) {
-            return (C)mController;
-        }
-        mController = c;
-        notifyDataSetChanged();
-        return c;
-    }*/
-
-    public void dismissControl () {
-        mController = null;
-        notifyDataSetChanged();
     }
 
 }

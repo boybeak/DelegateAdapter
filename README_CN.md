@@ -7,8 +7,8 @@
 通过Gradle:
 
 ```groovy
-compile 'com.github.boybeak:selector:1.1.2'
-compile 'com.github.boybeak:adapter:2.3.2'
+compile 'com.github.boybeak:selector:1.1.4'
+compile 'com.github.boybeak:adapter:2.3.3'
 ```
 
 
