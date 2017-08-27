@@ -1,1 +1,1 @@
-include ':app', ':adapter', ':selector'
+include ':app', ':adapter'

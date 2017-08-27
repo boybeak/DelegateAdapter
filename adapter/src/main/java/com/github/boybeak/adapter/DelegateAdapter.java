@@ -14,6 +14,9 @@ import com.github.boybeak.adapter.annotation.DelegateInfo;
 import com.github.boybeak.adapter.annotation.HolderClass;
 import com.github.boybeak.adapter.annotation.LayoutID;
 import com.github.boybeak.adapter.annotation.NullHolder;
+import com.github.boybeak.adapter.extention.Controller;
+import com.github.boybeak.adapter.extention.MultipleController;
+import com.github.boybeak.adapter.extention.SingleController;
 import com.github.boybeak.adapter.impl.DelegateImpl;
 import com.github.boybeak.adapter.impl.LayoutImpl;
 import com.github.boybeak.selector.ListSelector;
@@ -42,6 +45,8 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
     private SparseArrayCompat<Class<? extends AbsViewHolder>> mTypeHolderMap = null; // key -- layout, value -- holderClass
 
     private Bundle mBundle;
+
+    private Controller mController;
 
     public DelegateAdapter (Context context) {
         this(context, null);
@@ -752,6 +757,44 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
             }
         }
         return null;
+    }
+
+    public SingleController singleControl () {
+        if (mController != null && mController instanceof SingleController) {
+            return (SingleController)mController;
+        }
+        SingleController singleController = new SingleController(this);
+        mController = singleController;
+        notifyDataSetChanged();
+        return singleController;
+    }
+
+    public MultipleController multipleControl () {
+        if (mController != null && mController instanceof SingleController) {
+            return (MultipleController)mController;
+        }
+        MultipleController multipleController = new MultipleController(this);
+        mController = multipleController;
+        notifyDataSetChanged();
+        return multipleController;
+    }
+
+    public boolean isUnderControl () {
+        return mController != null;
+    }
+
+    /*private  <C extends Controller> C takeControlWith (C c) {
+        if (isUnderControl() && c.getClass().isInstance(mController)) {
+            return (C)mController;
+        }
+        mController = c;
+        notifyDataSetChanged();
+        return c;
+    }*/
+
+    public void dismissControl () {
+        mController = null;
+        notifyDataSetChanged();
     }
 
 }

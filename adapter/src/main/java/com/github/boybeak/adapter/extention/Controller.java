@@ -5,4 +5,5 @@ package com.github.boybeak.adapter.extention;
  */
 
 public interface Controller {
+    void check (Checkable checkable);
 }

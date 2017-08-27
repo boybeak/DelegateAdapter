@@ -16,15 +16,12 @@ The most amazing thing is binding multi types data and ViewHolder with Injection
 Grab via Gradle:
 
 ```groovy
-compile 'com.github.boybeak:adapter:2.2.1'
+compile 'com.github.boybeak:adapter:2.3.1'
 ```
-If you need selector operations, add this in your build.gradle
-```groovy
-compile 'com.github.boybeak:selector:1.0.1'
-```
-# What's new in version 2.2.0
 
-1. [DelegateAdapter](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/github/boybeak/adapter/DelegateAdapter.java) can hold some states via bundle() method, such as checkable, selectable etc.
+# What's new in version 2.3.x
+
+1. [DelegateAdapter](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/github/boybeak/adapter/DelegateAdapter.java) supports single and multiple selection.([See Details](#Choose mode))
 
 
 You can read a full [release note](https://github.com/boybeak/DelegateAdapter/blob/master/ReleaseNote.md).
@@ -417,3 +414,26 @@ ItemTouchHelper helper = new ItemTouchHelper(new SimpleItemTouchHelperCallback(m
 helper.attachToRecyclerView(mRv);
 ```
 
+## Choose mode
+
+Your data or delegate item must implements Checkable.
+
+for single choose:
+
+```java
+adapter.singleControl();
+```
+
+for multiple choose:
+
+```java
+adapter.multipleControl();
+```
+
+After this, the DelegateAdapter is **underControl** mode. And this method returns Controller instance. You can set some callbacks for this instance. 
+
+```java
+adapter.dismissControl();
+```
+
+Exit the choose mode.

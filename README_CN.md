@@ -7,18 +7,14 @@
 通过Gradle:
 
 ```groovy
-compile 'com.github.boybeak:adapter:2.2.1'
+compile 'com.github.boybeak:adapter:2.3.1'
 ```
 
-如果你需要使用selector操作，需要添加以下引用
 
-```groovy
-compile 'com.github.boybeak:selector:1.0.1'
-```
 
-# What's new in version 2.1.x
+# What's new in version 2.3.x
 
-1. [DelegateAdapter](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/github/boybeak/adapter/DelegateAdapter.java)可以保存一些临时的状态变量。比如说整个列表是否处于selectable, checkable状态等。
+1. [DelegateAdapter](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/github/boybeak/adapter/DelegateAdapter.java)支持单选和多选模式([查看详情](#Choose mode))。
 
 # Usage
 
@@ -414,3 +410,26 @@ ItemTouchHelper helper = new ItemTouchHelper(new SimpleItemTouchHelperCallback(m
 helper.attachToRecyclerView(mRv);
 ```
 
+## Choose mode
+
+你的 data or delegate 项必须实现 Checkable接口.
+
+单选模式:
+
+```java
+adapter.singleControl();
+```
+
+多选模式:
+
+```java
+adapter.multipleControl();
+```
+
+之后，DelegateAdapter处于**underControl**模式下，并且返回了一个Controller对象，你便可以为此设置回调。
+
+```java
+adapter.dismissControl();
+```
+
+Exit the choose mode.
