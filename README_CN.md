@@ -7,14 +7,15 @@
 通过Gradle:
 
 ```groovy
-compile 'com.github.boybeak:adapter:2.3.1'
+compile 'com.github.boybeak:selector:1.1.2'
+compile 'com.github.boybeak:adapter:2.3.2'
 ```
 
 
 
 # What's new in version 2.3.x
 
-1. [DelegateAdapter](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/github/boybeak/adapter/DelegateAdapter.java)支持单选和多选模式([查看详情](#Choose mode))。
+1. [DelegateAdapter](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/github/boybeak/adapter/DelegateAdapter.java)支持单选和多选模式([查看详情](https://github.com/boybeak/DelegateAdapter#choose-mode))。
 
 # Usage
 

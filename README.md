@@ -16,12 +16,13 @@ The most amazing thing is binding multi types data and ViewHolder with Injection
 Grab via Gradle:
 
 ```groovy
-compile 'com.github.boybeak:adapter:2.3.1'
+compile 'com.github.boybeak:selector:1.1.2'
+compile 'com.github.boybeak:adapter:2.3.2'
 ```
 
 # What's new in version 2.3.x
 
-1. [DelegateAdapter](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/github/boybeak/adapter/DelegateAdapter.java) supports single and multiple selection.([See Details](#Choose mode))
+1. [DelegateAdapter](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/github/boybeak/adapter/DelegateAdapter.java) supports single and multiple selection.([See Details](https://github.com/boybeak/DelegateAdapter#choose-mode))
 
 
 You can read a full [release note](https://github.com/boybeak/DelegateAdapter/blob/master/ReleaseNote.md).
