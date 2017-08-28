@@ -48,7 +48,7 @@ public class ExtentionAdapter extends DelegateAdapter {
      * @return {@link MultipleController}
      */
     public MultipleController multipleControl () {
-        if (mController != null && mController instanceof SingleController) {
+        if (mController != null && mController instanceof MultipleController) {
             return (MultipleController)mController;
         }
         MultipleController multipleController = new MultipleController(this);

@@ -34,10 +34,13 @@ public class SingleController implements Controller {
         int index = mAdapter.indexOf((LayoutImpl) checkable);
         mAdapter.notifyItemChanged(index);
 
-        if (onSingleListener != null) {
-            onSingleListener.onSingleChecked(checkable, mCurrentCheckable);
-        }
+        Checkable old = mCurrentCheckable;
+
         mCurrentCheckable = checkable;
+        if (onSingleListener != null) {
+            onSingleListener.onSingleChecked(checkable, old);
+        }
+
     }
 
     public Checkable getCheckedOne () {
