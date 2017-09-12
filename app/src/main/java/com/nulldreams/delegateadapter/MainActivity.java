@@ -22,6 +22,8 @@ import com.github.boybeak.adapter.impl.LayoutImpl;
 import com.github.boybeak.selector.ListSelector;
 import com.github.boybeak.selector.Operator;
 import com.github.boybeak.selector.Path;
+import com.nulldreams.delegateadapter.User.User;
+import com.nulldreams.delegateadapter.adapter.delegate.UserDelegate;
 
 import java.util.List;
 
@@ -111,6 +113,13 @@ public class MainActivity extends AppCompatActivity {
         mAdapter.setTailItem(mFooterDelegate);
         mRv = (RecyclerView) findViewById(R.id.main_rv);
         mRv.setAdapter(mAdapter);
+
+        User user = new User();
+        user.id = 0;
+        user.name = "Steve Jobs";
+        user.profile = "http://www.deyoungmedia.com/wp-content/uploads/2014/07/steve-jobs-morreu-brasil-153927.jpg";
+        user.bio = "Stay Hungry. Stay Foolish";
+        mAdapter.add(new UserDelegate(user));
 
     }
 
