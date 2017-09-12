@@ -1,8 +1,15 @@
 package com.github.boybeak.adapter.impl;
 
+import android.view.View;
+
+import com.github.boybeak.adapter.AbsViewHolder;
+import com.github.boybeak.adapter.DelegateAdapter;
+
 /**
  * Created by gaoyunfei on 16/7/29.
  */
-public interface DelegateImpl<T> extends LayoutImpl {
-    T getSource ();
+public interface DelegateImpl<Data, AVH extends AbsViewHolder> extends LayoutImpl<AVH> {
+    Data getSource ();
+
+    void actionViewEvent (int eventCode, View view, AVH viewHolder, Data t, int position, DelegateAdapter adapter);
 }

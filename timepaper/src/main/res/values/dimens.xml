@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="navigation_icon_size">40dp</dimen>
+    <dimen name="photo_height">320dp</dimen>
+    <dimen name="profile_size_big">80dp</dimen>
+</resources>

@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">DelegateAdapter</string>
-    <string name="ytb_rex">%1$s·%2$d views·4 months ago</string>
+    <string name="text_dialog_permission_instruction">
+        This app shows images in your device.
+        Don\'t worry, they will never be leaked, because this app never request INTERNET permission.
+        App need READ_EXTERNAL_STORAGE permission.
+    </string>
+    <string name="text_dialog_delete_instruction">
+        This operation will not delete the files in your device. This is a fake operation.
+    </string>
+    <string name="text_btn_forward">Forward</string>
+    <string name="text_btn_see_detail">Details</string>
 </resources>

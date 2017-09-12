@@ -1,0 +1,27 @@
+<preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- These settings headers are only used on tablets. -->
+
+    <header
+        android:fragment="com.github.boybeak.timepaper.activity.SettingsActivity$GeneralPreferenceFragment"
+        android:icon="@drawable/ic_info_black_24dp"
+        android:title="@string/pref_header_general" />
+
+    <header
+        android:fragment="com.github.boybeak.timepaper.activity.SettingsActivity$NotificationPreferenceFragment"
+        android:icon="@drawable/ic_notifications_black_24dp"
+        android:title="@string/pref_header_notifications" />
+
+    <header
+        android:fragment="com.github.boybeak.timepaper.activity.SettingsActivity$DataSyncPreferenceFragment"
+        android:icon="@drawable/ic_sync_black_24dp"
+        android:title="@string/pref_header_data_sync" />
+
+    <header
+        android:id="@+id/setting_logout"
+        android:title="@string/title_settings_logout"
+        android:summary="@string/text_logout_summary"
+        android:icon="@drawable/ic_logout"
+        />
+
+</preference-headers>

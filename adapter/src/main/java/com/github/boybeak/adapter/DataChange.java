@@ -12,6 +12,7 @@ import java.lang.annotation.RetentionPolicy;
 public final class DataChange {
 
     public static final int
+            TYPE_ITEM_JUST_NOTIFY = 0,
             TYPE_ITEM_INSERTED = 1,
             TYPE_ITEM_RANGE_INSERTED = 2,
             TYPE_ITEM_CHANGED = 3,
@@ -24,8 +25,13 @@ public final class DataChange {
         return new DataChange(true);
     }
 
+    public static DataChange notifyDataSetChangeInstance (DelegateAdapter adapter) {
+        return new DataChange(adapter, 0, TYPE_ITEM_JUST_NOTIFY);
+    }
+
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({
+            TYPE_ITEM_JUST_NOTIFY,
             TYPE_ITEM_INSERTED,
             TYPE_ITEM_RANGE_INSERTED,
             TYPE_ITEM_CHANGED,
@@ -34,7 +40,7 @@ public final class DataChange {
             TYPE_ITEM_RANGE_REMOVED,
             TYPE_ITEM_MOVED
     })
-    public @interface Type{};
+    public @interface Type{}
 
     private DelegateAdapter mAdapter;
     private int fromPosition, itemCountOrToPosition;
@@ -50,14 +56,14 @@ public final class DataChange {
      *                          and {@link DataChange#TYPE_ITEM_REMOVED}
      * @param type
      */
-    DataChange (DelegateAdapter adapter, int from, int countOrToPosition, @Type int type) {
+    public DataChange (DelegateAdapter adapter, int from, int countOrToPosition, @Type int type) {
         mAdapter = adapter;
         this.fromPosition = from;
         this.itemCountOrToPosition = countOrToPosition;
         this.type = type;
     }
 
-    DataChange(DelegateAdapter adapter, int from, @Type int type) {
+    public DataChange(DelegateAdapter adapter, int from, @Type int type) {
         this(adapter, from, 0, type);
     }
 

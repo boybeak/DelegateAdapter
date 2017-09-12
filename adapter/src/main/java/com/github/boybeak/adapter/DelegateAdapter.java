@@ -110,63 +110,6 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
     public void onBindViewHolder(final AbsViewHolder holder, final int position) {
         final LayoutImpl layoutImpl = mDelegateImplList.get(position);
         holder.onBindView(mContext, layoutImpl, position, this);
-        if (layoutImpl.getOnItemClickListener() != null) {
-            View.OnClickListener clickListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    layoutImpl.getOnItemClickListener()
-                            .onClick(v, mContext, layoutImpl, holder, position, DelegateAdapter.this);
-                }
-            };
-            int[] ids = layoutImpl.getOnClickIds();
-            if (ids != null) {
-                final int length = ids.length;
-                for (int i = 0; i < length; i++) {
-                    int id = ids[i];
-                    View v = null;
-                    if (id == ITEM_VIEW_ID) {
-                        v = holder.itemView;
-                    } else {
-                        v = holder.itemView.findViewById(id);
-                    }
-                    if (v != null) {
-                        v.setOnClickListener(clickListener);
-                    }
-                }
-            } else {
-                holder.itemView.setOnClickListener(clickListener);
-            }
-
-        }
-        if (layoutImpl.getOnItemLongClickListener() != null) {
-            View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    return layoutImpl.getOnItemLongClickListener().onLongClick(
-                            v, mContext, layoutImpl, holder, position, DelegateAdapter.this
-                    );
-                }
-            };
-            int[] ids = layoutImpl.getOnLongClickIds();
-            if (ids != null) {
-                final int length = ids.length;
-                for (int i = 0; i < length; i++) {
-                    int id = ids[i];
-                    View v = null;
-                    if (id == ITEM_VIEW_ID) {
-                        v = holder.itemView;
-                    } else {
-                        v = holder.itemView.findViewById(id);
-                    }
-                    if (v != null) {
-                        v.setOnLongClickListener(longClickListener);
-                    }
-                }
-            } else {
-                holder.itemView.setOnLongClickListener(longClickListener);
-            }
-
-        }
     }
 
     @Override
@@ -289,8 +232,9 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
     }
 
     public DataChange addAll(LayoutImpl[] array) {
-        mDelegateImplList.addAll(Arrays.asList(array));
-        return new DataChange(this, 0, array.length, DataChange.TYPE_ITEM_RANGE_INSERTED);
+        return addAll(Arrays.asList(array));
+        /*mDelegateImplList.addAll();
+        return new DataChange(this, 0, array.length, DataChange.TYPE_ITEM_RANGE_INSERTED);*/
     }
 
     public DataChange addAll(int position, LayoutImpl[] array) {
@@ -332,24 +276,6 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         return DataChange.doNothingInstance();
     }
 
-    public <T> DataChange addAllAtFirst (DelegateFilter filter, Collection<T> data, DelegateParser<T> parser) {
-        final int index = firstIndexOf(filter);
-        if (index >= 0) {
-            return addAll(index, data, parser);
-        } else {
-            return addAll(0, data, parser);
-        }
-    }
-
-    public <T> DataChange addAllAtLast (DelegateFilter filter, Collection<T> data, DelegateParser<T> parser) {
-        final int index = lastIndexOf(filter);
-        if (index >= 0) {
-            return addAll(index, data, parser);
-        } else {
-            return addAll(data, parser);
-        }
-    }
-
     public <T> DataChange addAll (T[] tArray, DelegateListParser<T> parser) {
         Collection<T> collection = Arrays.asList(tArray);
         List<LayoutImpl> delegates = generateDelegateImpls(collection, parser);
@@ -384,50 +310,12 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         return DataChange.doNothingInstance();
     }
 
-    public <T> DataChange addAllAtFirst (DelegateFilter filter, Collection<T> data, DelegateListParser<T> parser) {
-        final int index = firstIndexOf(filter);
-        if (index >= 0) {
-            return addAll(index, data, parser);
-        } else {
-            return addAll(0, data, parser);
-        }
-    }
-
-    public <T> DataChange addAllAtLast (DelegateFilter filter, Collection<T> data, DelegateListParser<T> parser) {
-        final int index = lastIndexOf(filter);
-        if (index >= 0) {
-            return addAll(index, data, parser);
-        } else {
-            return addAll(data, parser);
-        }
-    }
-
     public List<? extends LayoutImpl> getList() {
         return mDelegateImplList;
     }
 
     public LayoutImpl get (int position) {
         return mDelegateImplList.get(position);
-    }
-
-    public <T> ArrayList<T> getDataSourceArrayList (@NonNull SimpleFilter<T> filter) {
-        ArrayList<T> dataList = new ArrayList<>();
-        for (LayoutImpl impl : mDelegateImplList) {
-            if (filter.accept(this, impl)) {
-                dataList.add(((DelegateImpl<T>)impl).getSource());
-            }
-        }
-        return dataList;
-    }
-
-    public List<LayoutImpl> getSubList (@NonNull DelegateFilter filter) {
-        List<LayoutImpl> delegates = new ArrayList<>();
-        for (LayoutImpl impl : mDelegateImplList) {
-            if (filter.accept(this, impl)) {
-                delegates.add(impl);
-            }
-        }
-        return delegates;
     }
 
     /**
@@ -437,23 +325,6 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
      */
     public List<LayoutImpl> getSubList (int indexFrom, int indexTo) {
         return mDelegateImplList.subList(indexFrom, indexTo);
-    }
-
-    /**
-     * @param indexFrom start index, include this index;
-     * @param indexTo end index
-     * @param filter a filter between indexFrom and indexTo
-     * @return return a sub collection, the max collection is [indexFrom, indexTo)
-     */
-    public List<LayoutImpl> getSubList (int indexFrom, int indexTo, @NonNull DelegateFilter filter) {
-        List<LayoutImpl> delegates = new ArrayList<>();
-        for (int i = indexFrom; i < indexTo; i++) {
-            LayoutImpl impl = mDelegateImplList.get(i);
-            if (filter.accept(this, impl)) {
-                delegates.add(impl);
-            }
-        }
-        return delegates;
     }
 
     public <T> List<LayoutImpl> generateDelegateImpls (Collection<T> data, @NonNull DelegateParser<T> parser) {
@@ -494,100 +365,6 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         return mDelegateImplList.indexOf(impl);
     }
 
-    public int firstIndexOf (DelegateFilter filter) {
-        return firstIndexOf(-1, filter);
-    }
-
-    public int firstIndexOf (int index, @NonNull DelegateFilter filter) {
-        final int length = mDelegateImplList.size();
-        for (int i = index + 1; i < length; i++) {
-            if (filter.accept(this, mDelegateImplList.get(i))) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    public int lastIndexOf (DelegateFilter filter) {
-        final int length = mDelegateImplList.size();
-        return lastIndexOf(length, filter);
-    }
-
-    public int lastIndexOf (int index, @NonNull DelegateFilter filter) {
-        for (int i = index - 1; i >= 0; i--) {
-            if (filter.accept(this, mDelegateImplList.get(i))) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    public DataChange addAtLast (DelegateFilter filter, LayoutImpl delegate) {
-        final int index = lastIndexOf(filter);
-        if (index >= 0) {
-            return add(index, delegate);
-        } else {
-            return add(delegate);
-        }
-    }
-
-    public DataChange addAllAtLast (DelegateFilter filter, Collection<LayoutImpl> delegate) {
-        final int index = lastIndexOf(filter);
-        if (index >= 0) {
-            return addAll(index, delegate);
-        } else {
-            return addAll(delegate);
-        }
-    }
-
-    public DataChange addAtFirst (DelegateFilter filter, LayoutImpl delegate) {
-        final int index = firstIndexOf(filter);
-        if (index >= 0) {
-            return add(index, delegate);
-        } else {
-            return add(0, delegate);
-        }
-    }
-
-    public DataChange addAllAtFirst (DelegateFilter filter, Collection<LayoutImpl> delegate) {
-        final int index = firstIndexOf(filter);
-        if (index >= 0) {
-            return addAll(index, delegate);
-        } else {
-            return addAll(0, delegate);
-        }
-    }
-
-    public LayoutImpl getFirst (@NonNull DelegateFilter filter) {
-        for (LayoutImpl impl : mDelegateImplList) {
-            if (filter.accept(this, impl)) {
-                return impl;
-            }
-        }
-        return null;
-    }
-
-    public LayoutImpl getLast (@NonNull DelegateFilter filter) {
-        final int length = mDelegateImplList.size();
-        for (int i = length - 1; i >= 0; i--) {
-            LayoutImpl impl = mDelegateImplList.get(i);
-            if (filter.accept(this, impl)) {
-                return impl;
-            }
-        }
-        return null;
-    }
-
-    public int getCount (@NonNull DelegateFilter filter) {
-        int count = 0;
-        for (LayoutImpl impl : mDelegateImplList) {
-            if (filter.accept(this, impl)) {
-                count++;
-            }
-        }
-        return count;
-    }
-
     public DataChange remove (int position) {
         mDelegateImplList.remove(position);
         return new DataChange(this, position, 0, DataChange.TYPE_ITEM_REMOVED);
@@ -597,25 +374,6 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         DataChange change = remove(position);
         after.doAfter(this);
         return change;
-    }
-
-    public int remove (@NonNull DelegateFilter filter) {
-        Iterator<? extends LayoutImpl> iterator = mDelegateImplList.iterator();
-        int count = 0;
-        while (iterator.hasNext()) {
-            LayoutImpl impl = iterator.next();
-            if (filter.accept(this, impl)) {
-                iterator.remove();
-                count++;
-            }
-        }
-        return count;
-    }
-
-    public int remove (DelegateFilter filter, @NonNull DoAfter after) {
-        int count = remove(filter);
-        after.doAfter(this);
-        return count;
     }
 
     public DataChange remove (LayoutImpl impl) {
@@ -639,30 +397,6 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         for (LayoutImpl impl : mDelegateImplList) {
             action.onAction(impl);
             count++;
-        }
-        return count;
-    }
-
-    public int actionWith (@NonNull DelegateFilter filter, @NonNull DelegateAction action) {
-        int count = 0;
-        for (LayoutImpl impl : mDelegateImplList) {
-            if (filter.accept(this, impl)) {
-                action.onAction(impl);
-                count++;
-            }
-        }
-        return count;
-    }
-
-    public int replaceWith(@NonNull DelegateFilter filter, @NonNull DelegateReplace replace) {
-        int count = 0;
-        final int length = mDelegateImplList.size();
-        for (int i = 0; i < length; i++) {
-            LayoutImpl impl = mDelegateImplList.get(i);
-            if (filter.accept(this, impl)) {
-                mDelegateImplList.set(i, replace.replaceWith(this, impl));
-                count++;
-            }
         }
         return count;
     }
@@ -724,16 +458,16 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         return 0;
     }
 
-    public static Class<? extends AbsViewHolder> getHolderClassFromAnnotation (LayoutImpl impl) {
+    public static <AVH extends AbsViewHolder> Class<AVH> getHolderClassFromAnnotation (LayoutImpl impl) {
         Class clz = impl.getClass();
 
         Annotation anno = clz.getAnnotation(DelegateInfo.class);
-        Class<? extends AbsViewHolder> holderClass;
+        Class<AVH> holderClass;
         if (anno != null) {
             Class<? extends Annotation> annoClz = anno.annotationType();
             try {
                 Method method = annoClz.getMethod("holderClass");
-                holderClass = (Class<? extends AbsViewHolder>)method.invoke(anno);
+                holderClass = (Class<AVH>)method.invoke(anno);
                 if (holderClass != null && !holderClass.equals(NullHolder.class)) {
                     return holderClass;
                 }

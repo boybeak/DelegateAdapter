@@ -8,9 +8,9 @@ import com.github.boybeak.adapter.impl.DelegateImpl;
 
 /**
  * Created by gaoyunfei on 16/7/29.
- * An abstract class for all ViewHolder, generally T is a subclass of {@link DelegateImpl}
+ * An abstract class for all ViewHolder, generally Delegate is a subclass of {@link DelegateImpl}
  */
-public abstract class AbsViewHolder<T> extends RecyclerView.ViewHolder {
+public abstract class AbsViewHolder<Delegate> extends RecyclerView.ViewHolder {
 
     private boolean isViewAttachedToWindow;
 
@@ -24,7 +24,7 @@ public abstract class AbsViewHolder<T> extends RecyclerView.ViewHolder {
      * @param position adapter position
      * @param adapter adapter
      */
-    public abstract void onBindView (Context context, T t, int position, DelegateAdapter adapter);
+    public abstract void onBindView (Context context, Delegate t, int position, DelegateAdapter adapter);
 
     public void onViewAttachedToWindow (DelegateAdapter adapter, Context context) {
         isViewAttachedToWindow = true;

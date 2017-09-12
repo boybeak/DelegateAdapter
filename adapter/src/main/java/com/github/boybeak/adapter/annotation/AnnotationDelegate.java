@@ -33,22 +33,12 @@ import static com.github.boybeak.adapter.DelegateAdapter.getLayoutFromAnnotation
  * Created by gaoyunfei on 2016/12/17.
  */
 
-public abstract class AnnotationDelegate<T> extends AbsDelegate<T> {
+public abstract class AnnotationDelegate<T, AVH extends AbsViewHolder> extends AbsDelegate<T, AVH> {
 
     private static final String TAG = AnnotationDelegate.class.getSimpleName();
 
     private int layoutID = 0;
-    private Class<? extends AbsViewHolder> holderClass;
-
-    private OnItemClickListener onItemClickListener;
-    private boolean doNotGetOnClickListener = false;
-
-    private OnItemLongClickListener onItemLongClickListener;
-    private boolean doNotGetOnLongClickListener = false;
-
-    private int[] clickIds, longClickIds;
-
-    private Field[] fields = null;
+    private Class<AVH> holderClass;
 
     public AnnotationDelegate(T t) {
         super(t);
@@ -58,16 +48,20 @@ public abstract class AnnotationDelegate<T> extends AbsDelegate<T> {
         super(t, bundle);
     }
 
-    /*private void init () {
-        getFieldsFromDelegateInfo();
-    }*/
+    public AnnotationDelegate(T t, OnViewEventListener<T, AVH> onViewEventListener) {
+        super(t, onViewEventListener);
+    }
+
+    public AnnotationDelegate(T t, Bundle bundle, OnViewEventListener<T, AVH> onViewEventListener) {
+        super(t, bundle, onViewEventListener);
+    }
 
     /**
      * find layout res id in {@link DelegateInfo}, if not found, then with {@link LayoutID}
      * @return
      */
     @Override
-    public final int getLayout() {
+    public int getLayout() {
         if (layoutID > 0) {
             return layoutID;
         }
@@ -80,7 +74,7 @@ public abstract class AnnotationDelegate<T> extends AbsDelegate<T> {
      * find holder class in {@link DelegateInfo} first, if not found, then with {@link HolderClass}
      * @return
      */
-    public final Class<? extends AbsViewHolder> getHolderClass () {
+    public Class<AVH> getHolderClass () {
         if (holderClass != null) {
             return holderClass;
         }
@@ -88,7 +82,7 @@ public abstract class AnnotationDelegate<T> extends AbsDelegate<T> {
         return holderClass;
     }
 
-    @Override
+    /*@Override
     public OnItemClickListener<LayoutImpl, AbsViewHolder> getOnItemClickListener() {
         if (onItemClickListener == null && !doNotGetOnClickListener) {
             Class<? extends OnItemClickListener> clz = getOnItemClickListenerFromAnnotation(this);
@@ -113,17 +107,17 @@ public abstract class AnnotationDelegate<T> extends AbsDelegate<T> {
             }
         }
         return onItemClickListener;
-    }
+    }*/
 
-    @Override
+    /*@Override
     public int[] getOnClickIds() {
         if (clickIds == null) {
             clickIds = getClickIdsFromAnnotation(this);
         }
         return clickIds;
-    }
+    }*/
 
-    @Override
+    /*@Override
     public OnItemLongClickListener<LayoutImpl, AbsViewHolder> getOnItemLongClickListener() {
         if (onItemLongClickListener == null && !doNotGetOnLongClickListener) {
             Class<? extends OnItemLongClickListener> clz = getOnItemLongClickListenerFromAnnotation(this);
@@ -148,17 +142,17 @@ public abstract class AnnotationDelegate<T> extends AbsDelegate<T> {
             }
         }
         return onItemLongClickListener;
-    }
+    }*/
 
-    @Override
+    /*@Override
     public int[] getOnLongClickIds() {
         if (longClickIds == null) {
             longClickIds = getLongClickIdsFromAnnotation(this);
         }
         return longClickIds;
-    }
+    }*/
 
-    public static Class<? extends OnItemClickListener> getOnItemClickListenerFromAnnotation (LayoutImpl impl) {
+    /*public static Class<? extends OnItemClickListener> getOnItemClickListenerFromAnnotation (LayoutImpl impl) {
         Class clz = impl.getClass();
 
         Annotation anno = clz.getAnnotation(DelegateInfo.class);
@@ -310,5 +304,5 @@ public abstract class AnnotationDelegate<T> extends AbsDelegate<T> {
             }
         }
         return new int[]{DelegateAdapter.ITEM_VIEW_ID};
-    }
+    }*/
 }

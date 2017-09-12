@@ -1,1 +1,1 @@
-include ':app', ':adapter', ':adapter-extention'
+include ':app', ':adapter', ':adapter-extension', ':timepaper'

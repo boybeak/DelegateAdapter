@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="exif_table_key_weight">1</integer>
+    <integer name="exif_table_value_weight">4</integer>
+    <integer name="profile_photo_span_count">3</integer>
+</resources>
