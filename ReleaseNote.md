@@ -1,3 +1,8 @@
+**3.0.0**
+
+1. Reconstruct this library.
+2. Add extension library.
+
 **2.3.0**
 
 1. Support choose mode:single choose and multiple choose.

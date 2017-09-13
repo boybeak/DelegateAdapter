@@ -7,183 +7,22 @@
 通过Gradle:
 
 ```groovy
-compile 'com.github.boybeak:selector:1.1.4'
-compile 'com.github.boybeak:adapter:2.3.3'
+compile 'com.github.boybeak:adapter:3.0.0'
+compile 'com.github.boybeak:adapter-extension:2.0.0' //Optional
 ```
 
 
 
-# What's new in version 2.3.x
+# What's new in version 3.0.0
 
-1. [DelegateAdapter](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/github/boybeak/adapter/DelegateAdapter.java)支持单选和多选模式([查看详情](https://github.com/boybeak/DelegateAdapter#choose-mode))。
+1. 重构库结构。
+2. 增加了扩展库。
 
 # Usage
 
-我将分为4部分来介绍这个库的使用: Data, Adapter, ViewHolder and Advance Usages.
+[典型用法](https://github.com/boybeak/DelegateAdapter/wiki/3.-Typical-Usage)
 
-## Data
-
-[DelegateAdapter](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/DelegateAdapter.java) 只接受 [LayoutImpl](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/impl/LayoutImpl.java) 类型的数据. 所以你的数据模型必须变成以下的两种类型:
-
-1. 实现 [LayoutImpl](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/impl/LayoutImpl.java) 或者 [DelegateImpl](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/impl/DelegateImpl.java) 两个接口；
-2. 使用实现了[LayoutImpl](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/impl/LayoutImpl.java) 接口的两个代理类 ([AbsDelegate](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/AbsDelegate.java), [AnnotationDelegate](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/annotation/AnnotationDelegate.java))。为了避免原始数据模型污染, 强烈建议你使用这种方式。
-
-以下面这个数据模型为示例:
-
-```java
-public class User {
-	private int avatar;
-    private String name;
-    private String description;
-}
-```
-
-实现 [LayoutImpl](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/impl/LayoutImpl.java) 接口:
-
-```java
-public class UserLayoutImpl implements LayoutImpl{
-	private int avatar;
-    private String name;
-    private String description;
-  
-	@Override
-    public int getLayout() {
-        return R.layout.layout_user;
-    }
-
-    @Override
-    public Class<? extends AbsViewHolder> getHolderClass() {
-        return UserHolder.class;
-    }
-
-    @Override
-    public OnItemClickListener<LayoutImpl, AbsViewHolder> getOnItemClickListener() {
-        return null;
-    }
-
-    @Override
-    public OnItemLongClickListener<LayoutImpl, AbsViewHolder> getOnItemLongClickListener() {
-        return null;
-    }
-  	@Override
-    public int[] getOnClickIds() {
-        return null;
-    }
-  	@Override
-    public int[] getOnLongClickIds() {
-        return null;
-    }
-}
-```
-
-实现 [DelegateImpl](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/impl/DelegateImpl.java) 接口:
-
-```java
-public class UserDelegateImpl implements DelegateImpl<UserDelegateImpl> {
-
-    private int avatar;
-    private String name;
-    private String description;
-  	
-	@Override
-    public UserDelegateImpl getSource() {
-        return this;
-    }
-
-    @Override
-    public int getLayout() {
-        return R.layout.layout_user;
-    }
-
-    @Override
-    public Class<? extends AbsViewHolder> getHolderClass() {
-        return UserHolder.clsas;
-    }
-
-    @Override
-    public OnItemClickListener<LayoutImpl, AbsViewHolder> getOnItemClickListener() {
-        return null;
-    }
-
-    @Override
-    public OnItemLongClickListener<LayoutImpl, AbsViewHolder> getOnItemLongClickListener() {
-        return null;
-    }
-  	@Override
-    public int[] getOnClickIds() {
-        return null;
-    }
-  	@Override
-    public int[] getOnLongClickIds() {
-        return null;
-    }
-}
-```
-
-继承代理类 [AbsDelegate](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/AbsDelegate.java):
-
-```java
-public class UserDelegate extends AbsDelegate<User> {
-    
-    private UserClickListener onClick = new UserClickListener();
-    private UserLongClickListener onLongClick = new UserLongClickListener ();
-    public UserDelegate(User user) {
-        super(user);
-    }
-
-    @Override
-    public int getLayout() {
-        return R.layout.layout_user;
-    }
-
-    @Override
-    public Class<? extends AbsViewHolder> getHolderClass() {
-        return UserHolder.class;
-    }
-
-    @Override
-    public OnItemClickListener<LayoutImpl, AbsViewHolder> getOnItemClickListener() {
-        return onClick;
-    }
-
-    @Override
-    public OnItemLongClickListener<LayoutImpl, AbsViewHolder> getOnItemLongClickListener() {
-        return onLongClick;
-    }
-  	@Override
-    public int[] getOnClickIds() {
-        return null;
-    }
-  	@Override
-    public int[] getOnLongClickIds() {
-        return null;
-    }
-}
-```
-
-继承代理类 [AnnotationDelegate](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/annotation/AnnotationDelegate.java) 并使用注解:
-
-```java
-@DelegateInfo(
-  	layoutID = R.layout.layout_user,
-  	holderClass = UserHolder.class,
-  	onClick = UserClickListener.class,
-  	onLongClick = UserLongClickListener.class,
-  	onClickIds = {DelegateAdapter.ITEM_VIEW_ID, R.id.user_avatar},
-  	onLongClickIds = {DelegateAdapter.ITEM_VIEW_ID, R.id.user_avatar}
-)
-public class UserAnnotationDelegate extends AnnotationDelegate<User> {
-  
-    @OnClick(ids = {DelegateAdapter.ITEM_VIEW_ID, R.id.user_avatar})
-    public Class<UserClickListener> onClick = UserClickListener.class;
-  	@OnLongClick(ids = {DelegateAdapter.ITEM_VIEW_ID, R.id.user_avatar})
-  	public Class<UserLongClickListener> onLongClick = UserLongClickListener.class;
-  
-    public UserDelegate(User user) {
-        super(user);
-    }
-}
-```
+[先进用法](https://github.com/boybeak/DelegateAdapter/wiki/4.-Advanced-Usage)
 
 
 
@@ -277,62 +116,7 @@ public class UserHolder extends AbsViewHolder<UserDelegate> {
 
 在这样一个ViewHolder类中，你可以进行绑定数据，绑定事件等操作。
 
-## Advance Usages
-
-## 绑定事件
-
-在新版本 1.2.0 中，你可以通过 **@DelegateInfo**, **@OnClick**, **@OnLongClick** 这些注解直接绑定点击，长按事件。
-
-```java
-@DelegateInfo(
-  	layoutID = R.layout.layout_user,
-  	holderClass = UserHolder.class,
-  	onClick = UserClickListener.class,
-  	onLongClick = UserLongClickListener.class,
-  	onClickIds = {DelegateAdapter.ITEM_VIEW_ID, R.id.user_avatar},
-  	onLongClickIds = {DelegateAdapter.ITEM_VIEW_ID, R.id.user_avatar}
-)
-public class UserAnnotationDelegate extends AnnotationDelegate<User> {
-  
-    @OnClick(ids = {DelegateAdapter.ITEM_VIEW_ID, R.id.text_tv})
-    public Class<UserClickListener> onClick = UserClickListener.class;
-  	@OnLongClick(ids = {DelegateAdapter.ITEM_VIEW_ID, R.id.text_tv})
-  	public Class<UserLongClickListener> onLongClick = UserLongClickListener.class;
-  
-    public UserDelegate(User user) {
-        super(user);
-    }
-}
-```
-
-> 如果你以及在 **@DelegateInfo** 注解中定义了**onClick** 或 **onLongClick** 属性 in , **@OnClick** 和 **@OnLongClick** 将不会起作用。
-
-```java
-public class UserClickListener implements OnItemClickListener<UserDelegate, UserHolder> {
-    @Override
-    public void onClick(View view, Context context, UserDelegate userDelegate, UserHolder userHolder, 
-                        int position, DelegateAdapter adapter) {
-        Toast.makeText(context, UserHolder.class.getSimpleName(), Toast.LENGTH_SHORT).show();
-    }
-}
-```
-
-```java
-public class UserLongClickListener implements OnItemLongClickListener<UserDelegate, UserHolder> {
-    @Override
-    public boolean onLongClick(View view, Context context, UserDelegate userDelegate, UserHolder userHolder, 
-                               int position, DelegateAdapter adapter) {
-        new AlertDialog.Builder(context)
-                .setMessage(userDelegate.getSource().getName())
-                .show();
-        return true;
-    }
-}
-```
-
-
-
-## DelegateParser, DelegateListParser, DelegateFilter, SimpleFilter
+## DelegateParser, DelegateListParser
 
 接下来的几段代码展示一些较为便捷的操作。
 
@@ -410,27 +194,3 @@ ItemTouchHelper helper = new ItemTouchHelper(new SimpleItemTouchHelperCallback(m
                 ItemTouchHelper.UP|ItemTouchHelper.DOWN, ItemTouchHelper.END));
 helper.attachToRecyclerView(mRv);
 ```
-
-## Choose mode
-
-你的 data or delegate 项必须实现 Checkable接口.
-
-单选模式:
-
-```java
-adapter.singleControl();
-```
-
-多选模式:
-
-```java
-adapter.multipleControl();
-```
-
-之后，DelegateAdapter处于**underControl**模式下，并且返回了一个Controller对象，你便可以为此设置回调。
-
-```java
-adapter.dismissControl();
-```
-
-Exit the choose mode.

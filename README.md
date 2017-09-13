@@ -16,178 +16,23 @@ The most amazing thing is binding multi types data and ViewHolder with Injection
 Grab via Gradle:
 
 ```groovy
-compile 'com.github.boybeak:selector:1.1.4'
-compile 'com.github.boybeak:adapter:2.3.3'
+compile 'com.github.boybeak:adapter:3.0.0'
+compile 'com.github.boybeak:adapter-extension:2.0.0' //Optional
 ```
 
-# What's new in version 2.3.x
+# What's new in version 3.0.0
 
-1. [DelegateAdapter](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/github/boybeak/adapter/DelegateAdapter.java) supports single and multiple selection.([See Details](https://github.com/boybeak/DelegateAdapter#choose-mode))
+1. Reconstruct the library.
+2. Add extension library.
 
 
 You can read a full [release note](https://github.com/boybeak/DelegateAdapter/blob/master/ReleaseNote.md).
 
 # Usage
 
-I will introduce this library by 4 parts: Data, Adapter, ViewHolder and Advance Usages.
+[Typical Usage](https://github.com/boybeak/DelegateAdapter/wiki/3.-Typical-Usage)
 
-## Data
-
-[DelegateAdapter](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/DelegateAdapter.java) only accept [LayoutImpl](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/impl/LayoutImpl.java) data. So your data model must be changed into one of the two types as below:
-
-1. implements [LayoutImpl](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/impl/LayoutImpl.java) or [DelegateImpl](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/impl/DelegateImpl.java);
-2. with a delegate class extends LayoutImpl's sub classes ([AbsDelegate](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/AbsDelegate.java), [AnnotationDelegate](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/annotation/AnnotationDelegate.java)). In case of original data model pollution, I strongly suggest you use this.
-
-An example class as below:
-
-```java
-public class User {
-	private int avatar;
-    private String name;
-    private String description;
-}
-```
-
-Implements [LayoutImpl](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/impl/LayoutImpl.java):
-
-```java
-public class UserLayoutImpl implements LayoutImpl{
-	private int avatar;
-    private String name;
-    private String description;
-  
-	@Override
-    public int getLayout() {
-        return R.layout.layout_user;
-    }
-
-    @Override
-    public Class<? extends AbsViewHolder> getHolderClass() {
-        return UserHolder.class;
-    }
-
-    @Override
-    public OnItemClickListener<LayoutImpl, AbsViewHolder> getOnItemClickListener() {
-        return null;
-    }
-
-    @Override
-    public OnItemLongClickListener<LayoutImpl, AbsViewHolder> getOnItemLongClickListener() {
-        return null;
-    }
-  	@Override
-    public int[] getOnClickIds() {
-        return null;
-    }
-  	@Override
-    public int[] getOnLongClickIds() {
-        return null;
-    }
-}
-```
-
-implements [DelegateImpl](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/impl/DelegateImpl.java):
-
-```java
-public class UserDelegateImpl implements DelegateImpl<UserDelegateImpl> {
-
-    private int avatar;
-    private String name;
-    private String description;
-  	
-	@Override
-    public UserDelegateImpl getSource() {
-        return this;
-    }
-
-    @Override
-    public int getLayout() {
-        return R.layout.layout_user;
-    }
-
-    @Override
-    public Class<? extends AbsViewHolder> getHolderClass() {
-        return UserHolder.clsas;
-    }
-
-    @Override
-    public OnItemClickListener<LayoutImpl, AbsViewHolder> getOnItemClickListener() {
-        return null;
-    }
-
-    @Override
-    public OnItemLongClickListener<LayoutImpl, AbsViewHolder> getOnItemLongClickListener() {
-        return null;
-    }
-  	@Override
-    public int[] getOnClickIds() {
-        return null;
-    }
-  	@Override
-    public int[] getOnLongClickIds() {
-        return null;
-    }
-}
-```
-
-with a delegate class extends [AbsDelegate](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/AbsDelegate.java):
-
-```java
-public class UserDelegate extends AbsDelegate<User> {
-    
-    private UserClickListener onClick = new UserClickListener();
-    private UserLongClickListener onLongClick = new UserLongClickListener ();
-    public UserDelegate(User user) {
-        super(user);
-    }
-
-    @Override
-    public int getLayout() {
-        return R.layout.layout_user;
-    }
-
-    @Override
-    public Class<? extends AbsViewHolder> getHolderClass() {
-        return UserHolder.class;
-    }
-
-    @Override
-    public OnItemClickListener<LayoutImpl, AbsViewHolder> getOnItemClickListener() {
-        return onClick;
-    }
-
-    @Override
-    public OnItemLongClickListener<LayoutImpl, AbsViewHolder> getOnItemLongClickListener() {
-        return onLongClick;
-    }
-}
-```
-
-with a delegate class extend [AnnotationDelegate](https://github.com/boybeak/DelegateAdapter/blob/master/adapter/src/main/java/com/nulldreams/adapter/annotation/AnnotationDelegate.java) and injections:
-
-```java
-@DelegateInfo(
-  	layoutID = R.layout.layout_user,
-  	holderClass = UserHolder.class,
-  	onClick = UserClickListener.class,
-  	onLongClick = UserLongClickListener.class,
-  	onClickIds = {DelegateAdapter.ITEM_VIEW_ID, R.id.user_avatar},
-  	onLongClickIds = {DelegateAdapter.ITEM_VIEW_ID, R.id.user_avatar}
-)
-public class UserAnnotationDelegate extends AnnotationDelegate<User> {
-  
-    @OnClick(ids = {DelegateAdapter.ITEM_VIEW_ID, R.id.user_avatar})
-    public Class<UserClickListener> onClick = UserClickListener.class;
-  	@OnLongClick(ids = {DelegateAdapter.ITEM_VIEW_ID, R.id.text_tv})
-  	public Class<UserLongClickListener> onLongClick = UserLongClickListener.class;
-  
-    public UserDelegate(User user) {
-        super(user);
-    }
-}
-```
-
-If you define the same type attribute both in **@DelegateInfo** and class member variables, only the **@DelegateInfo** will work.
+[Advanced Usage](https://github.com/boybeak/DelegateAdapter/wiki/4.-Advanced-Usage)
 
 
 
@@ -281,62 +126,7 @@ public class UserHolder extends AbsViewHolder<UserDelegate> {
 
 In this ViewHolder class you can bind data, bind event etc.
 
-## Advance Usages
-
-## Bind event
-
-With version 1.2.0, you can bind itemView click and longClick event via **@DelegateInfo**, **@OnClick**, **@OnLongClick** injections.
-
-```java
-@DelegateInfo(
-  	layoutID = R.layout.layout_user,
-  	holderClass = UserHolder.class,
-  	onClick = UserClickListener.class,
-  	onLongClick = UserLongClickListener.class,
-  	onClickIds = {DelegateAdapter.ITEM_VIEW_ID, R.id.user_avatar},
-  	onLongClickIds = {DelegateAdapter.ITEM_VIEW_ID, R.id.user_avatar}
-)
-public class UserAnnotationDelegate extends AnnotationDelegate<User> {
-  
-    @OnClick(ids = {DelegateAdapter.ITEM_VIEW_ID, R.id.text_tv})
-    public Class<UserClickListener> onClick = UserClickListener.class;
-  	@OnLongClick(ids = {DelegateAdapter.ITEM_VIEW_ID, R.id.text_tv})
-  	public Class<UserLongClickListener> onLongClick = UserLongClickListener.class;
-  
-    public UserDelegate(User user) {
-        super(user);
-    }
-}
-```
-
-> If you define **onClick** and **onLongClick** attribute in **@DelegateInfo**, **@OnClick** and **@OnLongClick** will not work. This principles also to their inner attributes.
-
-```java
-public class UserClickListener implements OnItemClickListener<UserDelegate, UserHolder> {
-    @Override
-    public void onClick(View view, Context context, UserDelegate userDelegate, UserHolder userHolder, 
-                        int position, DelegateAdapter adapter) {
-        Toast.makeText(context, UserHolder.class.getSimpleName(), Toast.LENGTH_SHORT).show();
-    }
-}
-```
-
-```java
-public class UserLongClickListener implements OnItemLongClickListener<UserDelegate, UserHolder> {
-    @Override
-    public boolean onLongClick(View view, Context context, UserDelegate userDelegate, UserHolder userHolder, 
-                               int position, DelegateAdapter adapter) {
-        new AlertDialog.Builder(context)
-                .setMessage(userDelegate.getSource().getName())
-                .show();
-        return true;
-    }
-}
-```
-
-
-
-## DelegateParser, DelegateListParser, DelegateFilter, SimpleFilter
+## DelegateParser, DelegateListParser
 
 A serious of code snippets show you usage.
 
@@ -367,19 +157,7 @@ adapter.addAll (users, new DelegateListParser () {
 });
 ```
 
-```java
-/*DelegateFilter*/
-List<LayoutImpl> subUserDelegateList = adapter.getSubList (new DelegateAdapter() {
-  	public boolean accept (DelegateAdapter adapter, LayoutImpl impl) {
-      	return impl != null && impl instanceof UserDelegate;
-  	}
-});
-```
 
-```java
-/*SimpleFilter*/
-List<User> userList = adapter.getDataSourceArrayList (new SimpleFilter<User>());
-```
 
 ## DataChange
 
@@ -414,27 +192,3 @@ ItemTouchHelper helper = new ItemTouchHelper(new SimpleItemTouchHelperCallback(m
                 ItemTouchHelper.UP|ItemTouchHelper.DOWN, ItemTouchHelper.END));
 helper.attachToRecyclerView(mRv);
 ```
-
-## Choose mode
-
-Your data or delegate item must implements Checkable.
-
-for single choose:
-
-```java
-adapter.singleControl();
-```
-
-for multiple choose:
-
-```java
-adapter.multipleControl();
-```
-
-After this, the DelegateAdapter is **underControl** mode. And this method returns Controller instance. You can set some callbacks for this instance. 
-
-```java
-adapter.dismissControl();
-```
-
-Exit the choose mode.
