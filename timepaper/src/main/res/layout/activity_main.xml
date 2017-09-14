@@ -14,9 +14,12 @@
         app:elevation="1dp"
         android:fitsSystemWindows="true"
         >
-        <FrameLayout
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/main_cover_layout"
             android:layout_width="match_parent"
             android:layout_height="72dp"
+            android:fitsSystemWindows="true"
+            app:statusBarScrim="@android:color/transparent"
             app:layout_scrollFlags="scroll|enterAlways|snap"
             >
             <android.support.v7.widget.AppCompatImageView
@@ -24,28 +27,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
+                android:fitsSystemWindows="true"
                 android:foreground="#60ffffff"/>
             <android.support.v7.widget.Toolbar
                 android:id="@+id/main_tb"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fitsSystemWindows="true"
+                android:layout_height="?attr/actionBarSize"
                 android:layout_gravity="bottom"
+                android:fitsSystemWindows="true"
                 >
                 <android.support.design.widget.TabLayout
                     android:id="@+id/main_tab_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:fitsSystemWindows="true"
                     />
             </android.support.v7.widget.Toolbar>
-        </FrameLayout>
+        </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
     <android.support.v4.view.ViewPager
         android:id="@+id/main_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         />
 </android.support.design.widget.CoordinatorLayout>

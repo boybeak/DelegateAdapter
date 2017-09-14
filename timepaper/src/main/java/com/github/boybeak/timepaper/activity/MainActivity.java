@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -21,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
@@ -34,15 +34,14 @@ import com.github.boybeak.timepaper.fragment.PaperFragment;
 import com.github.boybeak.timepaper.fragment.PopularFragment;
 import com.github.boybeak.timepaper.fragment.RandomFragment;
 import com.github.boybeak.timepaper.model.User;
-import com.github.boybeak.timepaper.retrofit.Api;
 import com.github.boybeak.timepaper.retrofit.Auth;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import com.github.boybeak.timepaper.utils.UiHelper;
 
 public class MainActivity extends BaseActivity {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
+
+    private View mCoverLayout;
     private CoordinatorLayout mCl;
     private AppCompatImageView mCoverIv;
     private Toolbar mTb;
@@ -106,6 +105,7 @@ public class MainActivity extends BaseActivity {
         mTl = (TabLayout)findViewById(R.id.main_tab_layout);
         mVp = (ViewPager)findViewById(R.id.main_view_pager);
 
+        mCoverLayout = findViewById(R.id.main_cover_layout);
         mTb.setNavigationIcon(R.mipmap.ic_launcher_round);
         setSupportActionBar(mTb);
 
@@ -146,6 +146,17 @@ public class MainActivity extends BaseActivity {
         registerReceiver(mReceiver, new IntentFilter(Intent.ACTION_WALLPAPER_CHANGED));
         LocalBroadcastManager.getInstance(this).registerReceiver(mLogoutReceiver,
                 new IntentFilter(Finals.ACTION_LOGOUT));
+
+        getWindow().getDecorView().getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                getWindow().getDecorView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                ViewGroup.LayoutParams params = mCoverLayout.getLayoutParams();
+                params.height = UiHelper.getStatusBarHeight(MainActivity.this)
+                        + UiHelper.getActionBarSize(MainActivity.this);
+                mCoverLayout.setLayoutParams(params);
+            }
+        });
     }
 
     private void refreshWallpaper () {

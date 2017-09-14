@@ -30,9 +30,17 @@ public class PhotoMiniHolder extends AbsViewHolder<PhotoMiniDelegate> {
     }
 
     @Override
-    public void onBindView(Context context, PhotoMiniDelegate t, int position, DelegateAdapter adapter) {
+    public void onBindView(Context context, final PhotoMiniDelegate t, final int position, final DelegateAdapter adapter) {
         Photo photo = t.getSource();
         thumbIv.setBackgroundColor(photo.getBgColor());
         Glide.with(context).load(photo.urls.small).transition(mOptions).into(thumbIv);
+
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                t.actionViewEvent(PhotoMiniDelegate.EVENT_CLICK, view, PhotoMiniHolder.this, t.getSource(),
+                        position, adapter);
+            }
+        });
     }
 }

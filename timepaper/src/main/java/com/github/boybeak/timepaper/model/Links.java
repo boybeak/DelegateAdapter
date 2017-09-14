@@ -9,8 +9,17 @@ import android.os.Parcelable;
 
 public class Links implements Parcelable {
 
+    private static final String TAIL = "?utm_source=time_paper&utm_medium=referral&utm_campaign=api-credit";
+
     public String self, html, photos, likes, portfolio, download, download_location;
 
+    public String getHtml() {
+        return html + TAIL;
+    }
+
+    public String getPhotos() {
+        return photos + TAIL;
+    }
 
     protected Links(Parcel in) {
         self = in.readString();

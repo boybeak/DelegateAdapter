@@ -1,7 +1,8 @@
 package com.github.boybeak.timepaper.db;
 
-import com.github.boybeak.timepaper.model.User;
+import com.github.boybeak.timepaper.model.Photo;
 
+import org.xutils.db.annotation.Column;
 import org.xutils.db.annotation.Table;
 
 /**
@@ -13,12 +14,13 @@ public class PhotoEntity {
 
     public static final int STATE_NONE = 0, STATE_STARTED = 1, STATE_FINISHED = 2;
 
-    public int id;
-    public String photo_id;
-    public int state;
+    @Column(name = "id", isId = true) public String id;
+    @Column(name = "state") public int state;
 
-    public PhotoEntity (User user) {
-        photo_id = user.id;
+    public PhotoEntity () {}
+
+    public PhotoEntity (Photo photo) {
+        id = photo.id;
     }
 
 }

@@ -11,10 +11,19 @@
     <string name="title_pager_latest">New</string>
     <string name="title_pager_popular">Popular</string>
 
+    <string name="title_settings_star_me">Star me</string>
+    <string name="title_settings_open_source">Open source</string>
     <string name="title_settings_logout">Logout</string>
+    <string name="title_open_source_delegate_adapter">DelegateAdapter</string>
+    <string name="title_open_source_selector">Selector</string>
+
+    <string name="key_open_source_delegate_adapter">@string/title_open_source_delegate_adapter</string>
+    <string name="key_open_source_selector">@string/title_open_source_selector</string>
 
     <string name="title_menu_settings">Settings</string>
+    <string name="title_menu_open_browser">Open in browser</string>
 
+    <string name="text_unsplash">%1$s/Unsplash</string>
     <string name="text_exif_key_make">Make</string>
     <string name="text_exif_key_model">Model</string>
     <string name="text_exif_key_exposure_time">Exposure Time</string>
@@ -28,6 +37,9 @@
     <string name="text_logout_summary">This may cause personal data loss</string>
     <string name="text_dialog_logout">This may cause personal data loss. Are you sure ?</string>
 
+    <string name="text_summary_open_source_delegate_adapter">An advanced RecyclerView\'s Adapter.There is no need to custom an Adapter if you use this library. This library binds layout file, data and ViewHolder with Annotation.</string>
+    <string name="text_summary_open_source_selector">A data query library, quickly query data from array or collection.</string>
+
     <string name="text_count_photos">photos</string>
     <string name="text_count_followers">followers</string>
     <string name="text_count_following">following</string>
@@ -40,78 +52,8 @@
     <string name="translation_name_photo" translatable="false">photo</string>
     <string name="translation_name_profile" translatable="false">profile</string>
     <string name="translation_name_name" translatable="false">name</string>
+    <string name="translation_name_toolbar" translatable="false">toolbar</string>
 
     <string name="title_activity_settings">Settings</string>
 
-    <!-- Strings related to Settings -->
-
-    <!-- Example General settings -->
-    <string name="pref_header_general">General</string>
-
-    <string name="pref_title_social_recommendations">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations">Recommendations for people to contact
-        based on your message history
-    </string>
-
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
-
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
-    <string-array name="pref_example_list_titles">
-        <item>Always</item>
-        <item>When possible</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_example_list_values">
-        <item>1</item>
-        <item>0</item>
-        <item>-1</item>
-    </string-array>
-
-    <!-- Example settings for Data & Sync -->
-    <string name="pref_header_data_sync">Data &amp; sync</string>
-
-    <string name="pref_title_sync_frequency">Sync frequency</string>
-    <string-array name="pref_sync_frequency_titles">
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>3 hours</item>
-        <item>6 hours</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_sync_frequency_values">
-        <item>15</item>
-        <item>30</item>
-        <item>60</item>
-        <item>180</item>
-        <item>360</item>
-        <item>-1</item>
-    </string-array>
-
-    <string-array name="list_preference_entries">
-        <item>Entry 1</item>
-        <item>Entry 2</item>
-        <item>Entry 3</item>
-    </string-array>
-
-    <string-array name="list_preference_entry_values">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-
-    <string-array name="multi_select_list_preference_default_value" />
-
-    <string name="pref_title_system_sync_settings">System sync settings</string>
-
-    <!-- Example settings for Notifications -->
-    <string name="pref_header_notifications">Notifications</string>
-
-    <string name="pref_title_new_message_notifications">New message notifications</string>
-
-    <string name="pref_title_ringtone">Ringtone</string>
-    <string name="pref_ringtone_silent">Silent</string>
-
-    <string name="pref_title_vibrate">Vibrate</string>
 </resources>

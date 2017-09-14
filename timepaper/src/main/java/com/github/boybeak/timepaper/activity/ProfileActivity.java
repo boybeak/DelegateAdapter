@@ -1,6 +1,7 @@
 package com.github.boybeak.timepaper.activity;
 
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.text.format.Formatter;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -23,17 +25,22 @@ import com.github.boybeak.adapter.DelegateParser;
 import com.github.boybeak.adapter.extention.SuperAdapter;
 import com.github.boybeak.adapter.extention.callback.OnScrollBottomListener;
 import com.github.boybeak.adapter.impl.LayoutImpl;
+import com.github.boybeak.selector.Path;
 import com.github.boybeak.timepaper.R;
 import com.github.boybeak.timepaper.adapter.StateSpanLookup;
 import com.github.boybeak.timepaper.adapter.delegate.EmptyDelegate;
 import com.github.boybeak.timepaper.adapter.delegate.FooterDelegate;
 import com.github.boybeak.timepaper.adapter.delegate.PhotoMiniDelegate;
 import com.github.boybeak.timepaper.adapter.holder.EmptyHolder;
+import com.github.boybeak.timepaper.adapter.holder.PhotoMiniHolder;
 import com.github.boybeak.timepaper.model.Photo;
 import com.github.boybeak.timepaper.model.User;
 import com.github.boybeak.timepaper.retrofit.Api;
 import com.github.boybeak.timepaper.utils.Intents;
+import com.nulldreams.notify.toast.ToastCenter;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -57,8 +64,31 @@ public class ProfileActivity extends BaseActivity {
     private AbsDelegate.OnViewEventListener<String, EmptyHolder> mEmptyListener =
             new AbsDelegate.OnViewEventListener<String, EmptyHolder>() {
                 @Override
-                public void onViewEvent(int eventCode, View view, String t, EmptyHolder viewHolder, int position, DelegateAdapter adapter) {
+                public void onViewEvent(int eventCode, View view, String t, EmptyHolder viewHolder,
+                                        int position, DelegateAdapter adapter) {
+                    showUserPhotos(mUser);
+                }
+            };
 
+    private AbsDelegate.OnViewEventListener<Photo, PhotoMiniHolder> mPhotoListener =
+            new AbsDelegate.OnViewEventListener<Photo, PhotoMiniHolder>() {
+                @Override
+                public void onViewEvent(int eventCode, View view, Photo t, PhotoMiniHolder viewHolder,
+                                        int position, DelegateAdapter adapter) {
+                    switch (eventCode) {
+                        case PhotoMiniDelegate.EVENT_CLICK:
+                            Intent it = new Intent(ProfileActivity.this, GalleryActivity.class);
+                            List<Photo> photos = adapter.selector(PhotoMiniDelegate.class).extractAll(
+                                    Path.with(PhotoMiniDelegate.class, Photo.class).methodWith("getSource")
+                            );
+                            ArrayList<Photo> photoArrayList = new ArrayList<>();
+                            photoArrayList.addAll(photos);
+                            it.putExtra("photos", photoArrayList);
+                            it.putExtra("index", position);
+                            startActivity(it);
+                            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                            break;
+                    }
                 }
             };
 
@@ -76,13 +106,25 @@ public class ProfileActivity extends BaseActivity {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.profile_email:
-                    Intents.openUrl(ProfileActivity.this, mUser.email);
+                    try {
+                        Intents.emailTo(ProfileActivity.this, mUser.email, "", "");
+                    } catch (Exception e) {
+                        ToastCenter.with(ProfileActivity.this).text(R.string.toast_no_app_response_action).showShort();
+                    }
                     break;
                 case R.id.profile_twitter:
-                    Intents.openUrl(ProfileActivity.this, mUser.getTwitterUrl());
+                    try {
+                        Intents.openUrl(ProfileActivity.this, mUser.getTwitterUrl());
+                    } catch (Exception e) {
+                        ToastCenter.with(ProfileActivity.this).text(R.string.toast_no_app_response_action).showShort();
+                    }
                     break;
                 case R.id.profile_instagram:
-                    Intents.openUrl(ProfileActivity.this, mUser.getInstagramUrl());
+                    try {
+                        Intents.openUrl(ProfileActivity.this, mUser.getInstagramUrl());
+                    } catch (Exception e) {
+                        ToastCenter.with(ProfileActivity.this).text(R.string.toast_no_app_response_action).showShort();
+                    }
                     break;
             }
         }
@@ -192,10 +234,26 @@ public class ProfileActivity extends BaseActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_profile, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
             return true;
+        }
+        switch (item.getItemId()) {
+            case R.id.profile_open_in_browser:
+                try {
+                    Intents.openUrl(this, mUser.links.getHtml());
+                } catch (Exception e) {
+                    ToastCenter.with(ProfileActivity.this).text(R.string.toast_no_app_response_action)
+                            .showShort();
+                }
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -240,8 +298,14 @@ public class ProfileActivity extends BaseActivity {
 
     private void showUserPhotos (User user) {
         isLoading = true;
-        mAdapter.getTailItem().notifyLoadingState();
-        mAdapter.notifyTail();
+        if (mAdapter.onlyContainsEmptyItem()) {
+            mAdapter.getEmptyItem().notifyLoadingState();
+            mAdapter.notifyEmpty();
+        } else {
+            mAdapter.getTailItem().notifyLoadingState();
+            mAdapter.notifyTail();
+        }
+
         mPhotoCall = Api.userPhotos(this, user, mPage);
         mPhotoCall.enqueue(new Callback<List<Photo>>() {
             @Override
@@ -259,7 +323,7 @@ public class ProfileActivity extends BaseActivity {
                         mAdapter.addAll(photos, new DelegateParser<Photo>() {
                             @Override
                             public LayoutImpl parse(DelegateAdapter adapter, Photo data) {
-                                return new PhotoMiniDelegate(data);
+                                return new PhotoMiniDelegate(data, mPhotoListener);
                             }
                         }).autoNotify();
                         mAdapter.getTailItem().notifySuccessState();
@@ -270,7 +334,7 @@ public class ProfileActivity extends BaseActivity {
                             mAdapter.getTailItem().notifyFailedState();
                             mAdapter.notifyTail();
                         } else if (mAdapter.onlyContainsEmptyItem()) {
-                            mAdapter.getEmptyItem().notifyEmptyState();
+                            mAdapter.getEmptyItem().notifyFailedState();
                             mAdapter.notifyEmpty();
                         }
                     }
@@ -279,7 +343,12 @@ public class ProfileActivity extends BaseActivity {
                         mAdapter.getTailItem().notifyFailedState();
                         mAdapter.notifyTail();
                     } else if (mAdapter.onlyContainsEmptyItem()) {
-                        mAdapter.getEmptyItem().notifyEmptyState();
+                        try {
+                            mAdapter.getEmptyItem().setSource(response.errorBody().string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        mAdapter.getEmptyItem().notifyFailedState();
                         mAdapter.notifyEmpty();
                     }
                 }
@@ -292,7 +361,8 @@ public class ProfileActivity extends BaseActivity {
                     mAdapter.getTailItem().notifyFailedState();
                     mAdapter.notifyTail();
                 } else if (mAdapter.onlyContainsEmptyItem()) {
-                    mAdapter.getEmptyItem().notifyEmptyState();
+                    mAdapter.getEmptyItem().setSource(t.getMessage());
+                    mAdapter.getEmptyItem().notifyFailedState();
                     mAdapter.notifyEmpty();
                 }
 

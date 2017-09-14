@@ -77,7 +77,7 @@ public class UserRowHolder extends AbsViewHolder<UserRowDelegate> {
                 @Override
                 public void onClick(View view) {
                     try {
-                        Intents.openUrl(context, user.email);
+                        Intents.emailTo(context, user.email, "", "");
                     } catch (Exception e) {
                         ToastCenter.with(context).text(R.string.toast_no_app_response_action).showShort();
                     }

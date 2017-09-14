@@ -11,4 +11,18 @@
         android:scaleType="centerCrop"
         android:transitionName="@string/translation_name_photo"
         tools:ignore="UnusedAttribute"/>
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/photo_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/photo_thumb"
+        android:layout_alignBottom="@+id/photo_thumb"
+        android:textColor="#ccffffff"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:padding="8dp"
+        android:textStyle="bold"
+        android:shadowColor="#80000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"/>
 </RelativeLayout>

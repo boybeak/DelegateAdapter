@@ -44,7 +44,9 @@
             android:enabled="true"
             android:exported="false" />
 
-        <activity android:name=".activity.ProfileActivity"></activity>
+        <activity android:name=".activity.ProfileActivity" />
+        <activity android:name=".activity.GalleryActivity"
+            android:theme="@style/AppTheme.FullScreen.Translucent"/>
     </application>
 
 </manifest>

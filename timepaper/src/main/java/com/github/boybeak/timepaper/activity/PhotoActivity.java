@@ -36,6 +36,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.github.boybeak.adapter.AbsDelegate;
 import com.github.boybeak.adapter.DelegateAdapter;
+import com.github.boybeak.timepaper.db.PhotoManager;
 import com.github.boybeak.timepaper.retrofit.Api;
 import com.github.boybeak.timepaper.R;
 import com.github.boybeak.timepaper.adapter.delegate.ExifDelegate;
@@ -48,6 +49,9 @@ import com.github.boybeak.timepaper.service.StreamService;
 import com.github.boybeak.timepaper.utils.Intents;
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
 import com.nulldreams.notify.toast.ToastCenter;
+
+import org.xutils.DbManager;
+import org.xutils.x;
 
 import java.io.File;
 
@@ -101,6 +105,7 @@ public class PhotoActivity extends BaseActivity {
         @Override
         public void onStarted() {
             mCpv.startAnimation();
+            PhotoManager.getInstance().onStart(mPhoto);
         }
 
         @Override
@@ -116,12 +121,14 @@ public class PhotoActivity extends BaseActivity {
             mSetFab.setImageResource(R.drawable.ic_format_paint);
             mCpv.stopAnimation();
             mFile = result;
+            PhotoManager.getInstance().onFinish(mPhoto);
         }
 
         @Override
         public void onError(Throwable ex, boolean isOnCallback) {
             isDownloading = false;
             mCpv.stopAnimation();
+
         }
 
         @Override
@@ -146,13 +153,6 @@ public class PhotoActivity extends BaseActivity {
                     break;
                 case R.id.photo_share_fab:
                     Intents.shareText(PhotoActivity.this, "Share to:", mPhoto.links.html);
-                    /*Intent share = new Intent(android.content.Intent.ACTION_SEND);
-                    share.setType("text/plain");
-                    User user = mPhoto.user;
-                    share.putExtra(Intent.EXTRA_SUBJECT, user.first_name + " " + user.last_name);
-                    share.putExtra(Intent.EXTRA_TEXT, mPhoto.links.html);
-
-                    startActivity(Intent.createChooser(share, "Share link!"));*/
                     break;
             }
         }
@@ -178,12 +178,13 @@ public class PhotoActivity extends BaseActivity {
                         public void onAnimationEnd(Animator animator) {
                             animator.removeAllListeners();
                             Intent it = new Intent(PhotoActivity.this, ProfileActivity.class);
-                            Pair<View, String> p1 = new Pair<>((View) mThumbIv, getString(R.string.translation_name_photo));
-                            Pair<View, String> p2 = new Pair<>(view, getString(R.string.translation_name_profile));
-                            Pair<View, String> p3 = new Pair<>((View)viewHolder.nameTv, getString(R.string.translation_name_name));
+                            Pair<View, String> p1 = new Pair<View, String>(mThumbIv, getString(R.string.translation_name_photo));
+                            Pair<View, String> p2 = new Pair<View, String>(view, getString(R.string.translation_name_profile));
+                            Pair<View, String> p3 = new Pair<View, String>(viewHolder.nameTv, getString(R.string.translation_name_name));
+                            Pair<View, String> p4 = new Pair<View, String>(mTb, getString(R.string.translation_name_toolbar));
 
                             ActivityOptionsCompat optionsCompat =
-                                    ActivityOptionsCompat.makeSceneTransitionAnimation(PhotoActivity.this, p1, p2, p3);
+                                    ActivityOptionsCompat.makeSceneTransitionAnimation(PhotoActivity.this, p1, p2, p3, p4);
                             it.putExtra("user", t);
                             it.putExtra("photo", mPhoto);
                             PhotoActivity.this.startActivity(it, optionsCompat.toBundle());
@@ -282,6 +283,11 @@ public class PhotoActivity extends BaseActivity {
             }
         });
 
+        if (PhotoManager.getInstance().isDownloadComplete(mPhoto)) {
+            mFile = PhotoManager.getInstance().getFile(mPhoto);
+            mSetFab.setImageResource(R.drawable.ic_format_paint);
+        }
+
     }
 
     @Override
@@ -365,15 +371,15 @@ public class PhotoActivity extends BaseActivity {
     public void onSetFabClick(View view) {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED) {
+            if (mFile != null && mFile.exists()) {
+                Intent intent = new Intent(Intent.ACTION_ATTACH_DATA);
+                intent.addCategory(Intent.CATEGORY_DEFAULT);
+                intent.setDataAndType(Uri.fromFile(mFile), "image/jpeg");
+                intent.putExtra("mimeType", "image/jpeg");
+                this.startActivity(Intent.createChooser(intent, "Set as:"));
+                return;
+            }
             if (mService != null) {
-                if (mFile != null && mFile.exists()) {
-                    Intent intent = new Intent(Intent.ACTION_ATTACH_DATA);
-                    intent.addCategory(Intent.CATEGORY_DEFAULT);
-                    intent.setDataAndType(Uri.fromFile(mFile), "image/jpeg");
-                    intent.putExtra("mimeType", "image/jpeg");
-                    this.startActivity(Intent.createChooser(intent, "Set as:"));
-                    return;
-                }
                 if (isDownloading) {
                     ToastCenter.with(PhotoActivity.this).text(R.string.toast_download_is_executing).showShort();
                     return;
@@ -404,10 +410,8 @@ public class PhotoActivity extends BaseActivity {
 
     private void download () {
         String url = mPhoto.urls.full;
-        String name = mPhoto.id + ".jpg";
 
-        File outputFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                "TimePaper" + File.separator + name);
+        File outputFile = PhotoManager.getInstance().getFile(mPhoto);
 
         Log.v(TAG, "download url=" + url + " outputFile=" + outputFile.getAbsolutePath());
         mCancelable = mService.download(url, outputFile.getAbsolutePath(), mFileCallback);
