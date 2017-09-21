@@ -2,6 +2,9 @@
 
 # DelegateAdapter
 这是一个改进的RecyclerView框架下的适配Adapter库。使用这个库，在大多数情况下，你都不需要再写自定义的适配器Adapter类了。
+
+[Wiki](https://github.com/boybeak/DelegateAdapter/wiki)
+
 # Download
 
 通过Gradle:
