@@ -7,6 +7,8 @@ This is an advanced RecyclerView's Adapter library. With this library, writing c
 
 The most amazing thing is binding multi types data and ViewHolder with Injections.
 
+[Wiki](https://github.com/boybeak/DelegateAdapter/wiki)
+
 [中文Readme入口](https://github.com/boybeak/DelegateAdapter/blob/master/README_CN.md)
 
 [Selector](https://github.com/boybeak/DelegateAdapter/tree/master/selector)
