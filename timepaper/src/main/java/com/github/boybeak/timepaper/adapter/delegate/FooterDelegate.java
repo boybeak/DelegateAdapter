@@ -1,7 +1,7 @@
 package com.github.boybeak.timepaper.adapter.delegate;
 
 import com.github.boybeak.adapter.AbsDelegate;
-import com.github.boybeak.adapter.extention.state.StateDelegate;
+import com.github.boybeak.adapter.extension.state.StateDelegate;
 import com.github.boybeak.timepaper.R;
 import com.github.boybeak.timepaper.adapter.holder.FooterHolder;
 

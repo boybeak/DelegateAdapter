@@ -3,7 +3,7 @@ package com.github.boybeak.timepaper.fragment;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.github.boybeak.adapter.extention.SuperAdapter;
+import com.github.boybeak.adapter.extension.SuperAdapter;
 import com.github.boybeak.timepaper.retrofit.Api;
 import com.github.boybeak.timepaper.R;
 import com.github.boybeak.timepaper.adapter.delegate.EmptyDelegate;

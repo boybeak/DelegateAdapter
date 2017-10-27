@@ -1,4 +1,4 @@
-package com.github.boybeak.adapter.extention.touch;
+package com.github.boybeak.adapter.extension.touch;
 
 import android.content.Context;
 

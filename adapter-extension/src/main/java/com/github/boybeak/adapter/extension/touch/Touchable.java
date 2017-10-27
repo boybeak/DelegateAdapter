@@ -1,4 +1,4 @@
-package com.github.boybeak.adapter.extention.touch;
+package com.github.boybeak.adapter.extension.touch;
 
 /**
  * Created by gaoyunfei on 2017/7/6.

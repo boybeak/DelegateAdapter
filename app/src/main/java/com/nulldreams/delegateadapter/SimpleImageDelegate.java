@@ -1,7 +1,7 @@
 package com.nulldreams.delegateadapter;
 
 import com.github.boybeak.adapter.annotation.DelegateInfo;
-import com.github.boybeak.adapter.extention.CheckableDelegate;
+import com.github.boybeak.adapter.extension.CheckableDelegate;
 
 /**
  * Created by gaoyunfei on 2017/8/30.

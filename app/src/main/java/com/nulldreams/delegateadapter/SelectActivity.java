@@ -16,15 +16,10 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
-import com.github.boybeak.adapter.AbsDelegate;
 import com.github.boybeak.adapter.DelegateAdapter;
 import com.github.boybeak.adapter.DelegateParser;
-import com.github.boybeak.adapter.extention.Checkable;
-import com.github.boybeak.adapter.extention.SuperAdapter;
-import com.github.boybeak.adapter.extention.MultipleController;
+import com.github.boybeak.adapter.extension.SuperAdapter;
 import com.github.boybeak.adapter.impl.LayoutImpl;
 import com.github.boybeak.selector.Operator;
 import com.github.boybeak.selector.Path;

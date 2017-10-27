@@ -1,4 +1,4 @@
-package com.github.boybeak.adapter.extention;
+package com.github.boybeak.adapter.extension;
 
 /**
  * Created by gaoyunfei on 2017/8/26.

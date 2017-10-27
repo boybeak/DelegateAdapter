@@ -6,5 +6,5 @@ import com.github.boybeak.adapter.impl.LayoutImpl;
  * Created by gaoyunfei on 16/7/30.
  */
 public interface DelegateReplace {
-    public LayoutImpl replaceWith (DelegateAdapter adapter, LayoutImpl impl);
+    LayoutImpl replaceWith (DelegateAdapter adapter, LayoutImpl impl);
 }

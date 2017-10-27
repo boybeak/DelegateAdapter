@@ -14,20 +14,15 @@ import android.widget.Toast;
 
 import com.github.boybeak.adapter.AbsDelegate;
 import com.github.boybeak.adapter.DelegateAdapter;
-import com.github.boybeak.adapter.DelegateListParser;
 import com.github.boybeak.adapter.DelegateParser;
-import com.github.boybeak.adapter.extention.Checkable;
-import com.github.boybeak.adapter.extention.MultipleController;
-import com.github.boybeak.adapter.extention.SuperAdapter;
+import com.github.boybeak.adapter.extension.Checkable;
+import com.github.boybeak.adapter.extension.MultipleController;
+import com.github.boybeak.adapter.extension.SuperAdapter;
 import com.github.boybeak.adapter.impl.LayoutImpl;
-import com.github.boybeak.selector.Action;
 import com.github.boybeak.selector.ListSelector;
 import com.github.boybeak.selector.Operator;
 import com.github.boybeak.selector.Path;
-import com.nulldreams.delegateadapter.User.User;
-import com.nulldreams.delegateadapter.adapter.delegate.UserDelegate;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {

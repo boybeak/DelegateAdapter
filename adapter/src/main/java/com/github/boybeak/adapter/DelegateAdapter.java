@@ -14,7 +14,6 @@ import com.github.boybeak.adapter.annotation.DelegateInfo;
 import com.github.boybeak.adapter.annotation.HolderClass;
 import com.github.boybeak.adapter.annotation.LayoutID;
 import com.github.boybeak.adapter.annotation.NullHolder;
-import com.github.boybeak.adapter.impl.DelegateImpl;
 import com.github.boybeak.adapter.impl.LayoutImpl;
 import com.github.boybeak.selector.ListSelector;
 import com.github.boybeak.selector.Selector;
@@ -27,7 +26,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 /**

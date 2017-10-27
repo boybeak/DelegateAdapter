@@ -9,7 +9,7 @@ import android.widget.CompoundButton;
 import com.bumptech.glide.Glide;
 import com.github.boybeak.adapter.AbsViewHolder;
 import com.github.boybeak.adapter.DelegateAdapter;
-import com.github.boybeak.adapter.extention.SuperAdapter;
+import com.github.boybeak.adapter.extension.SuperAdapter;
 
 /**
  * Created by gaoyunfei on 2017/8/30.

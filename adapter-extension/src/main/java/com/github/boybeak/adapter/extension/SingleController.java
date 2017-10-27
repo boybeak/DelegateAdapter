@@ -1,4 +1,4 @@
-package com.github.boybeak.adapter.extention;
+package com.github.boybeak.adapter.extension;
 
 import com.github.boybeak.adapter.DelegateAdapter;
 import com.github.boybeak.adapter.impl.LayoutImpl;

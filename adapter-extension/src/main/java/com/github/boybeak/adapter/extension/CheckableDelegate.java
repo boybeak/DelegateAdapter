@@ -1,4 +1,4 @@
-package com.github.boybeak.adapter.extention;
+package com.github.boybeak.adapter.extension;
 
 import android.os.Bundle;
 

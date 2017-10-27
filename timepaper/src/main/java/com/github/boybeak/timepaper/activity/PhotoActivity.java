@@ -316,6 +316,9 @@ public class PhotoActivity extends BaseActivity {
 
             @Override
             public void onAnimationEnd(Animator animator) {
+                if (isDestroyed()) {
+                    return;
+                }
                 animator.removeAllListeners();
                 PhotoActivity.super.onBackPressed();
             }

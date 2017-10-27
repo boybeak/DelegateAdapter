@@ -1,4 +1,4 @@
-package com.github.boybeak.adapter.extention.callback;
+package com.github.boybeak.adapter.extension.callback;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

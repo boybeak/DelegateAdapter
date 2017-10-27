@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.github.boybeak.adapter.extention.SuperAdapter;
+import com.github.boybeak.adapter.extension.SuperAdapter;
 import com.github.boybeak.timepaper.retrofit.Api;
 import com.github.boybeak.timepaper.R;
 import com.github.boybeak.timepaper.adapter.delegate.EmptyDelegate;

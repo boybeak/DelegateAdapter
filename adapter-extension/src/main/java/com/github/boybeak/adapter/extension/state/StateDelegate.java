@@ -1,4 +1,4 @@
-package com.github.boybeak.adapter.extention.state;
+package com.github.boybeak.adapter.extension.state;
 
 import android.os.Bundle;
 import android.support.annotation.IntDef;

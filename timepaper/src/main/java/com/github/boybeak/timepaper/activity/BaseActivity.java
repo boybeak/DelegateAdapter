@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import com.github.boybeak.adapter.AbsDelegate;
 import com.github.boybeak.adapter.DelegateAdapter;
-import com.github.boybeak.adapter.extention.SuperAdapter;
+import com.github.boybeak.adapter.extension.SuperAdapter;
 import com.github.boybeak.timepaper.R;
 import com.github.boybeak.timepaper.adapter.delegate.FooterDelegate;
 import com.github.boybeak.timepaper.adapter.delegate.LogDelegate;
