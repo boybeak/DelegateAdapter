@@ -10,29 +10,29 @@ import com.github.boybeak.adapter.impl.DelegateImpl;
  */
 public abstract class AbsDelegate<Data, AVH extends AbsViewHolder> implements DelegateImpl<Data, AVH> {
 
-    private Data t;
+    private Data data;
 
     private Bundle bundle;
 
     private OnViewEventListener<Data, AVH> onViewEventListener;
 
     /**
-     * @param t the source data item
+     * @param data the source data item
      */
-    public AbsDelegate (Data t) {
-        this(t, null, null);
+    public AbsDelegate (Data data) {
+        this(data, null, null);
     }
 
-    public AbsDelegate (Data t, Bundle bundle) {
-        this(t, bundle, null);
+    public AbsDelegate (Data data, Bundle bundle) {
+        this(data, bundle, null);
     }
 
-    public AbsDelegate (Data t, OnViewEventListener<Data, AVH> onViewEventListener) {
-        this (t, null, onViewEventListener);
+    public AbsDelegate (Data data, OnViewEventListener<Data, AVH> onViewEventListener) {
+        this (data, null, onViewEventListener);
     }
 
-    public AbsDelegate(Data t, Bundle bundle, OnViewEventListener<Data, AVH> onViewEventListener) {
-        this.t = t;
+    public AbsDelegate(Data data, Bundle bundle, OnViewEventListener<Data, AVH> onViewEventListener) {
+        this.data = data;
         this.bundle = bundle;
         this.onViewEventListener = onViewEventListener;
     }
@@ -43,11 +43,11 @@ public abstract class AbsDelegate<Data, AVH extends AbsViewHolder> implements De
 
     @Override
     public Data getSource () {
-        return t;
+        return data;
     }
 
-    public void setSource (Data t) {
-        this.t = t;
+    public void setSource (Data data) {
+        this.data = data;
     }
 
     public Bundle bundle() {
@@ -58,13 +58,15 @@ public abstract class AbsDelegate<Data, AVH extends AbsViewHolder> implements De
     }
 
     @Override
-    public void actionViewEvent(int eventCode, View view, AVH viewHolder, Data t, int position, DelegateAdapter adapter) {
+    public void actionViewEvent(int eventCode, View view, AVH viewHolder, Data data,
+                                int position, DelegateAdapter adapter) {
         if (onViewEventListener != null) {
-            onViewEventListener.onViewEvent(eventCode, view, t, viewHolder, position, adapter);
+            onViewEventListener.onViewEvent(eventCode, view, data, viewHolder, position, adapter);
         }
     }
 
     public interface OnViewEventListener<Data, AVH> {
-        void onViewEvent (int eventCode, View view, Data t, AVH viewHolder, int position, DelegateAdapter adapter);
+        void onViewEvent (int eventCode, View view, Data data, AVH viewHolder,
+                          int position, DelegateAdapter adapter);
     }
 }

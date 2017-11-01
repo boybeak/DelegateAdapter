@@ -11,5 +11,6 @@ import com.github.boybeak.adapter.DelegateAdapter;
 public interface DelegateImpl<Data, AVH extends AbsViewHolder> extends LayoutImpl<AVH> {
     Data getSource ();
 
-    void actionViewEvent (int eventCode, View view, AVH viewHolder, Data t, int position, DelegateAdapter adapter);
+    void actionViewEvent (int eventCode, View view, AVH viewHolder, Data data,
+                          int position, DelegateAdapter adapter);
 }
