@@ -24,27 +24,27 @@ import static com.github.boybeak.adapter.DelegateAdapter.getLayoutFromAnnotation
  * Created by gaoyunfei on 2016/12/17.
  */
 
-public abstract class AnnotationDelegate<T, AVH extends AbsViewHolder> extends AbsDelegate<T, AVH> {
+public abstract class AnnotationDelegate<Data, AVH extends AbsViewHolder> extends AbsDelegate<Data, AVH> {
 
     private static final String TAG = AnnotationDelegate.class.getSimpleName();
 
     private int layoutID = 0;
     private Class<AVH> holderClass;
 
-    public AnnotationDelegate(T t) {
-        super(t);
+    public AnnotationDelegate(Data data) {
+        super(data);
     }
 
-    public AnnotationDelegate(T t, Bundle bundle) {
-        super(t, bundle);
+    public AnnotationDelegate(Data data, Bundle bundle) {
+        super(data, bundle);
     }
 
-    public AnnotationDelegate(T t, OnViewEventListener<T, AVH> onViewEventListener) {
-        super(t, onViewEventListener);
+    public AnnotationDelegate(Data data, OnViewEventListener<Data, AVH> onViewEventListener) {
+        super(data, onViewEventListener);
     }
 
-    public AnnotationDelegate(T t, Bundle bundle, OnViewEventListener<T, AVH> onViewEventListener) {
-        super(t, bundle, onViewEventListener);
+    public AnnotationDelegate(Data data, Bundle bundle, OnViewEventListener<Data, AVH> onViewEventListener) {
+        super(data, bundle, onViewEventListener);
     }
 
     /**

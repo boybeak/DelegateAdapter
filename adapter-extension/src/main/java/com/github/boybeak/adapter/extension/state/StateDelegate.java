@@ -19,20 +19,20 @@ public abstract class StateDelegate<Data, AVH extends AbsViewHolder> extends Abs
 
     private int state;
 
-    public StateDelegate(Data t) {
-        super(t);
+    public StateDelegate(Data data) {
+        super(data);
     }
 
-    public StateDelegate(Data t, Bundle bundle) {
-        super(t, bundle);
+    public StateDelegate(Data data, Bundle bundle) {
+        super(data, bundle);
     }
 
-    public StateDelegate(Data t, OnViewEventListener<Data, AVH> onViewEventListener) {
-        super(t, onViewEventListener);
+    public StateDelegate(Data data, OnViewEventListener<Data, AVH> onViewEventListener) {
+        super(data, onViewEventListener);
     }
 
-    public StateDelegate(Data t, Bundle bundle, OnViewEventListener<Data, AVH> onViewEventListener) {
-        super(t, bundle, onViewEventListener);
+    public StateDelegate(Data data, Bundle bundle, OnViewEventListener<Data, AVH> onViewEventListener) {
+        super(data, bundle, onViewEventListener);
     }
 
     public int getState () {

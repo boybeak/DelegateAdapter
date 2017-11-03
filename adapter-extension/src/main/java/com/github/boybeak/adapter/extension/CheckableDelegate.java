@@ -9,24 +9,24 @@ import com.github.boybeak.adapter.annotation.AnnotationDelegate;
  * Created by gaoyunfei on 2017/8/27.
  */
 
-public class CheckableDelegate<T, AVH extends AbsViewHolder> extends AnnotationDelegate<T, AVH> implements Checkable {
+public class CheckableDelegate<Data, AVH extends AbsViewHolder> extends AnnotationDelegate<Data, AVH> implements Checkable {
 
     private boolean checked;
 
-    public CheckableDelegate(T t) {
-        super(t);
+    public CheckableDelegate(Data data) {
+        super(data);
     }
 
-    public CheckableDelegate(T t, Bundle bundle) {
-        super(t, bundle);
+    public CheckableDelegate(Data data, Bundle bundle) {
+        super(data, bundle);
     }
 
-    public CheckableDelegate(T t, OnViewEventListener<T, AVH> onViewEventListener) {
-        super(t, onViewEventListener);
+    public CheckableDelegate(Data data, OnViewEventListener<Data, AVH> onViewEventListener) {
+        super(data, onViewEventListener);
     }
 
-    public CheckableDelegate(T t, Bundle bundle, OnViewEventListener<T, AVH> onViewEventListener) {
-        super(t, bundle, onViewEventListener);
+    public CheckableDelegate(Data data, Bundle bundle, OnViewEventListener<Data, AVH> onViewEventListener) {
+        super(data, bundle, onViewEventListener);
     }
 
 
