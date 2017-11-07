@@ -33,7 +33,7 @@ public class LogHolder extends AbsViewHolder<LogDelegate> {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                logDelegate.actionViewEvent(0, view, LogHolder.this, logMsg, position, adapter);
+                logDelegate.actionViewEvent(0, view, LogHolder.this, position, adapter);
             }
         });
     }

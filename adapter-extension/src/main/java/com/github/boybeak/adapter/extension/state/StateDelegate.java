@@ -5,6 +5,7 @@ import android.support.annotation.IntDef;
 
 import com.github.boybeak.adapter.AbsDelegate;
 import com.github.boybeak.adapter.AbsViewHolder;
+import com.github.boybeak.adapter.OnViewEventListener;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -27,12 +28,12 @@ public abstract class StateDelegate<Data, AVH extends AbsViewHolder> extends Abs
         super(data, bundle);
     }
 
-    public StateDelegate(Data data, OnViewEventListener<Data, AVH> onViewEventListener) {
-        super(data, onViewEventListener);
+    public StateDelegate(Data data, OnViewEventListener<Data, AVH> viewEventListener) {
+        super(data, viewEventListener);
     }
 
-    public StateDelegate(Data data, Bundle bundle, OnViewEventListener<Data, AVH> onViewEventListener) {
-        super(data, bundle, onViewEventListener);
+    public StateDelegate(Data data, Bundle bundle, OnViewEventListener<Data, AVH> viewEventListener) {
+        super(data, bundle, viewEventListener);
     }
 
     public int getState () {

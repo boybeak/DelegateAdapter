@@ -10,13 +10,13 @@
 通过Gradle:
 
 ```groovy
-compile 'com.github.boybeak:adapter:3.0.1'
-compile 'com.github.boybeak:adapter-extension:2.1.0' //Optional
+compile 'com.github.boybeak:adapter:3.1.0'
+compile 'com.github.boybeak:adapter-extension:2.2.0' //Optional
 ```
 
 
 
-# What's new in version 3.0.0
+# What's new in version 3.x.x
 
 1. 重构库结构。
 2. 增加了扩展库。

@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import com.github.boybeak.adapter.AbsDelegate;
 import com.github.boybeak.adapter.DelegateAdapter;
 import com.github.boybeak.adapter.DelegateParser;
+import com.github.boybeak.adapter.OnViewEventListener;
 import com.github.boybeak.adapter.extension.SuperAdapter;
 import com.github.boybeak.adapter.extension.callback.OnScrollBottomListener;
 import com.github.boybeak.adapter.impl.LayoutImpl;
@@ -44,7 +45,7 @@ import retrofit2.Response;
  */
 
 public abstract class PaperFragment extends Fragment implements Callback<List<Photo>>,
-        SwipeRefreshLayout.OnRefreshListener, DelegateParser<Photo>, AbsDelegate.OnViewEventListener<Photo, PhotoHolder> {
+        SwipeRefreshLayout.OnRefreshListener, DelegateParser<Photo>, OnViewEventListener<Photo, PhotoHolder> {
 
     private static final String TAG = PaperFragment.class.getSimpleName();
 
@@ -63,10 +64,11 @@ public abstract class PaperFragment extends Fragment implements Callback<List<Ph
         }
     };
 
-    private AbsDelegate.OnViewEventListener<String, EmptyHolder> mEmptyListener
-            = new AbsDelegate.OnViewEventListener<String, EmptyHolder>() {
+    private OnViewEventListener<String, EmptyHolder> mEmptyListener
+            = new OnViewEventListener<String, EmptyHolder>() {
         @Override
-        public void onViewEvent(int eventCode, View view, String t, EmptyHolder viewHolder, int position, DelegateAdapter adapter) {
+        public void onViewEvent(int eventCode, View view, String s, Bundle bundle,
+                                EmptyHolder viewHolder, int position, DelegateAdapter adapter) {
             if (!mSrl.isRefreshing()) {
                 mSrl.post(new Runnable() {
                     @Override
@@ -76,8 +78,8 @@ public abstract class PaperFragment extends Fragment implements Callback<List<Ph
                 });
                 onRefresh();
             }
-
         }
+
     };
 
     public CharSequence getTitle (Context context) {
@@ -130,7 +132,7 @@ public abstract class PaperFragment extends Fragment implements Callback<List<Ph
     }
 
     @Override
-    public void onViewEvent(int eventCode, View view, Photo t, PhotoHolder viewHolder,
+    public void onViewEvent(int eventCode, View view, Photo t, Bundle bundle, PhotoHolder viewHolder,
                             int position, DelegateAdapter adapter) {
         Intent it = new Intent(getContext(), PhotoActivity.class);
         ActivityOptionsCompat optionsCompat =

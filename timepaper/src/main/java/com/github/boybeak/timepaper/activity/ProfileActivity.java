@@ -22,6 +22,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.github.boybeak.adapter.AbsDelegate;
 import com.github.boybeak.adapter.DelegateAdapter;
 import com.github.boybeak.adapter.DelegateParser;
+import com.github.boybeak.adapter.OnViewEventListener;
 import com.github.boybeak.adapter.extension.SuperAdapter;
 import com.github.boybeak.adapter.extension.callback.OnScrollBottomListener;
 import com.github.boybeak.adapter.impl.LayoutImpl;
@@ -61,20 +62,18 @@ public class ProfileActivity extends BaseActivity {
 
     private SuperAdapter<EmptyDelegate, FooterDelegate> mAdapter;
 
-    private AbsDelegate.OnViewEventListener<String, EmptyHolder> mEmptyListener =
-            new AbsDelegate.OnViewEventListener<String, EmptyHolder>() {
+    private OnViewEventListener<String, EmptyHolder> mEmptyListener =
+            new OnViewEventListener<String, EmptyHolder>() {
                 @Override
-                public void onViewEvent(int eventCode, View view, String t, EmptyHolder viewHolder,
-                                        int position, DelegateAdapter adapter) {
+                public void onViewEvent(int eventCode, View view, String s, Bundle bundle, EmptyHolder viewHolder, int position, DelegateAdapter adapter) {
                     showUserPhotos(mUser);
                 }
             };
 
-    private AbsDelegate.OnViewEventListener<Photo, PhotoMiniHolder> mPhotoListener =
-            new AbsDelegate.OnViewEventListener<Photo, PhotoMiniHolder>() {
+    private OnViewEventListener<Photo, PhotoMiniHolder> mPhotoListener =
+            new OnViewEventListener<Photo, PhotoMiniHolder>() {
                 @Override
-                public void onViewEvent(int eventCode, View view, Photo t, PhotoMiniHolder viewHolder,
-                                        int position, DelegateAdapter adapter) {
+                public void onViewEvent(int eventCode, View view, Photo photo, Bundle bundle, PhotoMiniHolder viewHolder, int position, DelegateAdapter adapter) {
                     switch (eventCode) {
                         case PhotoMiniDelegate.EVENT_CLICK:
                             Intent it = new Intent(ProfileActivity.this, GalleryActivity.class);

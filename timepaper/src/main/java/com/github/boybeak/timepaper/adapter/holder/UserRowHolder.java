@@ -128,7 +128,7 @@ public class UserRowHolder extends AbsViewHolder<UserRowDelegate> {
         profileIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                t.actionViewEvent(UserRowDelegate.PROFILE_CLICK, view, UserRowHolder.this, user, position, adapter);
+                t.actionViewEvent(UserRowDelegate.PROFILE_CLICK, view, UserRowHolder.this, position, adapter);
             }
         });
 

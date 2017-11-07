@@ -51,7 +51,7 @@ public class PhotoHolder extends AbsViewHolder<PhotoDelegate> {
                 if (id == itemView.getId()) {
                     t.actionViewEvent(
                             PhotoDelegate.EVENT_CLICK,
-                            view, PhotoHolder.this, photo, position, adapter);
+                            view, PhotoHolder.this, position, adapter);
                 } else if (id == authorTv.getId()) {
                     Intent it = new Intent(context, ProfileActivity.class);
                     it.putExtra("photo", photo);

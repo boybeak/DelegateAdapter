@@ -36,6 +36,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.github.boybeak.adapter.AbsDelegate;
 import com.github.boybeak.adapter.DelegateAdapter;
+import com.github.boybeak.adapter.OnViewEventListener;
 import com.github.boybeak.timepaper.db.PhotoManager;
 import com.github.boybeak.timepaper.retrofit.Api;
 import com.github.boybeak.timepaper.R;
@@ -158,51 +159,52 @@ public class PhotoActivity extends BaseActivity {
         }
     };
 
-    private AbsDelegate.OnViewEventListener<User, UserRowHolder> userRowEventListener =
-            new AbsDelegate.OnViewEventListener<User, UserRowHolder>() {
-        @Override
-        public void onViewEvent(int eventCode, final View view, final User t, final UserRowHolder viewHolder,
-                                int position, DelegateAdapter adapter) {
-            switch (eventCode) {
-                case UserRowDelegate.PROFILE_CLICK:
-                    if (isFabAnimating) {
-                        return;
+    private OnViewEventListener<User, UserRowHolder> userRowEventListener =
+            new OnViewEventListener<User, UserRowHolder>() {
+                @Override
+                public void onViewEvent(int eventCode, final View view, final User user, Bundle bundle,
+                                        final UserRowHolder viewHolder, int position, DelegateAdapter adapter) {
+                    switch (eventCode) {
+                        case UserRowDelegate.PROFILE_CLICK:
+                            if (isFabAnimating) {
+                                return;
+                            }
+                            hideFabs(new Animator.AnimatorListener() {
+                                @Override
+                                public void onAnimationStart(Animator animator) {
+
+                                }
+
+                                @Override
+                                public void onAnimationEnd(Animator animator) {
+                                    animator.removeAllListeners();
+                                    Intent it = new Intent(PhotoActivity.this, ProfileActivity.class);
+                                    Pair<View, String> p1 = new Pair<View, String>(mThumbIv, getString(R.string.translation_name_photo));
+                                    Pair<View, String> p2 = new Pair<View, String>(view, getString(R.string.translation_name_profile));
+                                    Pair<View, String> p3 = new Pair<View, String>(viewHolder.nameTv, getString(R.string.translation_name_name));
+                                    Pair<View, String> p4 = new Pair<View, String>(mTb, getString(R.string.translation_name_toolbar));
+
+                                    ActivityOptionsCompat optionsCompat =
+                                            ActivityOptionsCompat.makeSceneTransitionAnimation(PhotoActivity.this, p1, p2, p3, p4);
+                                    it.putExtra("user", user);
+                                    it.putExtra("photo", mPhoto);
+                                    PhotoActivity.this.startActivity(it, optionsCompat.toBundle());
+                                }
+
+                                @Override
+                                public void onAnimationCancel(Animator animator) {
+
+                                }
+
+                                @Override
+                                public void onAnimationRepeat(Animator animator) {
+
+                                }
+                            });
+                            break;
                     }
-                    hideFabs(new Animator.AnimatorListener() {
-                        @Override
-                        public void onAnimationStart(Animator animator) {
+                }
 
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animator animator) {
-                            animator.removeAllListeners();
-                            Intent it = new Intent(PhotoActivity.this, ProfileActivity.class);
-                            Pair<View, String> p1 = new Pair<View, String>(mThumbIv, getString(R.string.translation_name_photo));
-                            Pair<View, String> p2 = new Pair<View, String>(view, getString(R.string.translation_name_profile));
-                            Pair<View, String> p3 = new Pair<View, String>(viewHolder.nameTv, getString(R.string.translation_name_name));
-                            Pair<View, String> p4 = new Pair<View, String>(mTb, getString(R.string.translation_name_toolbar));
-
-                            ActivityOptionsCompat optionsCompat =
-                                    ActivityOptionsCompat.makeSceneTransitionAnimation(PhotoActivity.this, p1, p2, p3, p4);
-                            it.putExtra("user", t);
-                            it.putExtra("photo", mPhoto);
-                            PhotoActivity.this.startActivity(it, optionsCompat.toBundle());
-                        }
-
-                        @Override
-                        public void onAnimationCancel(Animator animator) {
-
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animator animator) {
-
-                        }
-                    });
-                    break;
-            }
-        }
     };
 
     private boolean isFabsShowing = false;

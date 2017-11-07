@@ -3,6 +3,7 @@ package com.github.boybeak.adapter.extension;
 import android.os.Bundle;
 
 import com.github.boybeak.adapter.AbsViewHolder;
+import com.github.boybeak.adapter.OnViewEventListener;
 import com.github.boybeak.adapter.annotation.AnnotationDelegate;
 
 /**
@@ -21,12 +22,12 @@ public class CheckableDelegate<Data, AVH extends AbsViewHolder> extends Annotati
         super(data, bundle);
     }
 
-    public CheckableDelegate(Data data, OnViewEventListener<Data, AVH> onViewEventListener) {
-        super(data, onViewEventListener);
+    public CheckableDelegate(Data data, OnViewEventListener<Data, AVH> viewEventListener) {
+        super(data, viewEventListener);
     }
 
-    public CheckableDelegate(Data data, Bundle bundle, OnViewEventListener<Data, AVH> onViewEventListener) {
-        super(data, bundle, onViewEventListener);
+    public CheckableDelegate(Data data, Bundle bundle, OnViewEventListener<Data, AVH> viewEventListener) {
+        super(data, bundle, viewEventListener);
     }
 
 

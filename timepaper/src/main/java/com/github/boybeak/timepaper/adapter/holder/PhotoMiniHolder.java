@@ -38,7 +38,7 @@ public class PhotoMiniHolder extends AbsViewHolder<PhotoMiniDelegate> {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                t.actionViewEvent(PhotoMiniDelegate.EVENT_CLICK, view, PhotoMiniHolder.this, t.getSource(),
+                t.actionViewEvent(PhotoMiniDelegate.EVENT_CLICK, view, PhotoMiniHolder.this,
                         position, adapter);
             }
         });

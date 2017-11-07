@@ -56,7 +56,7 @@ public class EmptyHolder extends AbsViewHolder<EmptyDelegate> {
             retryBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    emptyDelegate.actionViewEvent(0, view, EmptyHolder.this, detail, position, adapter);
+                    emptyDelegate.actionViewEvent(0, view, EmptyHolder.this, position, adapter);
                 }
             });
         } else {

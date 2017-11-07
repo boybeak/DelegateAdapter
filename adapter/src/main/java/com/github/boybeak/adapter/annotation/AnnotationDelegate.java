@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.github.boybeak.adapter.AbsDelegate;
 import com.github.boybeak.adapter.AbsViewHolder;
 import com.github.boybeak.adapter.DelegateAdapter;
+import com.github.boybeak.adapter.OnViewEventListener;
 
 import static com.github.boybeak.adapter.DelegateAdapter.getLayoutFromAnnotation;
 
@@ -39,12 +40,12 @@ public abstract class AnnotationDelegate<Data, AVH extends AbsViewHolder> extend
         super(data, bundle);
     }
 
-    public AnnotationDelegate(Data data, OnViewEventListener<Data, AVH> onViewEventListener) {
-        super(data, onViewEventListener);
+    public AnnotationDelegate(Data data, OnViewEventListener<Data, AVH> viewEventListener) {
+        super(data, viewEventListener);
     }
 
-    public AnnotationDelegate(Data data, Bundle bundle, OnViewEventListener<Data, AVH> onViewEventListener) {
-        super(data, bundle, onViewEventListener);
+    public AnnotationDelegate(Data data, Bundle bundle, OnViewEventListener<Data, AVH> viewEventListener) {
+        super(data, bundle, viewEventListener);
     }
 
     /**

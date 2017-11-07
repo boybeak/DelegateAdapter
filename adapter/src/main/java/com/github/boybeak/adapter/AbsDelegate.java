@@ -27,18 +27,18 @@ public abstract class AbsDelegate<Data, AVH extends AbsViewHolder> implements De
         this(data, bundle, null);
     }
 
-    public AbsDelegate (Data data, OnViewEventListener<Data, AVH> onViewEventListener) {
-        this (data, null, onViewEventListener);
+    public AbsDelegate (Data data, OnViewEventListener<Data, AVH> viewEventListener) {
+        this (data, null, viewEventListener);
     }
 
-    public AbsDelegate(Data data, Bundle bundle, OnViewEventListener<Data, AVH> onViewEventListener) {
+    public AbsDelegate(Data data, Bundle bundle, OnViewEventListener<Data, AVH> viewEventListener) {
         this.data = data;
         this.bundle = bundle;
-        this.onViewEventListener = onViewEventListener;
+        this.onViewEventListener = viewEventListener;
     }
 
-    public void setOnViewEventListener(OnViewEventListener<Data, AVH> onViewEventListener) {
-        this.onViewEventListener = onViewEventListener;
+    public void setOnViewEventListener(OnViewEventListener<Data, AVH> viewEventListener) {
+        this.onViewEventListener = viewEventListener;
     }
 
     @Override
@@ -58,15 +58,12 @@ public abstract class AbsDelegate<Data, AVH extends AbsViewHolder> implements De
     }
 
     @Override
-    public void actionViewEvent(int eventCode, View view, AVH viewHolder, Data data,
+    public void actionViewEvent(int eventCode, View view, AVH viewHolder,
                                 int position, DelegateAdapter adapter) {
         if (onViewEventListener != null) {
-            onViewEventListener.onViewEvent(eventCode, view, data, viewHolder, position, adapter);
+            onViewEventListener.onViewEvent(eventCode, view, getSource(),
+                    bundle, viewHolder, position, adapter);
         }
     }
 
-    public interface OnViewEventListener<Data, AVH> {
-        void onViewEvent (int eventCode, View view, Data data, AVH viewHolder,
-                          int position, DelegateAdapter adapter);
-    }
 }

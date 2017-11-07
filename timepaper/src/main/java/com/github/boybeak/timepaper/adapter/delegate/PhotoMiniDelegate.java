@@ -1,5 +1,6 @@
 package com.github.boybeak.timepaper.adapter.delegate;
 
+import com.github.boybeak.adapter.OnViewEventListener;
 import com.github.boybeak.adapter.annotation.AnnotationDelegate;
 import com.github.boybeak.adapter.annotation.DelegateInfo;
 import com.github.boybeak.timepaper.R;
