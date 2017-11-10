@@ -20,11 +20,11 @@ public abstract class AbsViewHolder<Delegate> extends RecyclerView.ViewHolder {
 
     /**
      * @param context context
-     * @param t may be a subclass of {@link DelegateImpl}
+     * @param delegate may be a subclass of {@link DelegateImpl}
      * @param position adapter position
      * @param adapter adapter
      */
-    public abstract void onBindView (Context context, Delegate t, int position, DelegateAdapter adapter);
+    public abstract void onBindView (Context context, Delegate delegate, int position, DelegateAdapter adapter);
 
     public void onViewAttachedToWindow (DelegateAdapter adapter, Context context) {
         isViewAttachedToWindow = true;

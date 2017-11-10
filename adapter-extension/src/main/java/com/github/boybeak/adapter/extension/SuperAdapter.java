@@ -307,7 +307,7 @@ public class SuperAdapter<Empty extends LayoutImpl, Tail extends LayoutImpl> ext
         }
         SingleController singleController = new SingleController(this);
         mController = singleController;
-        notifyDataSetChanged();
+//        notifyDataSetChanged();
         return singleController;
     }
 
@@ -321,7 +321,7 @@ public class SuperAdapter<Empty extends LayoutImpl, Tail extends LayoutImpl> ext
         }
         MultipleController multipleController = new MultipleController(this);
         mController = multipleController;
-        notifyDataSetChanged();
+//        notifyDataSetChanged();
         return multipleController;
     }
 

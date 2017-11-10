@@ -11,7 +11,7 @@
 
 ```groovy
 compile 'com.github.boybeak:adapter:3.1.0'
-compile 'com.github.boybeak:adapter-extension:2.2.0' //Optional
+compile 'com.github.boybeak:adapter-extension:2.2.1' //Optional
 ```
 
 
