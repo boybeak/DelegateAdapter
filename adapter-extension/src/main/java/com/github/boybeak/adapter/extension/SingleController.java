@@ -2,6 +2,8 @@ package com.github.boybeak.adapter.extension;
 
 import com.github.boybeak.adapter.DelegateAdapter;
 import com.github.boybeak.adapter.impl.LayoutImpl;
+import com.github.boybeak.selector.Operator;
+import com.github.boybeak.selector.Path;
 
 /**
  * Created by gaoyunfei on 2017/8/27.
@@ -72,6 +74,20 @@ public class SingleController implements Controller {
     @Override
     public boolean isStarted() {
         return isStarted;
+    }
+
+    @Override
+    public boolean hasCheckedOnes() {
+        return getCheckedCount() > 0;
+    }
+
+    @Override
+    public int getCheckedCount() {
+        return mAdapter.selector(Checkable.class).where(
+                Path.with(Checkable.class, Boolean.class).methodWith("isChecked"),
+                Operator.OPERATOR_EQUAL,
+                true
+        ).count();
     }
 
     public Checkable getCheckedOne () {

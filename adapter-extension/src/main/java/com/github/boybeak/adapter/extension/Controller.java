@@ -10,4 +10,6 @@ public interface Controller {
     void stop ();
 
     boolean isStarted ();
+    boolean hasCheckedOnes ();
+    int getCheckedCount ();
 }

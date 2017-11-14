@@ -65,11 +65,7 @@ public class MultipleController implements Controller {
         if (allCheckableCount == 0) {
             return false;
         }
-        int checkedCount = mAdapter.selector(Checkable.class).where(
-                Path.with(Checkable.class, Boolean.class).methodWith("isChecked"),
-                Operator.OPERATOR_EQUAL,
-                true
-        ).count();
+        int checkedCount = getCheckedCount();
         return allCheckableCount == checkedCount;
     }
 
@@ -134,6 +130,20 @@ public class MultipleController implements Controller {
     @Override
     public boolean isStarted() {
         return isStarted;
+    }
+
+    @Override
+    public boolean hasCheckedOnes() {
+        return getCheckedCount() > 0;
+    }
+
+    @Override
+    public int getCheckedCount() {
+        return mAdapter.selector(Checkable.class).where(
+                Path.with(Checkable.class, Boolean.class).methodWith("isChecked"),
+                Operator.OPERATOR_EQUAL,
+                true
+        ).count();
     }
 
     public void setOnMultipleCheckedListener(OnMultipleCheckedListener onMultipleListener) {
