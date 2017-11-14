@@ -10,8 +10,8 @@
 通过Gradle:
 
 ```groovy
-compile 'com.github.boybeak:adapter:3.1.1'
-compile 'com.github.boybeak:adapter-extension:2.2.2' //Optional
+compile 'com.github.boybeak:adapter:3.1.2'
+compile 'com.github.boybeak:adapter-extension:2.2.3' //Optional
 ```
 
 
