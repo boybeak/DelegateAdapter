@@ -1,4 +1,5 @@
 [ ![Download](https://api.bintray.com/packages/boybeak/nulldreams/adapter/images/download.svg) ](https://bintray.com/boybeak/nulldreams/adapter/_latestVersion)
+[ ![Download](https://api.bintray.com/packages/boybeak/nulldreams/adapter-extension/images/download.svg) ](https://bintray.com/boybeak/nulldreams/adapter-extension/_latestVersion)
 
 # DelegateAdapter
 
@@ -18,8 +19,8 @@ The most amazing thing is binding multi types data and ViewHolder with Injection
 Grab via Gradle:
 
 ```groovy
-compile 'com.github.boybeak:adapter:3.1.3'
-compile 'com.github.boybeak:adapter-extension:2.2.4' //Optional
+compile 'com.github.boybeak:adapter:3.1.4'
+compile 'com.github.boybeak:adapter-extension:2.2.5' //Optional
 ```
 
 # What's new in version 3.x.x

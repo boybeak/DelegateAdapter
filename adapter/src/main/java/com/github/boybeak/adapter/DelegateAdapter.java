@@ -14,6 +14,7 @@ import com.github.boybeak.adapter.annotation.DelegateInfo;
 import com.github.boybeak.adapter.annotation.HolderClass;
 import com.github.boybeak.adapter.annotation.LayoutID;
 import com.github.boybeak.adapter.annotation.NullHolder;
+import com.github.boybeak.adapter.impl.DelegateImpl;
 import com.github.boybeak.adapter.impl.LayoutImpl;
 import com.github.boybeak.selector.ListSelector;
 import com.github.boybeak.selector.Selector;
@@ -183,6 +184,11 @@ public class DelegateAdapter extends RecyclerView.Adapter<AbsViewHolder>{
         int count = getItemCount();
         mDelegateImplList.clear();
         return new DataChange(this, 0, count, DataChange.TYPE_ITEM_RANGE_REMOVED);
+    }
+
+    public DataChange set (int position, DelegateImpl impl) {
+        mDelegateImplList.set(position, impl);
+        return new DataChange(this, position, DataChange.TYPE_ITEM_CHANGED);
     }
 
     public DataChange add(LayoutImpl impl) {

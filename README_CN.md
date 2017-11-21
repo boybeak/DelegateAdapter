@@ -1,4 +1,5 @@
 [ ![Download](https://api.bintray.com/packages/boybeak/nulldreams/adapter/images/download.svg) ](https://bintray.com/boybeak/nulldreams/adapter/_latestVersion)
+[ ![Download](https://api.bintray.com/packages/boybeak/nulldreams/adapter-extension/images/download.svg) ](https://bintray.com/boybeak/nulldreams/adapter-extension/_latestVersion)
 
 # DelegateAdapter
 这是一个改进的RecyclerView框架下的适配Adapter库。使用这个库，在大多数情况下，你都不需要再写自定义的适配器Adapter类了。
@@ -10,8 +11,8 @@
 通过Gradle:
 
 ```groovy
-compile 'com.github.boybeak:adapter:3.1.3'
-compile 'com.github.boybeak:adapter-extension:2.2.4' //Optional
+compile 'com.github.boybeak:adapter:3.1.4'
+compile 'com.github.boybeak:adapter-extension:2.2.5' //Optional
 ```
 
 
