@@ -1,5 +1,5 @@
-[ ![Download](https://api.bintray.com/packages/boybeak/nulldreams/adapter/images/download.svg) ](https://bintray.com/boybeak/nulldreams/adapter/_latestVersion)
-[ ![Download](https://api.bintray.com/packages/boybeak/nulldreams/adapter-extension/images/download.svg) ](https://bintray.com/boybeak/nulldreams/adapter-extension/_latestVersion)
+[ ![DelegateAdapter](https://api.bintray.com/packages/boybeak/nulldreams/adapter/images/download.svg) ](https://bintray.com/boybeak/nulldreams/adapter/_latestVersion)
+[ ![DelegateAdapter-Extension](https://api.bintray.com/packages/boybeak/nulldreams/adapter-extension/images/download.svg) ](https://bintray.com/boybeak/nulldreams/adapter-extension/_latestVersion)
 
 # DelegateAdapter
 
