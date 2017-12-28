@@ -11,8 +11,8 @@
 通过Gradle:
 
 ```groovy
-compile 'com.github.boybeak:adapter:3.1.4'
-compile 'com.github.boybeak:adapter-extension:2.2.5' //Optional
+compile 'com.github.boybeak:adapter:3.1.5'
+compile 'com.github.boybeak:adapter-extension:2.2.6' //Optional
 ```
 
 
