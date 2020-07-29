@@ -3,7 +3,7 @@
 
 
 # ~~DelegateAdapter~~ 
-> Do not use this library ever. Try the more advanced one - [**AnyAdapter**](https://github.com/boybeak/AnyAdapter)
+> 此库已作废，请使用新库 - [**AnyAdapter**](https://github.com/boybeak/AnyAdapter)
 
 这是一个改进的RecyclerView框架下的适配Adapter库。使用这个库，在大多数情况下，你都不需要再写自定义的适配器Adapter类了。
 
