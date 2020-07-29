@@ -1,9 +1,7 @@
 [ ![DelegateAdapter](https://api.bintray.com/packages/boybeak/nulldreams/adapter/images/download.svg) ](https://bintray.com/boybeak/nulldreams/adapter/_latestVersion)
 [ ![DelegateAdapter-Extension](https://api.bintray.com/packages/boybeak/nulldreams/adapter-extension/images/download.svg) ](https://bintray.com/boybeak/nulldreams/adapter-extension/_latestVersion)
 
-> Do not use this library ever. Try the more advanced one - [**AnyAdapter**](https://github.com/boybeak/AnyAdapter)
-
-# ~~DelegateAdapter~~
+# ~~DelegateAdapter~~ - > Do not use this library ever. Try the more advanced one - [**AnyAdapter**](https://github.com/boybeak/AnyAdapter)
 
 
 This is an advanced RecyclerView's Adapter library. With this library, writing custom adapter class is not necessary in most conditions. Using DelegateAdapter can satisfy most of what you need.
