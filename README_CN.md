@@ -1,7 +1,10 @@
 [ ![Download](https://api.bintray.com/packages/boybeak/nulldreams/adapter/images/download.svg) ](https://bintray.com/boybeak/nulldreams/adapter/_latestVersion)
 [ ![Download](https://api.bintray.com/packages/boybeak/nulldreams/adapter-extension/images/download.svg) ](https://bintray.com/boybeak/nulldreams/adapter-extension/_latestVersion)
 
-# DelegateAdapter
+
+# ~~DelegateAdapter~~ 
+> Do not use this library ever. Try the more advanced one - [**AnyAdapter**](https://github.com/boybeak/AnyAdapter)
+
 这是一个改进的RecyclerView框架下的适配Adapter库。使用这个库，在大多数情况下，你都不需要再写自定义的适配器Adapter类了。
 
 [Wiki](https://github.com/boybeak/DelegateAdapter/wiki)
