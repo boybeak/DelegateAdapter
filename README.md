@@ -3,7 +3,7 @@
 
 > Do not use this library ever. Try the more advanced one - [**AnyAdapter**](https://github.com/boybeak/AnyAdapter)
 
-# DelegateAdapter
+~~# DelegateAdapter~~
 
 
 This is an advanced RecyclerView's Adapter library. With this library, writing custom adapter class is not necessary in most conditions. Using DelegateAdapter can satisfy most of what you need.
